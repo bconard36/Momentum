@@ -1,5 +1,6 @@
 # Momentum
-**A React Fitness Tracking Application** 
+**A React Fitness Tracking Application**
+
 Momentum is a React application for logging, managing, and reviewing workouts. Users can dynamically add
 or remove exercises from a workout, validate inputs using React Hook Form, and persist workout history
 in localStorage. 
