@@ -95,6 +95,7 @@ Each exercise stores:
 - Sets
 - Repetitions
 - Exercise Type
+  
 Designing this structure with future database integration in mind makes the transition to 
 a SQL backend significantly easier. 
 
