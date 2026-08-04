@@ -89,6 +89,7 @@ experience serializing application data and synchronizing React state with brows
 - Unique identifier
 - Workout date
 - Collection of exercises
+  
 Each exercise stores: 
 - Name
 - Weight
