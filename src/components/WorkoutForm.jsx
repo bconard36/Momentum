@@ -145,7 +145,11 @@ const WorkoutForm = () => {
                                                                 required: "Workout type is required."
                                                             })}
                                                         />
-                                                        <span>Duration</span>
+                                                        <div className="radio-text">
+                                                            <span>Duration-Based</span>
+                                                            <br />
+                                                            <span>(Cardio, Mobility, Warm-Up/Cool down)</span>
+                                                        </div>
                                                     </label>
                                                     <label className="radio-option" htmlFor={`exercise-type-strength-${index}`}>
                                                         <input
@@ -156,7 +160,11 @@ const WorkoutForm = () => {
                                                                 required: "Workout type is required."
                                                             })}
                                                         />
-                                                        <span>Strength</span>
+                                                        <div className="radio-text">
+                                                            <span>Rep-Based</span>
+                                                            <br />
+                                                            <span>(Weight/Machine Strength Training)</span>
+                                                        </div>
                                                     </label>
                                                 </div>
                                             </div>
