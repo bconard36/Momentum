@@ -38,6 +38,7 @@ fitness platform.
 Current features include: 
 - Dynamic workout creation with React Hook Form
 - Add and remove exercises using `useFieldArray`
+- Conditional workout form based on type using `watch`
 - Built-in custom form validation
 - Workout history stored in localStorage
 - View previously logged workouts 
@@ -81,6 +82,11 @@ component re-renders.
 to add or remove any number of exercises during a workout. This introduced a different way of 
 thinking about forms, where the form structure itself changes over time instead of remaining fixed.
 
+**Conditional Form Displays with `watch`**: Workout forms are displayed based on workout type, 
+allowing users to log workouts of different styles with different metrics to track. This was solved
+by using React Form's `watch` API to subscribe to the workout-type field and re-render the relevant
+form inputs whenever it changes. 
+
 **Local Data Persistence**: Workout history is stored in browser localStorage, allowing users 
 to close and reopen the application without losing their logged workouts. This also provided 
 experience serializing application data and synchronizing React state with browser storage. 
@@ -96,6 +102,11 @@ Each exercise stores:
 - Sets
 - Repetitions
 - Exercise Type
+
+**Single Source of Truth for Form Data**: A bug in the workout log modal traced back to reading 
+conditional form data from two different places (log and form) rather than one — a good reminder that
+once state needs to be consistent across components, it should flow from one truthy source rather than 
+being re-read independently in more than one place. 
   
 Designing this structure with future database integration in mind makes the transition to 
 a SQL backend significantly easier. 
