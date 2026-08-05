@@ -156,6 +156,10 @@
   transition: all 0.2s ease;
 }
 
+.submit {
+  margin: 0 auto;
+}
+
 .primary-button {
   background: linear-gradient(135deg, var(--accent-mint), var(--accent-mint-light));
   color: #fff;

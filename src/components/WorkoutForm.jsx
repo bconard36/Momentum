@@ -200,17 +200,17 @@ const WorkoutForm = () => {
                                     </div>
                                     <div className="workout-button-container">
                                         <div className="form-actions">
+                                            <button className="secondary-button" type="button" onClick={() => append({ name: "", sets: undefined, reps: undefined, weight: undefined, type: "" })}>
+                                                Add Another Exercise
+                                            </button>
                                             <button className="secondary-button" type="button" onClick={() => remove(index)}>
                                                 Clear Exercise
-                                            </button>
+                                            </button>                                        
                                         </div>
                                     </div>
                                 </div>
                             ))}
                             <div className="form-actions">
-                                <button className="secondary-button" type="button" onClick={() => append({ name: "", sets: undefined, reps: undefined, weight: undefined, type: "" })}>
-                                    Add Another Exercise
-                                </button>
                                 <button className="primary-button submit" type="submit">
                                     Save Workout
                                 </button>
