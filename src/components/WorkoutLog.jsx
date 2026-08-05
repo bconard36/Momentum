@@ -16,7 +16,7 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout }) => {
 
             <div className="workout-log-button-container">
                 <button className="secondary-button" type="button" onClick={() => setIsOpen(true)}>
-                    View Logged Workouts
+                    View Workout Log
                 </button>
             </div>
 

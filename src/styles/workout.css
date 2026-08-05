@@ -216,7 +216,7 @@
 
 .secondary-button:hover,
 .secondary-button:focus-visible {
-  border-color: var(--border-active);
+  border-color: var(--accent-mint);
   transform: translateY(-1px);
 }
 
