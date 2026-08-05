@@ -122,105 +122,186 @@ const WorkoutForm = () => {
                                     })} />
                             </div>
 
-                            {fields.map((field, index) => (
-                                <div className="field-card" key={field.id}>
-                                    <div className="field-grid">
-                                        <div className="field-group">
-                                            <label className="field-label" htmlFor={`exercise-name-${index}`}>Exercise Name</label>
-                                            {errors.exercises?.[index]?.name && (
-                                                <span className="error-message">{errors.exercises[index].name.message}</span>
+                            {fields.map((field, index) => {
+                                // Watch the exercise type to render the correct form
+                                //
+                                const exerciseType = watch(`exercises.${index}.type`);
+                                return (
+                                    <div className="field-card" key={field.id}>
+                                        <div className="field-grid">
+                                            <div className="field-group full-width conditional">
+                                                <label className="field-label centered-label">Workout Type</label>
+                                                {errors.exercises?.[index]?.type && (
+                                                    <span className="error-message">{errors.exercises[index].type.message}</span>
+                                                )}
+                                                <div className="radio-group">
+                                                    <label className="radio-option" htmlFor={`exercise-type-duration-${index}`}>
+                                                        <input
+                                                            id={`exercise-type-duration-${index}`}
+                                                            type="radio"
+                                                            value="duration"
+                                                            {...register(`exercises.${index}.type`, {
+                                                                required: "Workout type is required."
+                                                            })}
+                                                        />
+                                                        <span>Duration</span>
+                                                    </label>
+                                                    <label className="radio-option" htmlFor={`exercise-type-strength-${index}`}>
+                                                        <input
+                                                            id={`exercise-type-strength-${index}`}
+                                                            type="radio"
+                                                            value="strength"
+                                                            {...register(`exercises.${index}.type`, {
+                                                                required: "Workout type is required."
+                                                            })}
+                                                        />
+                                                        <span>Strength</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            {/* Duration Form Render */}
+                                            {exerciseType === "duration" && (
+                                                <>
+                                                    <div className="field-group">
+                                                        <label className="field-label" htmlFor={`exercise-name-${index}`}>Exercise Name</label>
+                                                        {errors.exercises?.[index]?.name && (
+                                                            <span className="error-message">{errors.exercises[index].name.message}</span>
+                                                        )}
+                                                        <input
+                                                            id={`exercise-name-${index}`}
+                                                            type="text"
+                                                            {...register(`exercises.${index}.name`, {
+                                                                required: "Exercise name is required",
+                                                                minLength: { value: 2, message: "Exercise name must be at least 2 characters." },
+                                                                maxLength: { value: 50, message: "Exercise name cannot exceed 50 characters." }
+                                                            })}
+                                                            placeholder="Exercise Name"
+                                                        />
+                                                    </div>
+                                                    <div className="field-group">
+                                                        <label className="field-label" htmlFor={`exercise-duration-minutes-${index}`}>Duration (minutes)</label>
+                                                        {errors.exercises?.[index]?.["duration-minutes"] && (
+                                                            <span className="error-message">{errors.exercises[index]["duration-minutes"].message}</span>
+                                                        )}
+                                                        <input
+                                                            id={`exercise-duration-minutes-${index}`}
+                                                            type="number"
+                                                            {...register(`exercises.${index}.duration-minutes`, {
+                                                                valueAsNumber: true,
+                                                                required: "Duration (minutes) is required.",
+                                                                min: { value: 0, message: "Minutes cannot be negative." },
+                                                                max: { value: 300, message: "Minutes cannot exceed 300" }
+                                                            })}
+                                                            placeholder="Duration (minutes)"
+                                                        />
+                                                    </div>
+                                                    <div className="field-group orphan-group">
+                                                        <label className="field-label centered-label" htmlFor={`exercise-duration-seconds-${index}`}>Duration (seconds)</label>
+                                                        {errors.exercises?.[index]?.["duration-seconds"] && (
+                                                            <span className="error-message">{errors.exercises[index]["duration-seconds"].message}</span>
+                                                        )}
+                                                        <input
+                                                            id={`exercise-duration-seconds-${index}`}
+                                                            type="number"
+                                                            {...register(`exercises.${index}.duration-seconds`, {
+                                                                valueAsNumber: true,
+                                                                required: "Duration (seconds) is required.",
+                                                                min: { value: 0, message: "Seconds cannot be negative." },
+                                                                max: { value: 59, message: "Seconds cannot exceed 59." }
+                                                            })}
+                                                            placeholder="Duration (seconds)"
+                                                        />
+                                                    </div>
+                                                </>
                                             )}
-                                            <input
-                                                id={`exercise-name-${index}`}
-                                                type="text"
-                                                {...register(`exercises.${index}.name`, {
-                                                    required: "Exercise name is required",
-                                                    minLength: { value: 2, message: "Exercise name must be at least 2 characters."},
-                                                    maxLength: { value: 50, message: "Exercise name cannot exceed 50 characters." }
-                                                })}
-                                                placeholder="Exercise Name"
-                                            />
+
+                                            {/* Strength Form Render */}
+                                            {exerciseType === "strength" && (
+                                                <>
+                                                    <div className="field-group">
+                                                        <label className="field-label" htmlFor={`exercise-name-${index}`}>Exercise Name</label>
+                                                        {errors.exercises?.[index]?.name && (
+                                                            <span className="error-message">{errors.exercises[index].name.message}</span>
+                                                        )}
+                                                        <input
+                                                            id={`exercise-name-${index}`}
+                                                            type="text"
+                                                            {...register(`exercises.${index}.name`, {
+                                                                required: "Exercise name is required",
+                                                                minLength: { value: 2, message: "Exercise name must be at least 2 characters." },
+                                                                maxLength: { value: 50, message: "Exercise name cannot exceed 50 characters." }
+                                                            })}
+                                                            placeholder="Exercise Name"
+                                                        />
+                                                    </div>
+                                                    <div className="field-group">
+                                                        <label className="field-label" htmlFor={`exercise-weight-${index}`}>Weight (lbs)</label>
+                                                        {errors.exercises?.[index]?.weight && (
+                                                            <span className="error-message">{errors.exercises[index].weight.message}</span>
+                                                        )}
+                                                        <input
+                                                            id={`exercise-weight-${index}`}
+                                                            type="number"
+                                                            {...register(`exercises.${index}.weight`, {
+                                                                valueAsNumber: true,
+                                                                required: "Weight is required.",
+                                                                min: { value: 0, message: "Weight cannot be negative." },
+                                                                max: { value: 3000, message: "Weight cannot exceed 3000." }
+                                                            })}
+                                                            placeholder="Weight (lbs)"
+                                                        />
+                                                    </div>
+                                                    <div className="field-group">
+                                                        <label className="field-label" htmlFor={`exercise-sets-${index}`}>Sets</label>
+                                                        {errors.exercises?.[index]?.sets && (
+                                                            <span className="error-message">{errors.exercises[index].sets.message}</span>
+                                                        )}
+                                                        <input
+                                                            id={`exercise-sets-${index}`}
+                                                            type="number"
+                                                            {...register(`exercises.${index}.sets`, {
+                                                                valueAsNumber: true,
+                                                                required: "Set count is required.",
+                                                                min: { value: 1, message: "There must be at least 1 (one) set." },
+                                                                max: { value: 100, message: "Set count cannot exceed 100." }
+                                                            })}
+                                                            placeholder="Sets"
+                                                        />
+                                                    </div>
+                                                    <div className="field-group">
+                                                        <label className="field-label" htmlFor={`exercise-reps-${index}`}>Reps</label>
+                                                        {errors.exercises?.[index]?.reps && (
+                                                            <span className="error-message">{errors.exercises[index].reps.message}</span>
+                                                        )}
+                                                        <input
+                                                            id={`exercise-reps-${index}`}
+                                                            type="number"
+                                                            {...register(`exercises.${index}.reps`, {
+                                                                valueAsNumber: true,
+                                                                required: "Rep count is required.",
+                                                                min: { value: 1, message: "There must be at least 1 (one) rep." },
+                                                                max: { value: 1000, message: "Rep count cannot exceed 1000." }
+                                                            })}
+                                                            placeholder="Reps"
+                                                        />
+                                                    </div>
+                                                </>
+                                            )}
                                         </div>
-                                        <div className="field-group">
-                                            <label className="field-label" htmlFor={`exercise-weight-${index}`}>Weight (lbs)</label>
-                                            {errors.exercises?.[index]?.weight && (
-                                                <span className="error-message">{errors.exercises[index].weight.message}</span>
-                                            )}
-                                            <input
-                                                id={`exercise-weight-${index}`}
-                                                type="number"
-                                                {...register(`exercises.${index}.weight`, { 
-                                                    valueAsNumber: true,
-                                                    required: "Weight is required.",
-                                                    min: { value: 0, message: "Weight cannot be negative."},
-                                                    max: { value: 3000, message: "Weight cannot exceed 3000." }
-                                                })}
-                                                placeholder="Weight (lbs)"
-                                            />
-                                        </div>
-                                        <div className="field-group">
-                                            <label className="field-label" htmlFor={`exercise-sets-${index}`}>Sets</label>
-                                            {errors.exercises?.[index]?.sets && (
-                                                <span className="error-message">{errors.exercises[index].sets.message}</span>
-                                            )}
-                                            <input
-                                                id={`exercise-sets-${index}`}
-                                                type="number"
-                                                {...register(`exercises.${index}.sets`, { 
-                                                    valueAsNumber: true, 
-                                                    required: "Set count is required.",
-                                                    min: { value: 1, message: "There must be at least 1 (one) set."},
-                                                    max: { value: 100, message: "Set count cannot exceed 100." }
-                                                })}
-                                                placeholder="Sets"
-                                            />
-                                        </div>
-                                        <div className="field-group">
-                                            <label className="field-label" htmlFor={`exercise-reps-${index}`}>Reps</label>
-                                            {errors.exercises?.[index]?.reps && (
-                                                <span className="error-message">{errors.exercises[index].reps.message}</span>
-                                            )}
-                                            <input
-                                                id={`exercise-reps-${index}`}
-                                                type="number"
-                                                {...register(`exercises.${index}.reps`, { 
-                                                    valueAsNumber: true, 
-                                                    required: "Rep count is required.",
-                                                    min: { value: 1, message: "There must be at least 1 (one) rep."},
-                                                    max: { value: 1000, message: "Rep count cannot exceed 1000." }
-                                                })}
-                                                placeholder="Reps"
-                                            />
-                                        </div>
-                                        <div className="field-group full-width">
-                                            <label className="field-label centered-label" htmlFor={`exercise-type-${index}`}>Workout Type</label>
-                                            {errors.exercises?.[index]?.type && (
-                                                <span className="error-message">{errors.exercises[index].type.message}</span>
-                                            )}
-                                            <select id={`exercise-type-${index}`} {...register(`exercises.${index}.type`, {
-                                                required: "Workout type is required."
-                                            })}>
-                                                <option value="">Select Workout Type</option>
-                                                <option value="warm-up">Warm-up</option>
-                                                <option value="strength">Strength</option>
-                                                <option value="mobility">Mobility</option>
-                                                <option value="Cardio">Cardio</option>
-                                                <option value="cool-down">Cool-down</option>
-                                            </select>
+                                        <div className="workout-button-container">
+                                            <div className="form-actions">
+                                                <button className="secondary-button" type="button" onClick={() => append({ name: "", sets: undefined, reps: undefined, weight: undefined, type: "" })}>
+                                                    Add Another Exercise
+                                                </button>
+                                                <button className="secondary-button" type="button" onClick={() => remove(index)}>
+                                                    Clear Exercise
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div className="workout-button-container">
-                                        <div className="form-actions">
-                                            <button className="secondary-button" type="button" onClick={() => append({ name: "", sets: undefined, reps: undefined, weight: undefined, type: "" })}>
-                                                Add Another Exercise
-                                            </button>
-                                            <button className="secondary-button" type="button" onClick={() => remove(index)}>
-                                                Clear Exercise
-                                            </button>                                        
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
+                                );
+                            })}
                             <div className="form-actions">
                                 <button className="primary-button submit" type="submit">
                                     Save Workout
