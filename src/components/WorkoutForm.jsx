@@ -140,7 +140,7 @@ const WorkoutForm = () => {
                                                         <input
                                                             id={`exercise-type-duration-${index}`}
                                                             type="radio"
-                                                            value="duration"
+                                                            value="Duration"
                                                             {...register(`exercises.${index}.type`, {
                                                                 required: "Workout type is required."
                                                             })}
@@ -151,7 +151,7 @@ const WorkoutForm = () => {
                                                         <input
                                                             id={`exercise-type-strength-${index}`}
                                                             type="radio"
-                                                            value="strength"
+                                                            value="Strength"
                                                             {...register(`exercises.${index}.type`, {
                                                                 required: "Workout type is required."
                                                             })}
@@ -162,7 +162,7 @@ const WorkoutForm = () => {
                                             </div>
 
                                             {/* Duration Form Render */}
-                                            {exerciseType === "duration" && (
+                                            {exerciseType === "Duration" && (
                                                 <>
                                                     <div className="field-group">
                                                         <label className="field-label" htmlFor={`exercise-name-${index}`}>Exercise Name</label>
@@ -218,7 +218,7 @@ const WorkoutForm = () => {
                                             )}
 
                                             {/* Strength Form Render */}
-                                            {exerciseType === "strength" && (
+                                            {exerciseType === "Strength" && (
                                                 <>
                                                     <div className="field-group">
                                                         <label className="field-label" htmlFor={`exercise-name-${index}`}>Exercise Name</label>
@@ -292,7 +292,7 @@ const WorkoutForm = () => {
                                         </div>
                                         <div className="workout-button-container">
                                             <div className="form-actions">
-                                                <button className="secondary-button" type="button" onClick={() => append({ name: "", sets: undefined, reps: undefined, weight: undefined, type: "" })}>
+                                                <button className="secondary-button" type="button" onClick={() => append({ type: "" })}>
                                                     Add Another Exercise
                                                 </button>
                                                 <button className="secondary-button" type="button" onClick={() => remove(index)}>
