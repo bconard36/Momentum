@@ -109,14 +109,14 @@ a SQL backend significantly easier.
 - Workout analytics dashboard
 
 # Tools Used
-React
-React Hook Form
-React Hook Form `useFieldArray`
-JavaScript (ES6+)
-Vite
-localStorage API
-npm
-CSS3
-VS Code
-Git 
-GitHub
+- React
+- React Hook Form
+- React Hook Form `useFieldArray`
+- JavaScript (ES6+)
+- Vite
+- localStorage API
+- npm
+- CSS3
+- VS Code
+- Git 
+- GitHub
