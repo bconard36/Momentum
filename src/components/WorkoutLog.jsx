@@ -37,11 +37,22 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout }) => {
                                 <div className="exercise-list">
                                     {workout.exercises.map((exercise, index) => (
                                         <div key={index} className="exercise-item">
-                                            <p>Exercise: {exercise.name}</p>
-                                            <p>Weight (lbs): {exercise.weight}</p>
-                                            <p>Sets: {exercise.sets}</p>
-                                            <p>Reps: {exercise.reps}</p>
-                                            <p>Type: {exercise.type}</p>
+                                            {exercise.type === "Strength" && (
+                                                <>
+                                                    <p>Type: {exercise.type}</p>
+                                                    <p>Exercise: {exercise.name}</p>
+                                                    <p>Weight (lbs): {exercise.weight}</p>
+                                                    <p>Sets: {exercise.sets}</p>
+                                                    <p>Reps: {exercise.reps}</p>                                                    
+                                                </>
+                                            )}
+                                            {exercise.type === "Duration" && (
+                                                <>
+                                                    <p>Type: {exercise.type}</p>
+                                                    <p>Exercise: {exercise.name}</p>
+                                                    <p>Time: {exercise["duration-minutes"]}:{exercise["duration-seconds"]}</p>
+                                                </>
+                                            )}
                                         </div>
                                     ))}
                                 </div>
