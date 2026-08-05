@@ -19,7 +19,6 @@ const WorkoutForm = () => {
     // Initialize React Hook Form
     const { register, control, watch, handleSubmit, formState: { errors }, reset } = useForm({
         defaultValues: {
-            id: crypto.randomUUID(),
             date: "",
             exercises: [], // Default an empty array — user should not have to fill in a blank row 
         }
@@ -32,9 +31,13 @@ const WorkoutForm = () => {
     });
 
     const onSubmit = (data) => {
-        console.log(data);
+        // Build the new workout with data and a unique ID
+        const newWorkout = { 
+            ...data,
+            id: crypto.randomUUID()
+        };
         // Update localStorage with the new workout entry.
-        const updatedList = [...savedWorkouts, data];
+        const updatedList = [...savedWorkouts, newWorkout];
         // Update local React state with the new list of workouts 
         setSavedWorkouts(updatedList);
         // Write the updated list to local storage - don't forget to serialize
@@ -70,7 +73,14 @@ const WorkoutForm = () => {
                     ) : (
                         <>
 
-                            <WorkoutLog />
+                            <WorkoutLog 
+                                savedWorkouts={savedWorkouts}
+                                deleteWorkout={(idToDelete) => {
+                                    const updatedWorkouts = savedWorkouts.filter((workout, index) => workout.id !== idToDelete);
+                                    setSavedWorkouts(updatedWorkouts);
+                                    localStorage.setItem("workouts", JSON.stringify(updatedWorkouts))
+                                }}
+                            />
 
                             <div className="field-card date-card">
                                 <label className="field-label" htmlFor="workout-date">Workout Date</label>
