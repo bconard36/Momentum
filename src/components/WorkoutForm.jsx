@@ -112,14 +112,15 @@ const WorkoutForm = () => {
                                         max: {
                                             value: todayStr,
                                             message: "Date cannot be in the future."
-                                        },
+                                        }, 
                                         validate: (value) => {
                                             const selected = new Date(value);
                                             const today = new Date;
                                             today.setHours(0, 0, 0, 0);
                                             return selected <= today || "Cannot pick a future date.";
                                         }
-                                    })} />
+                                    })}
+                                     />
                             </div>
 
                             {fields.map((field, index) => {
