@@ -65,13 +65,24 @@ const WorkoutForm = () => {
                 <form className="workout-form" onSubmit={handleSubmit(onSubmit)}>
                     {fields.length === 0 ? (
                         <div className="empty-state">
-                            <button
-                                className="primary-button"
-                                type="button"
-                                onClick={() => append({ name: "", sets: undefined, reps: undefined, weight: undefined, type: "" })}
-                            >
-                                Build New Workout
-                            </button>
+                            <div className="form-actions">
+                                <button
+                                    className="primary-button"
+                                    type="button"
+                                    onClick={() => append({ name: "", sets: undefined, reps: undefined, weight: undefined, type: "" })}
+                                >
+                                    Build New Workout
+                                </button>
+                                {/* Pass savedWorkouts array and deleteWorkout method down as props to workout log */}
+                                {/* This keeps all form data true to this component */}
+                                <WorkoutLog 
+                                    savedWorkouts={savedWorkouts}
+                                    deleteWorkout={(idToDelete) => {
+                                        const updatedWorkouts = savedWorkouts.filter((workout, index) => workout.id !== idToDelete);
+                                        setSavedWorkouts(updatedWorkouts);
+                                        localStorage.setItem("workouts", JSON.stringify(updatedWorkouts))
+                                    }} />
+                            </div>
                         </div>
                     ) : (
                         <>
