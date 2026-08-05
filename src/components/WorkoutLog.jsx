@@ -6,22 +6,10 @@
  */
 import { useState } from 'react';
 
-const WorkoutLog = () => {
-
-    const [savedWorkouts, setSavedWorkouts] = useState(() => {
-        const logged = localStorage.getItem("workouts");
-        // Return parsed, saved workouts if they exist, otherwise an empty array
-        return logged ? JSON.parse(logged) : [];
-    });
+const WorkoutLog = ({ savedWorkouts, deleteWorkout }) => {
     
 
-    const [isOpen, setIsOpen] = useState(false);
-
-    const deleteWorkout = (idToDelete) => {
-        const updatedWorkouts = savedWorkouts.filter((workout, index) => workout.id !== idToDelete);
-        setSavedWorkouts(updatedWorkouts);
-        localStorage.setItem("workouts", JSON.stringify(updatedWorkouts));
-    }   
+    const [isOpen, setIsOpen] = useState(false); 
 
     return ( 
         <>
