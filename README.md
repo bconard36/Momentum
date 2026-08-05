@@ -38,7 +38,7 @@ fitness platform.
 Current features include: 
 - Dynamic workout creation with React Hook Form
 - Add and remove exercises using `useFieldArray`
-- Conditional workout form inputs based on type using `watch`
+- Conditional workout form inputs based on workout type using `watch`
 - Built-in custom form validation
 - Workout history stored in localStorage
 - View previously logged workouts 
@@ -122,7 +122,8 @@ a SQL backend significantly easier.
 # Tools Used
 - React
 - React Hook Form
-- React Hook Form `useFieldArray`
+    - `useFieldArray`
+    - `watch`
 - JavaScript (ES6+)
 - Vite
 - localStorage API
