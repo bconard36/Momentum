@@ -1,5 +1,5 @@
 import { useForm, useFieldArray } from "react-hook-form";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import WorkoutLog from "./WorkoutLog";
 
 // ============================================================
@@ -20,12 +20,15 @@ const WorkoutForm = () => {
     });
 
     // Initialize React Hook Form
-    const { register, control, watch, handleSubmit, formState: { errors }, reset } = useForm({
+    const { register, control, watch, handleSubmit, formState: { errors, isSubmitSuccessful }, reset } = useForm({
         defaultValues: {
             date: "",
             exercises: [], // Default an empty array — user should not have to fill in a blank row 
         }
     });
+
+    // Set state for success modal 
+    const [showSuccess, setShowSuccess] = useState(false);
 
     // Inside the form is an array called exercises, which is what useFieldArray manages.
     const { fields, append, remove } = useFieldArray({
@@ -34,19 +37,33 @@ const WorkoutForm = () => {
     });
 
     const onSubmit = (data) => {
-        // Build the new workout with data and a unique ID
-        const newWorkout = { 
-            ...data,
-            id: crypto.randomUUID()
-        };
-        // Update localStorage with the new workout entry.
-        const updatedList = [...savedWorkouts, newWorkout];
-        // Update local React state with the new list of workouts 
-        setSavedWorkouts(updatedList);
-        // Write the updated list to local storage - don't forget to serialize
-        localStorage.setItem("workouts", JSON.stringify(updatedList));
-        reset(); // Reset after submission 
+            // Build the new workout with data and a unique ID
+            const newWorkout = { 
+                ...data,
+                id: crypto.randomUUID()
+            };
+            // Update localStorage with the new workout entry.
+            const updatedList = [...savedWorkouts, newWorkout];
+            // Update local React state with the new list of workouts 
+            setSavedWorkouts(updatedList);
+            setShowSuccess(true);
+            // Write the updated list to local storage - don't forget to serialize
+            localStorage.setItem("workouts", JSON.stringify(updatedList));
     };
+
+    useEffect(() => {
+        if (isSubmitSuccessful) {
+            // Reset after success
+            reset();
+        }
+    }, [isSubmitSuccessful, reset]);
+
+    // Close the modal and redirect back to workout form 
+    // Redirect by appending an empty type so the field list = 1
+    const handleCloseModal = () => {
+        setShowSuccess(false);
+        append({ type: "" });
+    }
 
     return (
         <div className="workout-page">
@@ -63,7 +80,24 @@ const WorkoutForm = () => {
                 </header>
 
                 <form className="workout-form" onSubmit={handleSubmit(onSubmit)}>
-                    {fields.length === 0 ? (
+                    {showSuccess && (
+                        <div className="workout-modal-overlay">
+                            <p className="success-message">Success! Workout Saved!</p>
+                            <div className="success-return-container">
+                                <button className="secondary-button" type="button" onClick={handleCloseModal}>
+                                    Build New Workout
+                                </button> 
+                                <WorkoutLog 
+                                    savedWorkouts={savedWorkouts}
+                                    deleteWorkout={(idToDelete) => {
+                                        const updatedWorkouts = savedWorkouts.filter((workout, index) => workout.id !== idToDelete);
+                                        setSavedWorkouts(updatedWorkouts);
+                                        localStorage.setItem("workouts", JSON.stringify(updatedWorkouts))
+                                    }} /> 
+                            </div>
+                        </div>
+                    )}
+                    {!showSuccess && fields.length === 0 ? (
                         <div className="empty-state">
                             <div className="form-actions">
                                 <button
