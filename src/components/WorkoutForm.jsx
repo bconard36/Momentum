@@ -92,7 +92,11 @@ const WorkoutForm = () => {
                                     deleteWorkout={(idToDelete) => {
                                         const updatedWorkouts = savedWorkouts.filter((workout, index) => workout.id !== idToDelete);
                                         setSavedWorkouts(updatedWorkouts);
-                                        localStorage.setItem("workouts", JSON.stringify(updatedWorkouts))
+                                        localStorage.setItem("workouts", JSON.stringify(updatedWorkouts));
+                                        // If last workout is deleted from success modal window, close modal and return to workout form
+                                        if (updatedWorkouts.length === 0) {
+                                            handleCloseModal();
+                                        }
                                     }} /> 
                             </div>
                         </div>
