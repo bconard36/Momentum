@@ -9,6 +9,9 @@ import WorkoutLog from "./WorkoutLog";
 // ============================================================
 
 const WorkoutForm = () => {
+    // Get today's date for validation
+    const todayStr = new Date().toISOString().split("T")[0];
+
     // Initialize state by reading and parsing array from local storage, or default to an empty array
     const [savedWorkouts, setSavedWorkouts] = useState(() => {
         const saved = localStorage.getItem("workouts");
@@ -84,7 +87,25 @@ const WorkoutForm = () => {
 
                             <div className="field-card date-card">
                                 <label className="field-label" htmlFor="workout-date">Workout Date</label>
-                                <input id="workout-date" type="date" {...register("date")} />
+                                {errors.date && (
+                                    <span className="error-message">{errors.date.message}</span>
+                                )}
+                                <input 
+                                    id="workout-date" 
+                                    type="date" 
+                                    {...register("date", {
+                                        required: "Workout date is required.",
+                                        max: {
+                                            value: todayStr,
+                                            message: "Date cannot be in the future."
+                                        },
+                                        validate: (value) => {
+                                            const selected = new Date(value);
+                                            const today = new Date;
+                                            today.setHours(0, 0, 0, 0);
+                                            return selected <= today || "Cannot pick a future date.";
+                                        }
+                                    })} />
                             </div>
 
                             {fields.map((field, index) => (
