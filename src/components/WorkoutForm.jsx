@@ -124,18 +124,6 @@ const WorkoutForm = () => {
                         </div>
                     ) : (
                         <>
-
-                            {/* Pass savedWorkouts array and deleteWorkout method down as props to workout log */}
-                            {/* This keeps all form data true to this component */}
-                            <WorkoutLog 
-                                savedWorkouts={savedWorkouts}
-                                deleteWorkout={(idToDelete) => {
-                                    const updatedWorkouts = savedWorkouts.filter((workout, index) => workout.id !== idToDelete);
-                                    setSavedWorkouts(updatedWorkouts);
-                                    localStorage.setItem("workouts", JSON.stringify(updatedWorkouts))
-                                }}
-                            />
-
                             {/* Use built-in validate method to ensure date is not in the future */}
                             <div className="field-card date-card">
                                 <label className="field-label" htmlFor="workout-date">Workout Date</label>
