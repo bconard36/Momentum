@@ -58,7 +58,7 @@ const WorkoutForm = () => {
                 <header className="workout-header">
                     <h1 className="workout-title">Action Breeds Energy</h1>
                     <p className="workout-subtitle">
-                        Log your workouts to stay consistent and build momentum.
+                        Log your workouts <strong>|</strong> Stay consistent <strong>|</strong> Build momentum
                     </p>
                 </header>
 
