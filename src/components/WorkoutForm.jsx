@@ -81,10 +81,10 @@ const WorkoutForm = () => {
 
                 <form className="workout-form" onSubmit={handleSubmit(onSubmit)}>
                     {showSuccess && (
-                        <div className="workout-modal-overlay">
+                        <div className="workout-modal-overlay success-overlay">
                             <p className="success-message">Success! Workout Saved!</p>
                             <div className="success-return-container">
-                                <button className="secondary-button" type="button" onClick={handleCloseModal}>
+                                <button className="secondary-button success-redirect" type="button" onClick={handleCloseModal}>
                                     Build New Workout
                                 </button> 
                                 <WorkoutLog 
