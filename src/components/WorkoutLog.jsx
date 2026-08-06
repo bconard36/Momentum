@@ -11,6 +11,8 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout }) => {
 
     const [isOpen, setIsOpen] = useState(false); 
     const [confirmDelete, setConfirmDelete] = useState(false);
+    const [sortOrder, setSortOrder] = useState("desc");
+    const [isAscending, setIsAscending] = useState(false);
 
     const closeDeleteModal = (id) => {
         deleteWorkout(id);
@@ -29,6 +31,19 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout }) => {
             day: "numeric"
         });
     }
+
+    const sortDates = [...savedWorkouts].sort((a, b) => {
+        const timeA = new Date(a.date).getTime();
+        const timeB = new Date(b.date).getTime();
+
+        return sortOrder === 'asc' ? timeA - timeB : timeB - timeA;
+    });
+
+    const handleSort = () => {
+        setIsAscending(!isAscending);
+        setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    }
+
 
     return ( 
         <>
@@ -51,14 +66,24 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout }) => {
                 <div className="workout-modal-overlay" onClick={() => setIsOpen(false)}>
                     <div className="workout-modal-panel" role="dialog" aria-modal="true" aria-label="Workout Log Results" onClick={(e) => e.stopPropagation()}>
                         <div className="sort-container">
-                            <svg width="35px" height="35px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" id="sort-ascending" className="sort-icon" style={{fill: "currentColor"}}>
+                            <span className="sort-direction-label">Sort: {sortOrder === 'desc' ? "Newest Workouts First" : "Oldest Workouts First"}</span>
+                            <svg width="35px" height="35px" viewBox="0 0 24 24" 
+                                xmlns="http://www.w3.org/2000/svg" id="sort-ascending" className="sort-icon" 
+                                style={{
+                                    fill: "currentColor",
+                                    transform: isAscending ? "rotate(180deg)" : "rotate(0deg)",
+                                    transition: "transform 0.2s ease"
+                                
+                                }}
+                                onClick={() => handleSort()}>
                                 <path d="M6,20a1,1,0,0,1-.71-.29l-4-4a1,1,0,0,1,1.42-1.42L6,17.59l3.29-3.3a1,1,0,0,1,1.42,1.42l-4,4A1,1,0,0,1,6,20Z"></path>
                                 <path d="M6,20a1,1,0,0,1-1-1V4A1,1,0,0,1,7,4V19A1,1,0,0,1,6,20Z"></path>
                                 <path d="M20,17H15a1,1,0,0,1,0-2h5a1,1,0,0,1,0,2Z"></path>
                                 <path d="M20,12H13a1,1,0,0,1,0-2h7a1,1,0,0,1,0,2Z"></path>
-                                <path d="M20,7H10a1,1,0,0,1,0-2H20a1,1,0,0,1,0,2Z"></path></svg>
+                                <path d="M20,7H10a1,1,0,0,1,0-2H20a1,1,0,0,1,0,2Z"></path>
+                            </svg>
                         </div>
-                        {savedWorkouts.map((workout, index) => (
+                        {sortDates.map((workout, index) => (
                             <div key={index}>
                                 <p className="date-header">{formatDate(workout.date)}</p>
                                 <div className="exercise-list">

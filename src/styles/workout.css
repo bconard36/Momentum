@@ -311,6 +311,8 @@
 
 .date-header {
   font-style: italic;
+  text-align: left;
+  margin-left: 15px;
 }
 
 .exercise-item {
@@ -343,6 +345,13 @@
 .sort-icon:hover {
   color: var(--accent-mint-light);
   transform: translateY(-1px);
+}
+
+.sort-direction-label {
+  font-size: 0.7rem;
+  padding: 5px;
+  color: var(--text-secondary);
+  
 }
 
 /* Style rules for Delete Confirmation Window */
