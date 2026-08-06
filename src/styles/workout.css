@@ -330,6 +330,21 @@
   margin-bottom: 10px;
 }
 
+.sort-container {
+  display: flex;
+  align-items: flex-end;
+  justify-content: right;
+}
+
+.sort-icon {
+  cursor: pointer;
+}
+
+.sort-icon:hover {
+  color: var(--accent-mint-light);
+  transform: translateY(-1px);
+}
+
 /* Style rules for Delete Confirmation Window */
 .delete-overlay {
   display: flex;
