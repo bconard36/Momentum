@@ -65,6 +65,8 @@ const WorkoutForm = () => {
         append({ type: "" });
     }
 
+    
+
     return (
         <div className="workout-page">
             <div className="return-container">
@@ -81,22 +83,12 @@ const WorkoutForm = () => {
 
                 <form className="workout-form" onSubmit={handleSubmit(onSubmit)}>
                     {showSuccess && (
-                        <div className="workout-modal-overlay success-overlay" onClick={() => setShowSuccess(false)}>
+                        <div className="workout-modal-overlay success-overlay">
                             <p className="success-message">Success! Workout Saved!</p>
                             <div className="success-return-container">
                                 <button className="secondary-button success-redirect" type="button" onClick={handleCloseModal}>
                                     Build New Workout
-                                </button> 
-                                <WorkoutLog 
-                                    savedWorkouts={savedWorkouts}
-                                    deleteWorkout={(idToDelete) => {
-                                        const updatedWorkouts = savedWorkouts.filter((workout, index) => workout.id !== idToDelete);
-                                        setSavedWorkouts(updatedWorkouts);
-                                        
-                                        localStorage.setItem("workouts", JSON.stringify(updatedWorkouts));
-                                        // If last workout is deleted from success modal window, close modal and return to workout form
-                                        if (updatedWorkouts.length === 0) handleCloseModal();
-                                    }} /> 
+                                </button>                                
                             </div>
                         </div>
                     )}
