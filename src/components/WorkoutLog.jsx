@@ -21,25 +21,14 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout }) => {
     /** @type {[boolean, Function]} Controls whether the workout log modal is open. */
     const [isOpen, setIsOpen] = useState(false); 
 
-    /** @type {[boolean, Function]} Controls whether the delete-confirmation modal is showing. */
-    const [confirmDelete, setConfirmDelete] = useState(false);
+    /** @type {[number, Function]} Dictates which workout will be deleted */
+    const [pendingDelete, setPendingDelete] = useState(null);
 
     /** @type {[('asc'|'desc'), Function]} Current sort direction applied to savedWorkouts by date. */
     const [sortOrder, setSortOrder] = useState("desc");
 
     /** @type {[boolean, Function]} Tracks ascending state purely for the sort icon's rotation animation. */
     const [isAscending, setIsAscending] = useState(false);
-
-    /**
-     * Confirms deletion of a workout and closes the confirmation modal.
-     *
-     * @param {string} id - The id of the workout to delete.
-     * @returns {void}
-     */
-    const closeDeleteModal = (id) => {
-        deleteWorkout(id);
-        setConfirmDelete(false);
-    }
 
     /**
      * Formats a "YYYY-MM-DD" date string into a human-readable "Month Day, Year" string.
@@ -151,13 +140,19 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout }) => {
                                         </div>
                                     ))}
                                 </div>
-                                <button type="button" className="secondary-button delete-workout" onClick={() => setConfirmDelete(true)}>Delete Workout</button>
+                                <button type="button" className="secondary-button delete-workout" onClick={() => setPendingDelete(workout.id)}>Delete Workout</button>
                                 {/* Delete confirmation modal window */}
-                                {confirmDelete && savedWorkouts.length > 0 && (
+                                {pendingDelete === workout.id && (
                                     <div className="workout-modal-overlay delete-overlay">
                                         <p>Delete workout?</p>
-                                        <button type="button" className="secondary-button delete-workout" onClick={() => closeDeleteModal(workout.id)}>Delete Workout</button>
-                                        <button type="button" className="secondary-button" onClick={() => setConfirmDelete(false)}>Cancel</button>
+                                        <button type="button" className="secondary-button delete-workout" 
+                                            onClick={() => {
+                                            deleteWorkout(pendingDelete);
+                                            setPendingDelete(null)
+                                        }}>
+                                            Delete Workout
+                                        </button>
+                                        <button type="button" className="secondary-button" onClick={() => setPendingDelete(null)}>Cancel</button>
                                     </div>
                                 )}
                             </div>
