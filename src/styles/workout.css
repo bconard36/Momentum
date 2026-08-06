@@ -329,3 +329,11 @@
 .delete-workout {
   margin-bottom: 10px;
 }
+
+/* Style rules for Delete Confirmation Window */
+.delete-overlay {
+  display: flex;
+  align-items: center; 
+  justify-content: center;
+  flex-direction: column;
+}
