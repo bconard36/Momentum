@@ -65,8 +65,6 @@ const WorkoutForm = () => {
         append({ type: "" });
     }
 
-    
-
     return (
         <div className="workout-page">
             <div className="return-container">
