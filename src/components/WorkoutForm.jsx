@@ -1,25 +1,43 @@
-import { useForm, useFieldArray } from "react-hook-form";
-import { useState, useEffect } from 'react';
-import WorkoutLog from "./WorkoutLog";
-
 // ============================================================
 // WorkoutForm.jsx
 // Logs one workout entry: a date plus a dynamic list of exercises
 // (name/sets/reps/weight), each row addable/removable independently.
 // ============================================================
+import { useForm, useFieldArray } from "react-hook-form";
+import { useState, useEffect } from 'react';
+import WorkoutLog from "./WorkoutLog";
 
+/**
+ * Form for logging a new workout (date + one or more exercises), backed by
+ * react-hook-form. Persists saved workouts to localStorage and renders a
+ * success modal on submit. Also hosts the WorkoutLog component so users can
+ * view/delete past entries from the empty state.
+ *
+ * @returns {JSX.Element}
+ */
 const WorkoutForm = () => {
-    // Get today's date for validation
+    /** @type {string} Today's date as "YYYY-MM-DD", used to cap the date input from allowing future dates. */
     const todayStr = new Date().toISOString().split("T")[0];
 
-    // Initialize state by reading and parsing array from local storage, or default to an empty array
+    /**
+     * @type {[Array<Object>, Function]} All saved workouts, hydrated from localStorage on mount.
+     * Each workout: { id, date, exercises: Array<Object> }.
+     */
     const [savedWorkouts, setSavedWorkouts] = useState(() => {
         const saved = localStorage.getItem("workouts");
         // Return parsed, saved workouts if they exist, otherwise an empty array
         return saved ? JSON.parse(saved) : [];
     });
 
-    // Initialize React Hook Form
+    /**
+     * react-hook-form controls for the workout form.
+     * @property {Function} register - Registers an input field for validation/tracking.
+     * @property {Object} control - Passed to useFieldArray to bind the exercises array.
+     * @property {Function} watch - Watches a field's live value (used for exerciseType branching).
+     * @property {Function} handleSubmit - Wraps onSubmit with validation.
+     * @property {Object} formState - Contains errors and isSubmitSuccessful.
+     * @property {Function} reset - Resets the form to defaultValues.
+     */
     const { register, control, watch, handleSubmit, formState: { errors, isSubmitSuccessful }, reset } = useForm({
         defaultValues: {
             date: "",
@@ -27,15 +45,27 @@ const WorkoutForm = () => {
         }
     });
 
-    // Set state for success modal 
+    /** @type {[boolean, Function]} Controls whether the post-submit success modal is showing. */ 
     const [showSuccess, setShowSuccess] = useState(false);
 
-    // Inside the form is an array called exercises, which is what useFieldArray manages.
+    /**
+     * Field array bindings for the dynamic "exercises" list.
+     * @property {Array<Object>} fields - Current exercise rows (each with a stable field.id).
+     * @property {(value: Object) => void} append - Adds a new exercise row.
+     * @property {(index: number) => void} remove - Removes an exercise row by index.
+     */
     const { fields, append, remove } = useFieldArray({
         control,
         name: "exercises"
     });
 
+    /**
+     * Handles successful form submission: builds a new workout record, appends it
+     * to savedWorkouts, persists to localStorage, and opens the success modal.
+     *
+     * @param {Object} data - Form data collected by react-hook-form (date + exercises).
+     * @returns {void}
+     */
     const onSubmit = (data) => {
             // Build the new workout with data and a unique ID
             const newWorkout = { 
@@ -51,15 +81,23 @@ const WorkoutForm = () => {
             localStorage.setItem("workouts", JSON.stringify(updatedList));
     };
 
+    /**
+     * Resets the form fields back to defaultValues whenever a submission succeeds,
+     * so the next entry starts from a clean slate.
+     */
     useEffect(() => {
         if (isSubmitSuccessful) {
-            // Reset after success
             reset();
         }
     }, [isSubmitSuccessful, reset]);
 
-    // Close the modal and redirect back to workout form 
-    // Redirect by appending an empty type so the field list = 1
+    /**
+     * Closes the success modal and returns the user to the workout form by
+     * appending a single blank exercise row (so fields.length > 0 and the
+     * form view renders instead of the empty state).
+     *
+     * @returns {void}
+     */
     const handleCloseModal = () => {
         setShowSuccess(false);
         append({ type: "" });
@@ -140,7 +178,6 @@ const WorkoutForm = () => {
 
                             {fields.map((field, index) => {
                                 // Watch the exercise type to render the correct form
-                                //
                                 const exerciseType = watch(`exercises.${index}.type`);
                                 return (
                                     <div className="field-card" key={field.id}>
