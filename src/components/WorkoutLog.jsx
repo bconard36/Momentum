@@ -10,6 +10,12 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout }) => {
     
 
     const [isOpen, setIsOpen] = useState(false); 
+    const [confirmDelete, setConfirmDelete] = useState(false);
+
+    const closeDeleteModal = (id) => {
+        deleteWorkout(id);
+        setConfirmDelete(false);
+    }
 
     return ( 
         <>
@@ -56,7 +62,15 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout }) => {
                                         </div>
                                     ))}
                                 </div>
-                                <button type="button" className="secondary-button delete-workout" onClick={() => deleteWorkout(workout.id)}>Delete Workout</button>
+                                <button type="button" className="secondary-button delete-workout" onClick={() => setConfirmDelete(true)}>Delete Workout</button>
+                                {/* Delete confirmation modal window */}
+                                {confirmDelete && savedWorkouts.length > 0 && (
+                                    <div className="workout-modal-overlay delete-overlay">
+                                        <p>Proceed with delete workout?</p>
+                                        <button type="button" className="secondary-button delete-workout" onClick={() => closeDeleteModal(workout.id)}>Delete Workout</button>
+                                        <button type="button" className="secondary-button" onClick={() => setConfirmDelete(false)}>Cancel</button>
+                                    </div>
+                                )}
                             </div>
                         ))}
                     </div>
