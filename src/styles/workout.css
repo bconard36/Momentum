@@ -41,6 +41,12 @@
   max-width: 640px;
 }
 
+.workout-log-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .workout-form {
   display: flex;
   flex-direction: column;
@@ -50,9 +56,15 @@
   margin: 0 auto;
 }
 
+.workout-date-label {
+  margin: 0 auto;
+}
+
 #workout-date {
-  width: 100%;
+  width: 70%;
   max-width: 600px;
+  margin: 0 auto;
+  height: 40px;
 }
 
 .workout-form input,
@@ -123,6 +135,18 @@
 .field-group {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.number-field-group input, .orphan-field-group input {
+  padding: 10px;
+  width: 100px;
+}
+
+input[type="text"] {
+  height: 40px;
+  max-width: 70%;
 }
 
 .radio-group {
@@ -153,7 +177,7 @@
 
 .radio-option:hover,
 .radio-option:focus-within {
-  border-color: var(--border-active);
+  border-color: var(--accent-mint);
   transform: translateY(-1px);
 }
 
@@ -173,10 +197,12 @@
   font-size: 0.9rem;
 }
 
+
 .form-actions {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
   gap: 12px;
 }
 
@@ -274,8 +300,8 @@
   }
 
   .orphan-group input {
-    width: auto;
-    max-width: 140px;
+    width: 100px;
+    padding: 10px;
     display: block;
     margin: 0 auto;
   }

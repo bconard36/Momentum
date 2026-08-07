@@ -151,16 +151,18 @@ const WorkoutForm = () => {
                         </div>
                     ) : (
                         <>
-                            <WorkoutLog 
-                                savedWorkouts={savedWorkouts}
-                                deleteWorkout={(idToDelete) => {
-                                const updatedWorkouts = savedWorkouts.filter((workout, index) => workout.id !== idToDelete);
-                                setSavedWorkouts(updatedWorkouts);
-                                localStorage.setItem("workouts", JSON.stringify(updatedWorkouts))
-                                }} />
+                            <div className="workout-log-container">
+                                <WorkoutLog 
+                                    savedWorkouts={savedWorkouts}
+                                    deleteWorkout={(idToDelete) => {
+                                    const updatedWorkouts = savedWorkouts.filter((workout, index) => workout.id !== idToDelete);
+                                    setSavedWorkouts(updatedWorkouts);
+                                    localStorage.setItem("workouts", JSON.stringify(updatedWorkouts))
+                                    }} />
+                            </div>
                             {/* Use built-in validate method to ensure date is not in the future */}
                             <div className="field-card date-card">
-                                <label className="field-label" htmlFor="workout-date">Workout Date</label>
+                                <label className="field-label workout-date-label" htmlFor="workout-date">Workout Date</label>
                                 {errors.date && (
                                     <span className="error-message">{errors.date.message}</span>
                                 )}
@@ -205,9 +207,9 @@ const WorkoutForm = () => {
                                                             })}
                                                         />
                                                         <div className="radio-text">
-                                                            <span>Duration-Based</span>
+                                                            <span>Duration</span>
                                                             <br />
-                                                            <span>(Cardio, Mobility, Warm-Up/Cool down)</span>
+                                                            <span>(Time-based exerices)</span>
                                                         </div>
                                                     </label>
                                                     <label className="radio-option" htmlFor={`exercise-type-strength-${index}`}>
@@ -220,9 +222,9 @@ const WorkoutForm = () => {
                                                             })}
                                                         />
                                                         <div className="radio-text">
-                                                            <span>Rep-Based</span>
+                                                            <span>Repetition</span>
                                                             <br />
-                                                            <span>(Weight/Machine Strength Training)</span>
+                                                            <span>(Rep-based exercises)</span>
                                                         </div>
                                                     </label>
                                                 </div>
@@ -231,7 +233,7 @@ const WorkoutForm = () => {
                                             {/* Duration Form Render */}
                                             {exerciseType === "Duration" && (
                                                 <>
-                                                    <div className="field-group">
+                                                    <div className="field-group full-width">
                                                         <label className="field-label" htmlFor={`exercise-name-${index}`}>Exercise Name</label>
                                                         {errors.exercises?.[index]?.name && (
                                                             <span className="error-message">{errors.exercises[index].name.message}</span>
@@ -244,10 +246,9 @@ const WorkoutForm = () => {
                                                                 minLength: { value: 2, message: "Exercise name must be at least 2 characters." },
                                                                 maxLength: { value: 50, message: "Exercise name cannot exceed 50 characters." }
                                                             })}
-                                                            placeholder="Exercise Name"
                                                         />
                                                     </div>
-                                                    <div className="field-group">
+                                                    <div className="field-group number-field-group">
                                                         <label className="field-label" htmlFor={`exercise-duration-minutes-${index}`}>Duration (minutes)</label>
                                                         {errors.exercises?.[index]?.["duration-minutes"] && (
                                                             <span className="error-message">{errors.exercises[index]["duration-minutes"].message}</span>
@@ -261,10 +262,9 @@ const WorkoutForm = () => {
                                                                 min: { value: 0, message: "Minutes cannot be negative." },
                                                                 max: { value: 300, message: "Minutes cannot exceed 300" }
                                                             })}
-                                                            placeholder="Duration (minutes)"
                                                         />
                                                     </div>
-                                                    <div className="field-group orphan-group">
+                                                    <div className="field-group number-field-group">
                                                         <label className="field-label centered-label" htmlFor={`exercise-duration-seconds-${index}`}>Duration (seconds)</label>
                                                         {errors.exercises?.[index]?.["duration-seconds"] && (
                                                             <span className="error-message">{errors.exercises[index]["duration-seconds"].message}</span>
@@ -278,7 +278,6 @@ const WorkoutForm = () => {
                                                                 min: { value: 0, message: "Seconds cannot be negative." },
                                                                 max: { value: 59, message: "Seconds cannot exceed 59." }
                                                             })}
-                                                            placeholder="Duration (seconds)"
                                                         />
                                                     </div>
                                                 </>
@@ -287,7 +286,7 @@ const WorkoutForm = () => {
                                             {/* Strength Form Render */}
                                             {exerciseType === "Strength" && (
                                                 <>
-                                                    <div className="field-group">
+                                                    <div className="field-group full-width">
                                                         <label className="field-label" htmlFor={`exercise-name-${index}`}>Exercise Name</label>
                                                         {errors.exercises?.[index]?.name && (
                                                             <span className="error-message">{errors.exercises[index].name.message}</span>
@@ -300,10 +299,9 @@ const WorkoutForm = () => {
                                                                 minLength: { value: 2, message: "Exercise name must be at least 2 characters." },
                                                                 maxLength: { value: 50, message: "Exercise name cannot exceed 50 characters." }
                                                             })}
-                                                            placeholder="Exercise Name"
                                                         />
                                                     </div>
-                                                    <div className="field-group">
+                                                    <div className="field-group number-field-group">
                                                         <label className="field-label" htmlFor={`exercise-weight-${index}`}>Weight (lbs)</label>
                                                         {errors.exercises?.[index]?.weight && (
                                                             <span className="error-message">{errors.exercises[index].weight.message}</span>
@@ -317,10 +315,9 @@ const WorkoutForm = () => {
                                                                 min: { value: 0, message: "Weight cannot be negative." },
                                                                 max: { value: 3000, message: "Weight cannot exceed 3000." }
                                                             })}
-                                                            placeholder="Weight (lbs)"
                                                         />
                                                     </div>
-                                                    <div className="field-group">
+                                                    <div className="field-group number-field-group">
                                                         <label className="field-label" htmlFor={`exercise-sets-${index}`}>Sets</label>
                                                         {errors.exercises?.[index]?.sets && (
                                                             <span className="error-message">{errors.exercises[index].sets.message}</span>
@@ -334,10 +331,9 @@ const WorkoutForm = () => {
                                                                 min: { value: 1, message: "There must be at least 1 (one) set." },
                                                                 max: { value: 100, message: "Set count cannot exceed 100." }
                                                             })}
-                                                            placeholder="Sets"
                                                         />
                                                     </div>
-                                                    <div className="field-group">
+                                                    <div className="field-group number-field-group orphan-group">
                                                         <label className="field-label" htmlFor={`exercise-reps-${index}`}>Reps</label>
                                                         {errors.exercises?.[index]?.reps && (
                                                             <span className="error-message">{errors.exercises[index].reps.message}</span>
@@ -351,7 +347,6 @@ const WorkoutForm = () => {
                                                                 min: { value: 1, message: "There must be at least 1 (one) rep." },
                                                                 max: { value: 1000, message: "Rep count cannot exceed 1000." }
                                                             })}
-                                                            placeholder="Reps"
                                                         />
                                                     </div>
                                                 </>
