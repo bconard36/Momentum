@@ -17,10 +17,13 @@ fitness platform.
     - components: parent folder for individual components
         - CalorieTrack: Calculator component source code folder
         - Dashboard.jsx
+        - NotFound.jsx
         - WorkoutForm.jsx
         - WorkoutLog.jsx
     - styles: houses all style sheets 
         - base.css
+        - notFound.css
+        - success.css
         - workout.css
     - tests: parent test folder 
     - utils: parent folder for utility functions
@@ -42,6 +45,7 @@ Current features include:
 - Built-in custom form validation
 - Workout history stored in localStorage
 - View previously logged workouts 
+- Sort previously logged workouts by date
 - Delete individual workouts
 - Responsive modal windows
 - Graceful empty-state messaging
@@ -107,6 +111,16 @@ Each exercise stores:
 conditional form data from two different places (log and form) rather than one — a good reminder that
 once state needs to be consistent across components, it should flow from one truthy source rather than 
 being re-read independently in more than one place. 
+
+**State Identity in Repeated Components**: A separate bug was found in the delete workout confirmation overlay — 
+regardless of what workout was selected for deletion, the delete button in the confirmation overlay
+always deleted the _last_ workout in the array. This was traced back to how state was managed across repeated 
+modal instances of a list. Previously, one piece of state was being used to represent the specific workout
+pending deletion. However, that state was a Boolean, which could never hold a value like a workout ID — so every
+row in the list was reading the same true/false flag instead of checking its own identity. This was remedied by 
+switching the state to hold a specific value (the workout ID) rather than a boolean, and conditionally rendering
+the delete confirmation window based on a match against that ID. 
+
   
 Designing this structure with future database integration in mind makes the transition to 
 a SQL backend significantly easier. 
