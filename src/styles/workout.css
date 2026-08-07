@@ -360,4 +360,10 @@
   align-items: center; 
   justify-content: center;
   flex-direction: column;
+  width: min(100%, 300px);
+  max-height: min(50%, 200px);
+  position: fixed;
+  top: 35%;
+  border-radius: 8px;
+  margin: 0 auto;
 }
