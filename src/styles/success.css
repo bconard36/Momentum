@@ -1,3 +1,7 @@
+/*
+Style Rules for Success Message 
+Only displays after a workout is saved successfully
+*/
 .success-overlay {
     display: flex;
     flex-direction: column;

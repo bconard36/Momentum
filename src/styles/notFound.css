@@ -1,3 +1,6 @@
+/*
+Style rules for 404/Catch All "Not Found" Component
+*/
 .not-found-container {
     display: flex;
     flex-direction: column;
