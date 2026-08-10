@@ -50,6 +50,16 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout }) => {
         });
     }
 
+    const formatDuration = (minutes, seconds) => {
+        if (minutes >= 60) {
+            const hours = Math.floor(minutes / 60);
+            const newMinutes = minutes % 60;
+            return `${hours}h ${newMinutes}m ${seconds}s`;
+        } else {
+            return `${minutes}m ${seconds}s`
+        }
+    }
+
     /**
      * A copy of savedWorkouts sorted by date according to sortOrder.
      * Recomputed on every render since it depends on savedWorkouts and sortOrder;
@@ -134,7 +144,7 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout }) => {
                                                 <>
                                                     <p>Type: {exercise.type}</p>
                                                     <p>Exercise: {exercise.name}</p>
-                                                    <p>Time: {exercise["duration-minutes"]}:{exercise["duration-seconds"]}</p>
+                                                    <p>Time: {formatDuration(exercise["duration-minutes"], exercise["duration-seconds"])}</p>
                                                 </>
                                             )}
                                         </div>
