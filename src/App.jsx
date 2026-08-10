@@ -21,8 +21,8 @@ function App() {
 
     /**
      * Deletes a specified workout from the workout log  
-     * @param {Number} idToDelete - id of workout to delete from log 
-     * @returns {Array} - array of saved workout objects, or empty if none exist
+     * @param {String} idToDelete - randomly generated UUID string for workout to delete from log 
+     * @returns {void} 
      */
     const deleteWorkout = (idToDelete) => {
       const updatedWorkouts = savedWorkouts.filter((workout, index) => workout.id !== idToDelete);
@@ -40,10 +40,6 @@ function App() {
           <Route path="/workouts" element={ <WorkoutForm 
                                             savedWorkouts={savedWorkouts} 
                                             setSavedWorkouts={setSavedWorkouts}
-                                            deleteWorkout={deleteWorkout}
-                                            />} />
-          <Route path="/logs" element={ <WorkoutLog 
-                                            savedWorkouts={savedWorkouts}
                                             deleteWorkout={deleteWorkout}
                                             />} />
           <Route path="/calculator" element={ <Calculator /> } />
