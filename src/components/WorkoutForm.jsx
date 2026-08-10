@@ -137,11 +137,6 @@ const WorkoutForm = ({ savedWorkouts, setSavedWorkouts, deleteWorkout }) => {
                         </div>
                     ) : (
                         <>
-                            <div className="workout-log-container">
-                                <WorkoutLog 
-                                    savedWorkouts={savedWorkouts}
-                                    deleteWorkout={deleteWorkout} />
-                            </div>
                             {/* Use built-in validate method to ensure date is not in the future */}
                             <div className="field-card date-card">
                                 <label className="field-label workout-date-label" htmlFor="workout-date">Workout Date</label>
