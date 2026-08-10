@@ -19,6 +19,11 @@ function App() {
         return saved ? JSON.parse(saved) : [];
     });
 
+    /**
+     * Deletes a specified workout from the workout log  
+     * @param {Number} idToDelete - id of workout to delete from log 
+     * @returns {Array} - array of saved workout objects, or empty if none exist
+     */
     const deleteWorkout = (idToDelete) => {
       const updatedWorkouts = savedWorkouts.filter((workout, index) => workout.id !== idToDelete);
       setSavedWorkouts(updatedWorkouts);
@@ -29,7 +34,9 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={ <Dashboard /> } />
+          <Route path="/" element={ <Dashboard 
+                                    savedWorkouts={savedWorkouts}
+                                    deleteWorkout={deleteWorkout} /> } />
           <Route path="/workouts" element={ <WorkoutForm 
                                             savedWorkouts={savedWorkouts} 
                                             setSavedWorkouts={setSavedWorkouts}
