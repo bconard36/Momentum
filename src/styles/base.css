@@ -147,6 +147,24 @@ button, a {
   line-height: 1.6;
 }
 
+.dashboard-log {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px;
+  width: min(100%, 360px);
+  margin: 0 auto;
+  grid-column: 1 / -1;
+}
+
+.dashboard-log > span {
+  color: var(--accent-mint);
+  padding-bottom: 10px;
+}
+
 /* Style Rules for Calculator */
 .return-container {
   position: absolute;

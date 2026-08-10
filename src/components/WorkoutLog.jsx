@@ -269,7 +269,7 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout }) => {
                                 {pendingDelete === workout.id && (
                                     <div className="workout-modal-overlay delete-overlay">
                                         <p>Delete workout?</p>
-                                        <button type="button" className="secondary-button delete-workout" 
+                                        <button type="button" className="secondary-button confirm-delete-workout" 
                                             onClick={() => {
                                             deleteWorkout(pendingDelete);
                                             setPendingDelete(null)
