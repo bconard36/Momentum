@@ -4,7 +4,6 @@ import Dashboard from './components/Dashboard'
 import Calculator from './components/CalorieTrack/Calculator'
 import WorkoutForm from './components/WorkoutForm'
 import NotFound from './components/NotFound'
-import WorkoutLog from './components/WorkoutLog'
 
 function App() {
 
