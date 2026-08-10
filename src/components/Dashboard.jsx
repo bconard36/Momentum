@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import WorkoutLog from "./WorkoutLog";
 
 // ============================================================
 // Dashboard.jsx
@@ -20,7 +21,7 @@ import { Link } from "react-router";
 // is wired up.
 // ============================================================
 
-const Dashboard = () => {
+const Dashboard = ({ savedWorkouts, deleteWorkout }) => {
     return (
         <>
             <div className="dashboard">
@@ -45,6 +46,14 @@ const Dashboard = () => {
                             Check your BMI, BMR, and daily calorie targets.
                         </span>
                     </Link>
+    
+                    <div className="dashboard-log">
+                        <WorkoutLog 
+                            savedWorkouts={savedWorkouts}
+                            deleteWorkout={deleteWorkout}
+                        />
+                    </div>
+                    
                 </nav>
             </div>
         </>
