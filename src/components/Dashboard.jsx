@@ -36,7 +36,7 @@ const Dashboard = ({ savedWorkouts, deleteWorkout }) => {
                     <Link to="/workouts" className="nav-card">
                         <span className="nav-card-label">Workouts</span>
                         <span className="nav-card-description">
-                            Log today's session and review your training history.
+                            Log today's session and review past workouts.
                         </span>
                     </Link>
 
@@ -48,6 +48,7 @@ const Dashboard = ({ savedWorkouts, deleteWorkout }) => {
                     </Link>
     
                     <div className="dashboard-log">
+                        <span className="nav-card-label">Workout History</span>
                         <WorkoutLog 
                             savedWorkouts={savedWorkouts}
                             deleteWorkout={deleteWorkout}
