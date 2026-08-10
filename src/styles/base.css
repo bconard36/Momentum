@@ -174,7 +174,7 @@ button, a {
   justify-content: flex-start;
 }
 
-.return-link {
+.return-link, .calculator-return-link {
   display: inline-block;
   font-size: 0.9rem;
   font-weight: 600;
@@ -185,12 +185,20 @@ button, a {
 
 .return-link:hover,
 .return-link:focus-visible {
+  color: var(--accent-mint);
+  transform: translateY(-2px);
+  text-shadow: 0 4px 12px rgba(96, 165, 250, 0.25);
+}
+
+.calculator-return-link:hover, 
+.calculator-return-link:focus-visible {
   color: var(--accent-blue-light);
   transform: translateY(-2px);
   text-shadow: 0 4px 12px rgba(96, 165, 250, 0.25);
 }
 
-.return-link:visited {
+.return-link:visited, 
+.calculator-return-link:visited {
   color: var(--text-secondary);
 }
 
