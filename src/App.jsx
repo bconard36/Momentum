@@ -2,7 +2,6 @@ import { BrowserRouter, Routes, Route } from 'react-router'
 import Dashboard from './components/Dashboard'
 import Calculator from './components/CalorieTrack/Calculator'
 import WorkoutForm from './components/WorkoutForm'
-import WorkoutLog from './components/WorkoutLog'
 import NotFound from './components/NotFound'
 
 function App() {
