@@ -7,7 +7,7 @@
 import { useState } from 'react';
 
 /**
- * Renders a modal displaying all saved workouts, with sorting and deletion support.
+ * Renders a modal displaying all saved workouts, with sorting, filtering and deletion support.
  *
  * @param {Object} props
  * @param {Array<Object>} props.savedWorkouts - Array of workout objects loaded from localStorage.
@@ -76,17 +76,6 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout }) => {
     }
 
     /**
-     * Toggles sort order between ascending and descending, and flips the
-     * sort icon's rotation state to match.
-     *
-     * @returns {void}
-     */
-    const handleSort = () => {
-        setIsAscending(!isAscending);
-        setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    }
-
-    /**
      * Converts a month string to a number for display conversions
      * @param {String} month - month value for a workout object 
      * @returns Long version of month 
@@ -98,6 +87,14 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout }) => {
 
         const date = new Date(2000, monthNumber - 1, 1);
         return date.toLocaleString('en-US', { month: 'long' });
+    }
+
+    const toggleFilter = () => {
+        if (openFilter) {
+            setOpenFilter(false);
+        } else {
+            setOpenFilter(true);
+        }
     }
 
     /**
@@ -154,6 +151,17 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout }) => {
         return sortOrder === 'asc' ? timeA - timeB : timeB - timeA;
     });
 
+     /**
+     * Toggles sort order between ascending and descending, and flips the
+     * sort icon's rotation state to match.
+     *
+     * @returns {void}
+     */
+    const handleSort = () => {
+        setIsAscending(!isAscending);
+        setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    }
+
     return ( 
         <>
             <div className="workout-log-button-container">
@@ -173,13 +181,13 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout }) => {
             {savedWorkouts?.length > 0 && isOpen && (
                 <div className="workout-modal-overlay" onClick={() => setIsOpen(false)}>
                     <div className="workout-modal-panel" role="dialog" aria-modal="true" aria-label="Workout Log Results" onClick={(e) => e.stopPropagation()}>
-                        <div className="filter-container">                         
+                        <div className="filter-container icon-container">                         
                             <svg width="35px" height="35px" viewBox="0 -0.5 25 25" fill="none" 
                                 xmlns="http://www.w3.org/2000/svg" id="filter" className="filter-icon"
                                 style={{
                                     fill: "currentColor"
                                 }}
-                                onClick={() => setOpenFilter(true)}
+                                onClick={() => toggleFilter()}
                                 >
                                 <path fillRule="evenodd" clipRule="evenodd" d="M11.19 7.84996C11.6934 7.09341 11.5669 6.0823 10.8926 5.47312C10.2183 4.86394 9.19957 4.8404 8.49785 5.41779C7.79614 5.99517 7.62304 6.99935 8.09096 7.77835C8.55887 8.55735 9.52668 8.87624 10.366 8.52796C10.7014 8.38801 10.9881 8.15215 11.19 7.84996Z" strokeWidth="0.5" strokeLinecap="round" strokeLinejoin="round"/>
                                 <path fillRule="evenodd" clipRule="evenodd" d="M11.19 18.165C11.6934 17.4084 11.5669 16.3973 10.8926 15.7881C10.2183 15.1789 9.19957 15.1554 8.49785 15.7328C7.79614 16.3102 7.62304 17.3144 8.09096 18.0934C8.55887 18.8724 9.52668 19.1912 10.366 18.843C10.7014 18.703 10.9881 18.4672 11.19 18.165V18.165Z" strokeWidth="0.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -192,28 +200,28 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout }) => {
                             </svg>
                             {openFilter && (
                                 <>
-                                    <label className="filter-label">
-                                        <input
-                                            type="checkbox"
-                                            checked={isAllMonthsSelected}
-                                            onChange={() => setSelectedMonths([])}
-                                        />
-                                        All Months
-                                    </label>
-                                    {monthOptions.map((monthId) => (
-                                        <label key={monthId}>
-                                            <input 
+                                    <div className="filter-label-container">
+                                        <label>
+                                            <input
                                                 type="checkbox"
-                                                checked={selectedMonths.includes(monthId)}
-                                                onChange={() => handleFilterChange(monthId)}
+                                                checked={isAllMonthsSelected}
+                                                onChange={() => setSelectedMonths([])}
                                             />
-                                            {formatMonth(monthId)}
+                                            All Months
                                         </label>
-                                    ))}
+                                        {monthOptions.map((monthId) => (
+                                            <label key={monthId}>
+                                                <input 
+                                                    type="checkbox"
+                                                    checked={selectedMonths.includes(monthId)}
+                                                    onChange={() => handleFilterChange(monthId)}
+                                                />
+                                                {formatMonth(monthId)}
+                                            </label>
+                                        ))}
+                                    </div>
                                 </>
                             )}
-                        </div>
-                        <div className="sort-container">
                             <span className="sort-direction-label">Sort: {sortOrder === 'desc' ? "Newest Workouts First" : "Oldest Workouts First"}</span>
                             {/* Style the sort icon inline to allow for conditional rendering based on sort order */}
                             <svg width="35px" height="35px" viewBox="0 0 24 24" 
