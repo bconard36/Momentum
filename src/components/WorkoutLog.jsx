@@ -200,7 +200,7 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout }) => {
                             </svg>
                             {openFilter && (
                                 <>
-                                    <div className="filter-label-container">
+                                    <div className="filter-label-container" onClick={() => setOpenFilter(false)}>
                                         <label>
                                             <input
                                                 type="checkbox"
