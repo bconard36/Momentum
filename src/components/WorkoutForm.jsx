@@ -15,7 +15,7 @@ import WorkoutLog from "./WorkoutLog";
  *
  * @returns {JSX.Element}
  */
-const WorkoutForm = ({ savedWorkouts, setSavedWorkouts }) => {
+const WorkoutForm = ({ savedWorkouts, setSavedWorkouts, deleteWorkout }) => {
     /** @type {string} Today's date as "YYYY-MM-DD", used to cap the date input from allowing future dates. */
     const todayStr = new Date().toISOString().split("T")[0];
 
@@ -132,11 +132,7 @@ const WorkoutForm = ({ savedWorkouts, setSavedWorkouts }) => {
                                 {/* This keeps all form data true to this component */}
                                 <WorkoutLog 
                                     savedWorkouts={savedWorkouts}
-                                    deleteWorkout={(idToDelete) => {
-                                        const updatedWorkouts = savedWorkouts.filter((workout, index) => workout.id !== idToDelete);
-                                        setSavedWorkouts(updatedWorkouts);
-                                        localStorage.setItem("workouts", JSON.stringify(updatedWorkouts))
-                                    }} />
+                                    deleteWorkout={deleteWorkout} />
                             </div>
                         </div>
                     ) : (
@@ -144,11 +140,7 @@ const WorkoutForm = ({ savedWorkouts, setSavedWorkouts }) => {
                             <div className="workout-log-container">
                                 <WorkoutLog 
                                     savedWorkouts={savedWorkouts}
-                                    deleteWorkout={(idToDelete) => {
-                                    const updatedWorkouts = savedWorkouts.filter((workout, index) => workout.id !== idToDelete);
-                                    setSavedWorkouts(updatedWorkouts);
-                                    localStorage.setItem("workouts", JSON.stringify(updatedWorkouts))
-                                    }} />
+                                    deleteWorkout={deleteWorkout} />
                             </div>
                             {/* Use built-in validate method to ensure date is not in the future */}
                             <div className="field-card date-card">
