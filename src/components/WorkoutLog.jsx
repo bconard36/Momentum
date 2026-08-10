@@ -50,13 +50,22 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout }) => {
         });
     }
 
+    /**
+     * Formats duration output into fitness standard Xh Xm Xs display format
+     * Converts minutes >= 60 into hours and remaining minutes
+     * Original numeric values remain unchanged; formatting is for display only
+     * @param {Number} minutes - user input for minutes (300 max)
+     * @param {Number} seconds - user input for seconds (59 max)
+     * @returns formatted duration string for workout log display purposes only
+     */
     const formatDuration = (minutes, seconds) => {
+        // If minutes equals or exceeds 60, split hours from minutes
         if (minutes >= 60) {
             const hours = Math.floor(minutes / 60);
             const newMinutes = minutes % 60;
             return `${hours}h ${newMinutes}m ${seconds}s`;
         } else {
-            return `${minutes}m ${seconds}s`
+            return `${minutes}m ${seconds}s`;
         }
     }
 
