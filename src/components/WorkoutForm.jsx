@@ -15,19 +15,9 @@ import WorkoutLog from "./WorkoutLog";
  *
  * @returns {JSX.Element}
  */
-const WorkoutForm = () => {
+const WorkoutForm = ({ savedWorkouts, setSavedWorkouts }) => {
     /** @type {string} Today's date as "YYYY-MM-DD", used to cap the date input from allowing future dates. */
     const todayStr = new Date().toISOString().split("T")[0];
-
-    /**
-     * @type {[Array<Object>, Function]} All saved workouts, hydrated from localStorage on mount.
-     * Each workout: { id, date, exercises: Array<Object> }.
-     */
-    const [savedWorkouts, setSavedWorkouts] = useState(() => {
-        const saved = localStorage.getItem("workouts");
-        // Return parsed, saved workouts if they exist, otherwise an empty array
-        return saved ? JSON.parse(saved) : [];
-    });
 
     /**
      * react-hook-form controls for the workout form.
