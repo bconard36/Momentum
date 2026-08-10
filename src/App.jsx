@@ -19,6 +19,12 @@ function App() {
         return saved ? JSON.parse(saved) : [];
     });
 
+    const deleteWorkout = (idToDelete) => {
+      const updatedWorkouts = savedWorkouts.filter((workout, index) => workout.id !== idToDelete);
+      setSavedWorkouts(updatedWorkouts);
+      localStorage.setItem("workouts", JSON.stringify(updatedWorkouts));
+    }
+
   return (
     <>
       <BrowserRouter>
@@ -27,6 +33,11 @@ function App() {
           <Route path="/workouts" element={ <WorkoutForm 
                                             savedWorkouts={savedWorkouts} 
                                             setSavedWorkouts={setSavedWorkouts}
+                                            deleteWorkout={deleteWorkout}
+                                            />} />
+          <Route path="/logs" element={ <WorkoutLog 
+                                            savedWorkouts={savedWorkouts}
+                                            deleteWorkout={deleteWorkout}
                                             />} />
           <Route path="/calculator" element={ <Calculator /> } />
           <Route path="*" element={<NotFound />} />
