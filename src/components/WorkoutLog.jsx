@@ -77,7 +77,7 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout }) => {
      *
      * @type {Array<Object>}
      */
-    const sortDates = [...savedWorkouts].sort((a, b) => {
+    const sortDates = [...(savedWorkouts || [])].sort((a, b) => {
         const timeA = new Date(a.date).getTime();
         const timeB = new Date(b.date).getTime();
 
@@ -105,7 +105,7 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout }) => {
                 </button>
             </div>
 
-            {savedWorkouts.length === 0 && isOpen && (
+            {savedWorkouts?.length === 0 && isOpen && (
                 <div className="workout-modal-overlay" onClick={() => setIsOpen(false)}>
                     <div className="workout-modal-panel" role="dialog" aria-modal="true" aria-label="Workout Log Results" onClick={(e) => e.stopPropagation()}>
                         <p>No workouts logged yet.</p>
@@ -113,7 +113,7 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout }) => {
                 </div>
             )}
 
-            {savedWorkouts.length > 0 && isOpen && (
+            {savedWorkouts?.length > 0 && isOpen && (
                 <div className="workout-modal-overlay" onClick={() => setIsOpen(false)}>
                     <div className="workout-modal-panel" role="dialog" aria-modal="true" aria-label="Workout Log Results" onClick={(e) => e.stopPropagation()}>
                         <div className="sort-container">
