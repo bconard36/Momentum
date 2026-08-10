@@ -44,9 +44,12 @@ Current features include:
 - Conditional workout form inputs based on workout type using `watch`
 - Built-in custom form validation
 - Workout history stored in localStorage
+- Shared workout state lifted to the `App` component and passed to child components through props
 - View previously logged workouts 
 - Sort previously logged workouts by date
+- Filter previously logged workouts by month
 - Delete individual workouts
+- Duration formatting in workout history using `Xm Xs` and `Xh Xm Xs` formats
 - Responsive modal windows
 - Graceful empty-state messaging
 
@@ -95,21 +98,35 @@ form inputs whenever it changes.
 to close and reopen the application without losing their logged workouts. This also provided 
 experience serializing application data and synchronizing React state with browser storage. 
 
+**Shared Application State**: Workout state was lifted to the `App` component so that localStorage
+could be read and managed by a shared parent component. The saved workout data and related functions 
+are then passed to child components through props. This established a single source of truth for 
+saved workout data while keeping the current application structure simple, avoiding unnecessary
+state-mamagement libraries.
+
+**Workout History Filtering & Sorting**: The workout log includes filtering by month and sorting by 
+workout date. Filtered data is derived from the saved workout state before being sorted for display, 
+allowing users to narrow their workout history while preserving the original saved data. 
+
 **Data Modeling**: Each workout is represented as a single object containing: 
 - Unique identifier
 - Workout date
 - Collection of exercises
   
 Each exercise stores: 
+- Type
 - Name
-- Weight
-- Sets
-- Repetitions
-- Exercise Type
+- _For Duration-Based Exercises_:
+    - Duration in minutes and seconds
+- _For Strength-Based Exercises_:
+    - Weight
+    - Sets
+    - Repetitions
+
 
 **Single Source of Truth for Form Data**: A bug in the workout log modal traced back to reading 
 conditional form data from two different places (log and form) rather than one — a good reminder that
-once state needs to be consistent across components, it should flow from one truthy source rather than 
+once state needs to be consistent across components, it should flow from one single source of truth rather than 
 being re-read independently in more than one place. 
 
 **State Identity in Repeated Components**: A separate bug was found in the delete workout confirmation overlay — 
@@ -126,7 +143,6 @@ Designing this structure with future database integration in mind makes the tran
 a SQL backend significantly easier. 
 
 **Future Refactoring Goals**: As Momentum evolves into a full-stack application, planned improvements include:
-- Lifting workout state to a shared parent component
 - Replacing localStorage with a SQL database and REST API
 - Editing existing workouts
 - Improved state management
