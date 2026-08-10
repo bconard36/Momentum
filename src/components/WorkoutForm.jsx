@@ -6,6 +6,7 @@
 import { useForm, useFieldArray } from "react-hook-form";
 import { useState, useEffect } from 'react';
 import WorkoutLog from "./WorkoutLog";
+import { Link } from "react-router";
 
 /**
  * Form for logging a new workout (date + one or more exercises), backed by
@@ -96,7 +97,7 @@ const WorkoutForm = ({ savedWorkouts, setSavedWorkouts, deleteWorkout }) => {
     return (
         <div className="workout-page">
             <div className="return-container">
-                <a href="/" className="return-link">Return to Dashboard</a>
+                <Link to="/" className="return-link">Return to Dashboard</Link>
             </div>
 
             <div className="workout-shell">
