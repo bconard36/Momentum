@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router'
 import { useState } from 'react'
 import Dashboard from './components/Dashboard'
-import Calculator from './components/CalorieTrack/Calculator'
+import Calculator from './components/CalorieTrack/components/CalculatorForm'
 import WorkoutForm from './components/WorkoutForm'
 import NotFound from './components/NotFound'
 
