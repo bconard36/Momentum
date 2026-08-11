@@ -71,8 +71,10 @@ export const calcBMR = (gender, metricWeight, metricHeight, age) => {
     let bmr;
     if (gender === 'm' || gender === 'M') {
         bmr = (10 * metricWeight) + (6.25 * (metricHeight * 100)) - (5 * age) + 5;
-    } else {
+    } else if (gender === 'f' || gender === 'F') {
         bmr = (10 * metricWeight) + (6.25 * (metricHeight * 100)) - (5 * age) - 161;
+    } else {
+        throw new Error(`Invalid gender: ${gender}`);
     }
     return bmr;
 }
