@@ -2,14 +2,10 @@
 
 /* ============================================================
    base.css
-   Single stylesheet for the whole app: global tokens/resets/typography,
-   the Dashboard's nav-card layout, and the Calculator tool's styles.
-
-   Calculator's rules are all scoped under .calculator-tool — every
-   selector that used to be a bare element (input, button, header...) or
-   an ID (#container, #inputs...) is now prefixed with .calculator-tool,
-   so none of it leaks out and restyles inputs/buttons/headers anywhere
-   else in the app (e.g. a future Workouts page).
+   Global tokens/resets/typography and the Dashboard's nav-card
+   layout. Calculator-tool-specific rules now live in calculator.css
+   — load base.css first, since calculator.css depends on the
+   custom properties defined in :root below.
    ============================================================ */
 
 :root {
@@ -165,7 +161,8 @@ button, a {
   padding-bottom: 10px;
 }
 
-/* Style Rules for Calculator */
+/* Shared "back" link — used by the Calculator tool (as .return-link)
+   and available for other tools/pages (e.g. Workouts) to reuse as-is. */
 .return-container {
   position: absolute;
   top: 1rem;
@@ -174,7 +171,7 @@ button, a {
   justify-content: flex-start;
 }
 
-.return-link, .calculator-return-link {
+.return-link {
   display: inline-block;
   font-size: 0.9rem;
   font-weight: 600;
@@ -190,297 +187,6 @@ button, a {
   text-shadow: 0 4px 12px rgba(96, 165, 250, 0.25);
 }
 
-.calculator-return-link:hover, 
-.calculator-return-link:focus-visible {
-  color: var(--accent-blue-light);
-  transform: translateY(-2px);
-  text-shadow: 0 4px 12px rgba(96, 165, 250, 0.25);
-}
-
-.return-link:visited, 
-.calculator-return-link:visited {
+.return-link:visited {
   color: var(--text-secondary);
-}
-
-.calculator-tool .icon-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.75rem;
-}
-
-.calculator-tool header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.calculator-tool header svg {
-  width: 54px;
-  height: 54px;
-  filter: drop-shadow(0 10px 24px rgba(59, 130, 246, 0.18));
-}
-
-.calculator-tool .header-text {
-  text-align: center;
-  margin: 0.25rem 0 1.5rem;
-}
-
-.calculator-tool .header-text h1 {
-  font-size: clamp(1.8rem, 3vw, 2.5rem);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: var(--text-primary);
-  text-shadow: 0 2px 18px rgba(96, 165, 250, 0.14);
-}
-
-.calculator-tool .header-text p {
-  margin-top: 0.65rem;
-  color: var(--text-secondary);
-  font-size: 1rem;
-  line-height: 1.7;
-  max-width: 640px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.calculator-tool .calculator-container {
-  max-width: 680px;
-  margin: 0 auto;
-  padding: 40px 20px 60px;
-}
-
-.calculator-tool button {
-  border: none;
-  border-radius: var(--radius-sm);
-  transition: all 0.2s ease;
-}
-
-.calculator-tool  {
-  background-color: var(--bg-primary);
-  color: #fff;
-  font-weight: 600;
-  padding: 12px 32px;
-  font-size: 1rem;
-  display: block;
-  margin: 0 auto;
-}
-
-.calculator-tool input,
-.calculator-tool select {
-  width: 100%;
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  color: var(--text-primary);
-  padding: 12px 16px;
-  font-size: 1rem;
-  transition: border-color 0.2s ease;
-  margin-top: 8px;
-  font-family: 'Inter', sans-serif;
-}
-
-.calculator-tool input:focus,
-.calculator-tool select:focus {
-  outline: none;
-  border-color: var(--border-active);
-}
-
-.calculator-tool input[type="number"] {
-  appearance: textfield;
-  -moz-appearance: textfield;
-}
-
-.calculator-tool input::-webkit-inner-spin-button,
-.calculator-tool input::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-.calculator-tool label {
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: var(--text-secondary);
-  display: block;
-  margin-top: 20px;
-  font-family: 'Noto Sans', sans-serif;
-}
-
-.calculator-tool .inputs-section,
-.calculator-tool .activity-section {
-  margin-top: 24px;
-}
-
-.calculator-tool fieldset {
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 24px;
-  background: rgba(255, 255, 255, 0.02);
-}
-
-.calculator-tool legend {
-  padding: 0 8px;
-  color: var(--text-primary);
-  font-weight: 600;
-}
-
-.calculator-tool select {
-  padding-right: 42px;
-  background-position: right 14px center;
-}
-
-.calculator-tool .invalid-input-banner {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 0.7rem;
-  padding: 0.8rem 0.9rem;
-  border-radius: 10px;
-  background: var(--bg-secondary);
-  border: var(--bg-primary) 1px solid;
-}
-
-.calculator-tool .invalid-input-banner span {
-  display: block;
-  width: 100%;
-  text-align: center;
-  color: var(--accent-blue);
-  font-size: 0.85rem;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-}
-
-.calculator-tool .definitions {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 12px;
-  margin: 24px 0 8px;
-}
-
-.calculator-tool .term-button {
-  background-color: var(--bg-surface);
-  color: var(--text-primary);
-  border: 1px solid var(--border);
-  padding: 10px 14px;
-  border-radius: var(--radius-sm);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
-}
-
-.calculator-tool .term-button:hover {
-  border-color: var(--border-active);
-  transform: translateY(-1px);
-}
-
-/* Modal styles — shared by both the Header term-definition modal and the
-   Results modal, since both live inside the same .calculator-tool subtree. */
-.calculator-tool .modal-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  background: rgba(4, 8, 16, 0.72);
-  backdrop-filter: blur(8px);
-}
-
-.calculator-tool .modal-panel {
-  width: min(100%, 560px);
-  padding: 28px;
-  border-radius: 20px;
-  background: linear-gradient(135deg, rgba(26, 29, 39, 0.97), rgba(34, 38, 58, 0.97));
-  border: 1px solid var(--border);
-  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.32);
-  color: var(--text-primary);
-  font-family: 'Inter', sans-serif;
-}
-
-.calculator-tool .modal-title {
-  margin-bottom: 0.55rem;
-  font-family: 'Noto Sans', sans-serif;
-  font-size: 1.35rem;
-  font-weight: 700;
-  color: var(--text-primary);
-}
-
-.calculator-tool .modal-copy {
-  color: var(--text-secondary);
-  line-height: 1.75;
-  font-size: 1rem;
-}
-
-.calculator-tool .modal-divider {
-  height: 1px;
-  margin: 1.05rem 0 1.2rem;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.18), transparent);
-}
-
-.calculator-tool .modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 12px;
-  margin-top: 24px;
-}
-
-.calculator-tool .submit-button,
-.calculator-tool .close-button {
-  min-width: 120px;
-  padding: 10px 18px;
-  background-color: var(--accent-blue);
-  color: #fff;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 20px auto;
-}
-
-.calculator-tool .submit-button:hover,
-.calculator-tool .close-button:hover {
-  background-color: var(--accent-blue-light);
-}
-
-.calculator-tool .result-message {
-  padding: 0.85rem 1rem;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: var(--text-secondary);
-  margin-bottom: 1rem;
-}
-
-.calculator-tool .result-message.error {
-  color: var(--accent-blue);
-  background: var(--bg-secondary);
-  border-color: var(--bg-primary);
-}
-
-.calculator-tool .results-list {
-  display: grid;
-  gap: 0.8rem;
-}
-
-.calculator-tool .result-item {
-  padding: 0.95rem 1rem;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.calculator-tool .result-item strong {
-  display: block;
-  margin-bottom: 0.2rem;
-  color: var(--text-primary);
-  font-size: 0.95rem;
-}
-
-.calculator-tool .result-item span {
-  color: var(--text-secondary);
-  font-size: 0.95rem;
 }
