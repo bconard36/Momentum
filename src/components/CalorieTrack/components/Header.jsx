@@ -37,7 +37,7 @@ const Header = () => {
             <header>
 
                 <div className="return-container">
-                    <Link to="/" className="calculator-return-link">Return to Dashboard</Link>
+                    <Link to="/" className="calculator-return-link" id="calculator-return">Return to Dashboard</Link>
                 </div>
 
                 <div className="icon-container">
