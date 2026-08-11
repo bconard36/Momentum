@@ -85,10 +85,7 @@
   transition: all 0.2s ease;
 }
 
-/* NOTE: selector below is ".calculator-tool" itself (the extra
-   whitespace before "{" in the original is meaningless) — see the
-   flag in chat. Kept as-is, moved verbatim. */
-.calculator-tool  {
+.calculator-tool {
   background-color: var(--bg-primary);
   color: #fff;
   font-weight: 600;
