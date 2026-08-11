@@ -1,0 +1,124 @@
+/*
+Styles for WorkoutLog.jsx (the workout history log)
+Load this file after (or alongside) workoutForm.css. 
+Both files depend on the custom properties defined in base.css's :root — 
+load base.css first.
+*/
+
+/* Style rules for Workout Log */
+.date-header {
+  font-style: italic;
+  text-align: left;
+  margin-left: 15px;
+  text-align: center;
+}
+
+.exercise-item {
+  padding: 0.95rem 1rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  margin: 5px auto;
+}
+
+.exercise-item p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.delete-workout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 15px auto 40px auto;
+}
+
+.confirm-delete-workout {
+  margin-bottom: 20px;
+}
+
+.icon-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 12px;
+}
+
+.filter-container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: nowrap;
+  width: 100%;
+}
+
+.filter-label-container {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 1200;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 10px;
+  border: 1px solid var(--border);
+  min-width: 180px;
+  max-width: min(90vw, 240px);
+  background: linear-gradient(135deg, rgba(26, 29, 39, 0.97), rgba(34, 38, 58, 0.97));
+  border-radius: 12px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.24);
+}
+
+.filter-label-container label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+.filter-label {
+  font-family: "Inter", sans-serif;
+  padding: 10px;
+}
+
+.sort-icon, .filter-icon {
+  cursor: pointer;
+}
+
+.sort-icon:hover, 
+.filter-icon:hover {
+  color: var(--accent-mint-light);
+  transform: translateY(-1px);
+}
+
+.sort-direction-label {
+  flex: 1;
+  text-align: center;
+  font-size: 0.65rem;
+  padding: 5px;
+  color: var(--text-secondary);
+}
+
+/* Style rules for Delete Confirmation Window */
+.delete-overlay {
+  display: flex;
+  align-items: center; 
+  justify-content: center;
+  flex-direction: column;
+  width: min(100%, 300px);
+  max-height: min(50%, 200px);
+  position: fixed;
+  top: 35%;
+  border-radius: 8px;
+  margin: 0 auto;
+}
