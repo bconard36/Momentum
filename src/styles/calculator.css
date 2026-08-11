@@ -8,7 +8,7 @@
 
 /* Calculator's own return-link variant (base.css keeps the shared
    .return-link rules used elsewhere in the app) */
-.calculator-return-link {
+#calculator-return {
   display: inline-block;
   font-size: 0.9rem;
   font-weight: 600;
@@ -17,14 +17,14 @@
   transition: transform 0.2s ease, color 0.2s ease, text-shadow 0.2s ease;
 }
 
-.calculator-return-link:hover,
-.calculator-return-link:focus-visible {
+#calculator-return:hover,
+#calculator-return:focus-visible {
   color: var(--accent-blue-light);
   transform: translateY(-2px);
   text-shadow: 0 4px 12px rgba(96, 165, 250, 0.25);
 }
 
-.calculator-return-link:visited {
+.calculator-return:visited {
   color: var(--text-secondary);
 }
 
