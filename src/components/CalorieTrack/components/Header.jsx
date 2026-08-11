@@ -40,8 +40,8 @@ const Header = () => {
                     <Link to="/" className="calculator-return-link">Return to Dashboard</Link>
                 </div>
 
-                <div id="icon-container">
-                    <svg fill="#F8F9FA" width="200px" height="200px" viewBox="0 0 15 15" id="fitness-centre" xmlns="http://www.w3.org/2000/svg">
+                <div className="icon-container">
+                    <svg fill="currentColor" width="200px" height="200px" viewBox="0 0 15 15" id="fitness-centre" xmlns="http://www.w3.org/2000/svg">
                         <path id="daec40ff-71f5-4432-9d75-dcba7b9c1b89" d="M14.5,7V8h-1v2h-1v1H11V8H4v3H2.5V10h-1V8H.5V7h1V5h1V4H4V7h7V4h1.5V5h1V7Z"/>
                     </svg>
                     <svg width="200px" height="200px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -50,7 +50,7 @@ const Header = () => {
                         18.9201 19 17.8V6.2C19 5.0799 19 4.51984 18.782 4.09202C18.5903 3.71569 18.2843 3.40973 17.908 3.21799C17.4802 
                         3 16.9201 3 15.8 3H8.2C7.0799 3 6.51984 3 6.09202 3.21799C5.71569 3.40973 5.40973 3.71569 5.21799 4.09202C5 4.51984 
                         5 5.07989 5 6.2V17.8C5 18.9201 5 19.4802 5.21799 19.908C5.40973 20.2843 5.71569 20.5903 6.09202 20.782C6.51984 21 
-                        7.07989 21 8.2 21Z" stroke="#F8F9FA" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                        7.07989 21 8.2 21Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                 </div>
             </header>
