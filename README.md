@@ -15,16 +15,20 @@ fitness platform.
 - public
 - src: parent folder for components, stylesheets, and assets
     - components: parent folder for individual components
-        - CalorieTrack: Calculator component source code folder
+        - CalorieTrack: Calculator component 
+            - refactored from the original [Calorie Track](https://github.com/bconard36/CalorieTrack), 
+            rebuilt using `react-hook-form` for form state management and validation.  
         - Dashboard.jsx
         - NotFound.jsx
         - WorkoutForm.jsx
         - WorkoutLog.jsx
     - styles: houses all style sheets 
         - base.css
+        - calculator.css
         - notFound.css
         - success.css
-        - workout.css
+        - workoutForm.css
+        - workoutLog.css
     - tests: parent test folder 
     - utils: parent folder for utility functions
 - App.jsx
@@ -83,7 +87,9 @@ Current features include:
 **React Hook Form**: Rather than manually managing every input with `useState`, this 
 project uses React Hook Form to register, validate, and track form values. This 
 significantly reduces boilerplate while improving performance by minimizing unnecessary
-component re-renders. 
+component re-renders. Additionally, this project features a refactored version of the original
+CalorieTrack calculator, replacing manually managed form state and prop-drilling with React
+Hook Form. 
 
 **Dynamic Forms with `useFieldArray`**: Exercises are managed as a dynamic array, allowing users 
 to add or remove any number of exercises during a workout. This introduced a different way of 
