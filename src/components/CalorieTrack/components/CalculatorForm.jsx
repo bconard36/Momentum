@@ -86,7 +86,7 @@ const CalculatorForm = () => {
                         <div className="metrics">
                             <label htmlFor="height">Enter Height (in inches)</label>
                             {errors.height && (
-                                <span className="invalid-input-banner">{errors.height.message}</span>
+                                <div className="invalid-input-banner"><span>{errors.height.message}</span></div>
                             )}
                             <input 
                                 id="height"
@@ -102,7 +102,7 @@ const CalculatorForm = () => {
                             />
                             <label htmlFor="weight">Enter Weight (in pounds)</label>
                             {errors.weight && (
-                                <span className="invalid-input-banner">{errors.weight.message}</span>
+                                <div className="invalid-input-banner"><span>{errors.weight.message}</span></div>
                             )}
                             <input 
                                 id="weight"
@@ -118,7 +118,7 @@ const CalculatorForm = () => {
                             />
                             <label htmlFor="age">Enter Age</label>
                             {errors.age && (
-                                <span className="invalid-input-banner">{errors.age.message}</span>
+                                <div className="invalid-input-banner"><span>{errors.age.message}</span></div>
                             )}
                             <input 
                                 id="age"
@@ -134,7 +134,7 @@ const CalculatorForm = () => {
                             />
                             <label htmlFor="gender">Assigned Sex/Gender at Birth</label>
                             {errors.gender && (
-                                <span className="invalid-input-banner">{errors.gender.message}</span>
+                                <div className="invalid-input-banner"><span>{errors.gender.message}</span></div>
                             )}
                             <input 
                                 id="gender"
@@ -149,7 +149,7 @@ const CalculatorForm = () => {
                         <div className="activity" id="activity">
                             <label htmlFor="activityLevel">Please choose a number corresponding to your activity levels:</label>
                             {errors.activityLevel && (
-                                <span className="invalid-input-banner">{errors.activityLevel.message}</span>
+                                <div className="invalid-input-banner"><span>{errors.activityLevel.message}</span></div>
                             )}
                             <select 
                                 id="activityLevel"
