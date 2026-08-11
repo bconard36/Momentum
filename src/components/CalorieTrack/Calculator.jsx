@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import '../../styles/base.css'
+import '../../styles/calculator.css'
 import CalculatorForm from './components/CalculatorForm'
 import Header from './components/Header'
 

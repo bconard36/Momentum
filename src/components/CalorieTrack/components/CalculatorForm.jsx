@@ -77,102 +77,105 @@ const CalculatorForm = () => {
 
     return ( 
         <>
-            <Header />
-            <div id="inputs">
+            <div id="container" className="calculator-tool calculator-container">
 
-                <form className="calculator-form" onSubmit={handleSubmit(onSubmit)}>
-                    <div className="metrics">
-                        <label htmlFor="height">Enter Height (in inches)</label>
-                        {errors.height && (
-                            <span className="error-message calculator-error-message">{errors.height.message}</span>
-                        )}
-                        <input 
-                            id="height"
-                            type="number"
-                            {...register('height', {
-                                valueAsNumber: true,
-                                required: "Height (in inches) is required",
-                                validate: {
-                                    inRange: (value) => validateHeight(value) || "Height must be between 53 and 84 inches",
-                                    isNumber: (value) => !isNaN(value) || "Height must be a number"
-                                }
-                            })}
-                        />
-                        <label htmlFor="weight">Enter Weight (in pounds)</label>
-                        {errors.weight && (
-                            <span className="error-message calculator-error-message">{errors.weight.message}</span>
-                        )}
-                        <input 
-                            id="weight"
-                            type="number"
-                            {...register('weight', {
-                                valueAsNumber: true,
-                                required: "Weight (in pounds) is required",
-                                validate: {
-                                    inRange: (value) => validateWeight(value) || "Weight must be between 50 and 1000 pounds (lbs)",
-                                    isNumber: (value) => !isNaN(value) || "Weight must be a number"
-                                }
-                            })}
-                        />
-                        <label htmlFor="age">Enter Age</label>
-                        {errors.age && (
-                            <span className="error-message calculator-error-message">{errors.age.message}</span>
-                        )}
-                        <input 
-                            id="age"
-                            type="number"
-                            {...register('age', {
-                                valueAsNumber: true,
-                                required: "Age is required",
-                                validate: {
-                                    inRange: (value) => validateAge(value) || "Age must be between 12 and 100 (inclusive)",
-                                    isNumber: (value) => !isNaN(value) || "Age must be a number"
-                                }
-                            })}
-                        />
-                        <label htmlFor="gender">Assigned Sex/Gender at Birth</label>
-                        {errors.gender && (
-                            <span className="error-message calculator-error-message">{errors.gender.message}</span>
-                        )}
-                        <input 
-                            id="gender"
-                            type="text"
-                            {...register('gender', {
-                                required: "Sex/Gender is required",
-                                validate: (value) => validateGender(value) || "Gender must be M/m for Male or F/f for Female"
-                            })}
-                        />
-                    </div>
+                <Header />
 
-                    <div className="activity">
-                        <label htmlFor="activityLevel">Please choose a number corresponding to your activity levels:</label>
-                        {errors.activityLevel && (
-                            <span className="error-message calculator-error-message">{errors.activityLevel.message}</span>
-                        )}
-                        <select 
-                            id="activityLevel"
-                            {...register('activityLevel', {
-                                required: "Activity Level is required",
-                                validate: (value) => validateActivityLevel(value) || "Activity Level must be 1-5. Please choose an option from the list."
-                            })}
-                        >
-                            <option value="">Select One</option>
-                            <option value="1">1. Sedentary (little or no exercise)</option>
-                            <option value="2">2. Lightly Active (light exercise/sports 1-3 days/week)</option>
-                            <option value="3">3. Moderately Active (moderate exercise/sports 3-5 days/week)</option>
-                            <option value="4">4. Very Active (hard exercise/sports 6-7 days a week)</option>
-                            <option value="5">5. Extra Active (very hard exercise/sports & a physical job)</option>
-                        </select>
-                    </div>
-                    <div className="calculator-submit-container">
-                        <button type="submit" value="Submit">Submit</button>
-                    </div>
-                </form>
-                {showResults && (
-                    <Results 
-                        results={results}
-                    />
-                )}
+                <div id="inputs" className="metrics">
+                    <form className="calculator-form" onSubmit={handleSubmit(onSubmit)}>
+                        <div className="metrics">
+                            <label htmlFor="height">Enter Height (in inches)</label>
+                            {errors.height && (
+                                <span className="invalid-input-banner">{errors.height.message}</span>
+                            )}
+                            <input 
+                                id="height"
+                                type="number"
+                                {...register('height', {
+                                    valueAsNumber: true,
+                                    required: "Height (in inches) is required",
+                                    validate: {
+                                        inRange: (value) => validateHeight(value) || "Height must be between 53 and 84 inches",
+                                        isNumber: (value) => !isNaN(value) || "Height must be a number"
+                                    }
+                                })}
+                            />
+                            <label htmlFor="weight">Enter Weight (in pounds)</label>
+                            {errors.weight && (
+                                <span className="invalid-input-banner">{errors.weight.message}</span>
+                            )}
+                            <input 
+                                id="weight"
+                                type="number"
+                                {...register('weight', {
+                                    valueAsNumber: true,
+                                    required: "Weight (in pounds) is required",
+                                    validate: {
+                                        inRange: (value) => validateWeight(value) || "Weight must be between 50 and 1000 pounds (lbs)",
+                                        isNumber: (value) => !isNaN(value) || "Weight must be a number"
+                                    }
+                                })}
+                            />
+                            <label htmlFor="age">Enter Age</label>
+                            {errors.age && (
+                                <span className="invalid-input-banner">{errors.age.message}</span>
+                            )}
+                            <input 
+                                id="age"
+                                type="number"
+                                {...register('age', {
+                                    valueAsNumber: true,
+                                    required: "Age is required",
+                                    validate: {
+                                        inRange: (value) => validateAge(value) || "Age must be between 12 and 100 (inclusive)",
+                                        isNumber: (value) => !isNaN(value) || "Age must be a number"
+                                    }
+                                })}
+                            />
+                            <label htmlFor="gender">Assigned Sex/Gender at Birth</label>
+                            {errors.gender && (
+                                <span className="invalid-input-banner">{errors.gender.message}</span>
+                            )}
+                            <input 
+                                id="gender"
+                                type="text"
+                                {...register('gender', {
+                                    required: "Sex/Gender is required",
+                                    validate: (value) => validateGender(value) || "Gender must be M/m for Male or F/f for Female"
+                                })}
+                            />
+                        </div>
+
+                        <div className="activity" id="activity">
+                            <label htmlFor="activityLevel">Please choose a number corresponding to your activity levels:</label>
+                            {errors.activityLevel && (
+                                <span className="invalid-input-banner">{errors.activityLevel.message}</span>
+                            )}
+                            <select 
+                                id="activityLevel"
+                                {...register('activityLevel', {
+                                    required: "Activity Level is required",
+                                    validate: (value) => validateActivityLevel(value) || "Activity Level must be 1-5. Please choose an option from the list."
+                                })}
+                            >
+                                <option value="">Select One</option>
+                                <option value="1">1. Sedentary (little or no exercise)</option>
+                                <option value="2">2. Lightly Active (light exercise/sports 1-3 days/week)</option>
+                                <option value="3">3. Moderately Active (moderate exercise/sports 3-5 days/week)</option>
+                                <option value="4">4. Very Active (hard exercise/sports 6-7 days a week)</option>
+                                <option value="5">5. Extra Active (very hard exercise/sports & a physical job)</option>
+                            </select>
+                        </div>
+                        <div className="calculator-submit-container">
+                            <button type="submit" value="Submit" className="submit-button">Submit</button>
+                        </div>
+                    </form>
+                    {showResults && (
+                        <Results 
+                            results={results}
+                        />
+                    )}
+                </div>
             </div>
         </>
 
