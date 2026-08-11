@@ -17,7 +17,7 @@ fitness platform.
     - components: parent folder for individual components
         - CalorieTrack: Calculator component 
             - refactored from the original [Calorie Track](https://github.com/bconard36/CalorieTrack), 
-            rebuilt using `react-hook-form` for form state management and validation.  
+            migrated into Momentum rebuilt using `react-hook-form` for form state management and validation.  
         - Dashboard.jsx
         - NotFound.jsx
         - WorkoutForm.jsx
