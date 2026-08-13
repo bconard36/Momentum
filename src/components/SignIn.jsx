@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { supabase } from "../utils/supabaseClient";
 /**
  * Sign In component
@@ -92,6 +92,14 @@ const SignIn = () => {
                         </button>
                     </div>
                 </form>
+                <div className="sign-up-action">
+                    <span className="no-account">Don't have an account?</span>
+                    <Link to="/sign-up">
+                        <button className="secondary-button">
+                                Sign Up
+                        </button>
+                    </Link>
+                </div>
             </div>
         </>
      );

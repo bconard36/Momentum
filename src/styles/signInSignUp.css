@@ -7,17 +7,20 @@
 }
 
 .sign-in-form {
-    position: fixed;
+    position: absolute;
     top: 30%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    background: linear-gradient(180deg, rgb(from var(--accent-blue) r g b / 40%), var(--bg-surface));
+    padding: 50px;
+    border-radius: 20px;
 }
 
 @keyframes titleAnimation {
-    0% { left:-350px; top:0px;}
-    100% { left:0px; top:0px;}
+    0% { left: 0px; top: -40px;}
+    100% { left: 0px; top: 0px; }
 }
 
 #form-title {
@@ -43,3 +46,15 @@
     font-family: "Inter", sans-serif;
 }
 
+.sign-up-action {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 77.5%;
+}
+
+.no-account {
+    padding-bottom: 10px;
+}
