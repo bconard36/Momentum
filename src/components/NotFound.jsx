@@ -6,7 +6,7 @@ const NotFound = () => {
         <>
             <div className="not-found-container">
                 <p className="not-found-text">Sorry, dead end.</p>
-                <Link to="/" className="not-found-link">Build Momentum Here</Link>
+                <Link to="/dashboard" className="not-found-link">Build Momentum Here</Link>
             </div>
         </>
      );

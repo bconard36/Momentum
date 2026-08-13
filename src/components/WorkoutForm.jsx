@@ -97,7 +97,7 @@ const WorkoutForm = ({ savedWorkouts, setSavedWorkouts, deleteWorkout }) => {
     return (
         <div className="workout-page">
             <div className="return-container">
-                <Link to="/" className="return-link" id="workout-return">Return to Dashboard</Link>
+                <Link to="/dashboard" className="return-link" id="workout-return">Return to Dashboard</Link>
             </div>
 
             <div className="workout-shell">

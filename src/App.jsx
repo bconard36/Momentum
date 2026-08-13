@@ -35,9 +35,9 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="sign-in" element={ <SignIn /> } />
-          <Route path="sign-up" element={ <SignUp /> } />
-          <Route path="/" element={ <Dashboard 
+          <Route path="/sign-in" element={ <SignIn /> } />
+          <Route path="/sign-up" element={ <SignUp /> } />
+          <Route path="/dashboard" element={ <Dashboard 
                                     savedWorkouts={savedWorkouts}
                                     deleteWorkout={deleteWorkout} /> } />
           <Route path="/workouts" element={ <WorkoutForm 
