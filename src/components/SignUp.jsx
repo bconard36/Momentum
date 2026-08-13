@@ -13,7 +13,7 @@ import { supabase } from "../utils/supabaseClient"
  * public.users receives remainder of form data as a "profile" table
  * @returns {JSX.Element}
  */
-const CreateAccount = () => {
+const SignUp = () => {
 
     /**
      * react-hook-form controls for the Create Account form 
@@ -170,4 +170,4 @@ const CreateAccount = () => {
      );
 }
  
-export default CreateAccount;
+export default SignUp;

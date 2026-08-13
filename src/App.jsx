@@ -5,7 +5,7 @@ import Calculator from './components/CalorieTrack/components/CalculatorForm'
 import WorkoutForm from './components/WorkoutForm'
 import NotFound from './components/NotFound'
 import SignIn from './components/SignIn'
-import CreateAccount from './components/CreateAccount'
+import SignUp from './components/SignUp'
 
 function App() {
 
@@ -36,7 +36,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="sign-in" element={ <SignIn /> } />
-          <Route path="create-account" element={ <CreateAccount /> } />
+          <Route path="sign-up" element={ <SignUp /> } />
           <Route path="/" element={ <Dashboard 
                                     savedWorkouts={savedWorkouts}
                                     deleteWorkout={deleteWorkout} /> } />
