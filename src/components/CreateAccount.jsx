@@ -1,4 +1,8 @@
+/**
+ * Create Account Form Component
+ */
 import { useForm } from "react-hook-form";
+import { supabase } from "../utils/supabaseClient"
 
 const CreateAccount = () => {
 
@@ -15,8 +19,22 @@ const CreateAccount = () => {
 
     const passwordValue = watch("password", "");
 
-    const onSubmit = (data) => {
-        console.log("Form submitted successfully: ", data);
+    const onSubmit = async (data) => {
+        const { error } = await supabase 
+            .from("users")
+            .insert([{ 
+                first_name: data["first-name"], 
+                last_name: data["last-name"],
+                email: data.email,
+                password: data.password
+            }]);
+            
+            if (error) {
+                console.error("Error saving data:", error.message);
+            } else {
+                console.log('Data saved successfully!');
+                reset();
+            }
     }
 
     return ( 
@@ -71,10 +89,21 @@ const CreateAccount = () => {
                         type="text"
                         name="password"
                         id="password"
+                        autoComplete="new-password"
                         {...register("password", {
                             required: "Password is required.",
-                            minLength: { value: 12, message: "Password must be at least 12 characters" },
-                            maxLength: { value: 30, message: "Password must be less than 30 characters" }
+                            minLength: { 
+                                value: 12, 
+                                message: "Password must be at least 12 characters" 
+                            },
+                            maxLength: { 
+                                value: 30, 
+                                message: "Password must be less than 30 characters" 
+                            },
+                            pattern: {
+                                value: /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/,
+                                message: "Password needs an uppercase letter, a number, and a symbol."
+                            }
                         })}
                     />
 
