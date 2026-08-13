@@ -85,7 +85,7 @@ const SignIn = () => {
                             Sign In
                         </button>
                         <button 
-                            className="primary-button clear-button"
+                            className="secondary-button clear-button"
                             type="reset"
                         >
                             Clear
@@ -95,7 +95,7 @@ const SignIn = () => {
                 <div className="sign-up-action">
                     <span className="no-account">Don't have an account?</span>
                     <Link to="/sign-up">
-                        <button className="secondary-button">
+                        <button className="primary-button">
                                 Sign Up
                         </button>
                     </Link>
