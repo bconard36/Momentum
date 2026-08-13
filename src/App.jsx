@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router'
 import { useState } from 'react'
+import ProtectedRoute from './components/ProtectedRoute'
 import Dashboard from './components/Dashboard'
 import Calculator from './components/CalorieTrack/components/CalculatorForm'
 import WorkoutForm from './components/WorkoutForm'
@@ -37,9 +38,13 @@ function App() {
         <Routes>
           <Route path="/" element={ <SignIn /> } />
           <Route path="/sign-up" element={ <SignUp /> } />
-          <Route path="/dashboard" element={ <Dashboard 
+          <Route path="/dashboard" element={ 
+                                <ProtectedRoute>
+                                  <Dashboard 
                                     savedWorkouts={savedWorkouts}
-                                    deleteWorkout={deleteWorkout} /> } />
+                                    deleteWorkout={deleteWorkout} /> 
+                                </ProtectedRoute>
+                                  } />
           <Route path="/workouts" element={ <WorkoutForm 
                                             savedWorkouts={savedWorkouts} 
                                             setSavedWorkouts={setSavedWorkouts}
