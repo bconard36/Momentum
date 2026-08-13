@@ -8,8 +8,8 @@ const CreateAccount = () => {
 
     const { register, watch, handleSubmit, formState: { errors, isSubmitSuccessful }, reset } = useForm({
         defaultValues: {
-            "first-name": "",
-            "last-name": "",
+            "first_name": "",
+            "last_name": "",
             email: "",
             password: "",
             "confirm-password": ""
@@ -20,21 +20,45 @@ const CreateAccount = () => {
     const passwordValue = watch("password", "");
 
     const onSubmit = async (data) => {
-        const { error } = await supabase 
-            .from("users")
-            .insert([{ 
-                first_name: data["first-name"], 
-                last_name: data["last-name"],
+        try {
+            // Create the user account in auth schema first 
+            // DB triggers in place to INSERT into public schema on success
+            const { data: authData, error: authError } = await supabase.auth.signUp({
                 email: data.email,
-                password: data.password
-            }]);
+                password: data.password,
+                options: {
+                    data: {
+                        first_name: data["first_name"],
+                        last_name: data["last_name"]
+                    }
+                }
+            });
+            console.log("Data inserted:", data.first_name, data.last_name, data.email)
+        } catch (error) {
+            console.error(error);
+        }
+        
             
-            if (error) {
-                console.error("Error saving data:", error.message);
-            } else {
-                console.log('Data saved successfully!');
-                reset();
-            }
+        
+
+        
+
+        // // Create the profile row, linked via the same UUID 
+        // const { error: profileError } = await supabase  
+        //     .from("users")
+        //     .insert([{
+        //         user_id: authData.user.id,
+        //         first_name: data["first_name"],
+        //         last_name: data["last_name"],
+        //         email: data.email
+        //     }]);
+
+        // if (profileError) {
+        //     console.error("Error saving profile:", profileError.message);
+        // } else {
+        //     console.log("Account Created Successfully!");
+        //     reset();
+        // }
     }
 
     return ( 
@@ -42,28 +66,28 @@ const CreateAccount = () => {
             <div className="create-account-container">
                 <form className="create-account-form" onSubmit={handleSubmit(onSubmit)}>
 
-                    <label htmlFor="first-name">First Name</label>
-                    {errors["first-name"] && (
-                        <span className="error-message">{errors["first-name"].message}</span>
+                    <label htmlFor="first_name">First Name</label>
+                    {errors["first_name"] && (
+                        <span className="error-message">{errors["first_name"].message}</span>
                     )}
                     <input 
                         type="text"
-                        name="first-name"
-                        id="first-name"
-                        {...register("first-name", {
+                        name="first_name"
+                        id="first_name"
+                        {...register("first_name", {
                             required: "First name is required."
                         })}
                     />
 
-                    <label htmlFor="last-name">Last Name</label>
-                    {errors["last-name"] && (
-                        <span className="error-message">{errors["last-name"].message}</span>
+                    <label htmlFor="last_name">Last Name</label>
+                    {errors["last_name"] && (
+                        <span className="error-message">{errors["last_name"].message}</span>
                     )}
                     <input 
                         type="text"
-                        name="last-name"
-                        id="last-name"
-                        {...register("last-name", {
+                        name="last_name"
+                        id="last_name"
+                        {...register("last_name", {
                             required: "Last name is required."
                         })}
                     />
@@ -86,7 +110,7 @@ const CreateAccount = () => {
                         <span className="error-message">{errors.password.message}</span>
                     )}
                     <input 
-                        type="text"
+                        type="password"
                         name="password"
                         id="password"
                         autoComplete="new-password"
@@ -112,7 +136,7 @@ const CreateAccount = () => {
                         <span className="error-message">{errors["confirm-password"].message}</span>
                     )}
                     <input 
-                        type="text"
+                        type="password"
                         name="confirm-password"
                         id="confirm-password"
                         {...register("confirm-password", {
