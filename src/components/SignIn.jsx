@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
 import { supabase } from "../utils/supabaseClient";
 /**
  * Sign In component constructor 
@@ -6,6 +7,9 @@ import { supabase } from "../utils/supabaseClient";
  * @returns Sign in component 
  */
 const SignIn = () => {
+
+    // Initialize navigation hook 
+    const navigate = useNavigate();
 
     const { register, handleSubmit, formState: { errors, isSubmitSuccessful }, reset } = useForm({
         defaultValues: {
@@ -24,7 +28,9 @@ const SignIn = () => {
                 if (authError) {
                     console.log("Error Signing In:", authError)
                 } else {
-                    console.log("got here");
+                    // Redirect to Dashboard here 
+                    navigate("/dashboard", { replace: true });
+                    // console.log("got here");
                 }
             } catch (error) {
                 console.error(error);
