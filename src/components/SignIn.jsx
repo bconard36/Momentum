@@ -15,16 +15,21 @@ const SignIn = () => {
     });
 
     const onSubmit = async (data) => {
-        try {
-            // console.log(data);
-            const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
-                email: data.email,
-                password: data.password
-            });
-            console.log("got here");
-        } catch (error) {
-            console.error("Error signing in:", error)
-        }
+            try {
+                const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+                    email: data.email,
+                    password: data.password
+                });
+
+                if (authError) {
+                    console.log("Error Signing In:", authError)
+                } else {
+                    console.log("got here");
+                }
+            } catch (error) {
+                console.error(error);
+            }
+            
     }
 
     return ( 
