@@ -2,22 +2,28 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { supabase } from "../utils/supabaseClient";
 /**
- * Sign In component constructor 
- * Holds Email and Password inputs for account sign in
- * @returns Sign in component 
+ * Sign In component
+ * Provides a form for user authentication using an email address and a password
+ * On successful authentication, navigates the user to the Dashboard
+ *  
+ * @returns {JSX.Element} - Sign in component
  */
 const SignIn = () => {
 
     // Initialize navigation hook 
     const navigate = useNavigate();
 
-    const { register, handleSubmit, formState: { errors, isSubmitSuccessful }, reset } = useForm({
+    const { register, handleSubmit, formState: { errors }, reset } = useForm({
         defaultValues: {
             email: "",
             password: ""
         }
     });
 
+    /**
+     * Submit Form handler 
+     * @param {Object} data - user data sent to Supabase for authentication 
+     */
     const onSubmit = async (data) => {
             try {
                 const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
@@ -28,9 +34,8 @@ const SignIn = () => {
                 if (authError) {
                     console.log("Error Signing In:", authError)
                 } else {
-                    // Redirect to Dashboard here 
+                    // Navigate to the dashboard after successful authentication 
                     navigate("/dashboard", { replace: true });
-                    // console.log("got here");
                 }
             } catch (error) {
                 console.error(error);
@@ -48,7 +53,7 @@ const SignIn = () => {
                             <span className="error-message">{errors.email.message}</span>
                         )}
                         <input 
-                            type="text" 
+                            type="email" 
                             id="email" 
                             name="email" 
                             {...register("email", {

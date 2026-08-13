@@ -1,29 +1,27 @@
-/**
- * Create Account Form Component
- */
 import { useForm } from "react-hook-form";
 import { supabase } from "../utils/supabaseClient"
 
 /**
- * Create Account Component Constructor 
- * Utilizes react-hook-form to capture and send form data for account creation 
+ * Sign Up Component
+ * Utilizes react-hook-form to capture and send form data for account sign up
  * supabaseClient receives and handles the data 
- * email, password, first_name, last_name sent to the auth.users table in Supabase 
+ * email, password, first_name, last_name sent to the Supabase signUp() method
  * Stored function and trigger in DB handle auto-insert into public.users
- * public.users receives remainder of form data as a "profile" table
- * @returns {JSX.Element}
+ * Stored function constructs the Auth user profile and trigger inserts the Public user row
+ 
+ * @returns {JSX.Element} - Sign Up form component 
  */
 const SignUp = () => {
 
     /**
-     * react-hook-form controls for the Create Account form 
+     * React Hook Form constrols for the sign-up form
      * @property {Function} register - Registers an input field for validation/tracking.
      * @property {Function} watch - Watches a field's live value (used for real time password matching).
      * @property {Function} handleSubmit - Wraps onSubmit with validation.
      * @property {Object} formState - Contains errors and isSubmitSuccessful.
      * @property {Function} reset - Resets the form to defaultValues.
      */
-    const { register, watch, handleSubmit, formState: { errors, isSubmitSuccessful }, reset } = useForm({
+    const { register, watch, handleSubmit, formState: { errors }, reset } = useForm({
         defaultValues: {
             "first_name": "",
             "last_name": "",
@@ -34,22 +32,21 @@ const SignUp = () => {
         mode: "onChange"
     });
 
-    // Store the passwordValue for real-time string matching 
+    // Watch password field so confirm-password can validate against its current value 
     const passwordValue = watch("password", "");
 
     /**
-     * Handles successful form submission: builds a new user record in auth.users,
-     * where the email, password, first and last names are sent.
-     * Password is hashed/encrypted (password transport ends there) by Supabase
-     * @param {Object} data - create account form data 
+     * Handles account creation by sending the user's email, password, and profile data to Supabase Auth
      * 
-     * @returns {void}
+     * @param {Object} data - account sign up form data 
+     
+     * @returns {Promise<void>}
      */
     const onSubmit = async (data) => {
         try {
-            // Create the user account in auth schema first 
-            // DB triggers in place to INSERT into public schema on success
-            const { data: authData, error: authError } = await supabase.auth.signUp({
+            // Create the user account through Supabase Auth 
+            // DB trigger creates corresponding profile in public.users
+            const { data, error: authError } = await supabase.auth.signUp({
                 email: data.email,
                 password: data.password,
                 options: {
@@ -59,6 +56,12 @@ const SignUp = () => {
                     }
                 }
             });
+
+            if (authError) {
+                    console.log("Error signing up:", authError)
+            } else {
+                console.log("Successful account creation!")
+            }
         } catch (error) {
             // Need better error handling here — graceful modal/pop up message? 
             console.error("Account creation error", error);

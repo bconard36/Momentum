@@ -4,29 +4,17 @@ import { supabase } from "../utils/supabaseClient";
 
 // ============================================================
 // Dashboard.jsx
-// Landing page for the app. Its only job is navigation: two cards,
-// each linking to a real route (/workouts and /calculator) via
-// React Router's <Link>, rather than managing view state locally.
-//
-// IMPORTANT — this component assumes it's rendered somewhere inside
-// a <BrowserRouter> (v8 package: "react-router", not the old
-// "react-router-dom" — that package doesn't exist in React Router v8).
-// That wrapper isn't set up yet; it needs to go in main.jsx or App.jsx
-// alongside <Routes>/<Route> definitions for "/workouts" and
-// "/calculator" once those components exist. Until that wrapper is in
-// place, this component will throw an error if rendered on its own.
-//
-// CalorieTrack (the fitness calculator) is intended to live at the
-// "/calculator" route as a self-contained tool — no changes needed to
-// its own internals, it just gets mounted at that route once routing
-// is wired up.
+// 
+// Dashboard landing page for Momentum. Provies navigation to the Workouts 
+// and Fitness Calculator routes, displays workout history, and handles local 
+// Supabase authentication sign-out 
 // ============================================================
 /**
- * Dashboard component constructor
- * @param {Array<Object>} savedWorkouts - array of saved workout objects 
- * @param {Function} deleteWorkout - deletes a specified workout from the log
+ * Dashboard component 
+ * @param {Array<Object>} savedWorkouts - array containing the user's saved workouts 
+ * @param {Function} deleteWorkout - function used to remove a specified workout from the workout log
    
- * @returns {JSX.Element}
+ * @returns {JSX.Element} - Dashboard component
  */
 const Dashboard = ({ savedWorkouts, deleteWorkout }) => {
 
@@ -35,16 +23,16 @@ const Dashboard = ({ savedWorkouts, deleteWorkout }) => {
 
     /**
      * Sign Out Handler 
-     * Calls auth.signOut() to remove a user from the browser session / log them out 
-     * Redirects to sign-in component on successful sign out 
+     * Calls Supabase Auth signOut() to end the user's current session. 
+     * On successful sign-out, redirects the user to the sign-in route.
       
-     * @returns {Object} - sign out/error promise
+     * @returns {Promise<void>} - Resolves after the sign-out requests completes
      */
     const signOut = async () => {
         try {
             const { error } = await supabase.auth.signOut({ 
-                // Local scope - signs out current session/browser tab only
-                // Global scope logs user out of every tab/browser/device. 
+                // Local scope signs the user out of the current session,
+                // without terminating the user's other active sessions 
                 scope: "local" 
             }); 
 
