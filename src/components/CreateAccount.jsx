@@ -35,30 +35,8 @@ const CreateAccount = () => {
             });
             console.log("Data inserted:", data.first_name, data.last_name, data.email)
         } catch (error) {
-            console.error(error);
+            console.error("Account creation error", error);
         }
-        
-            
-        
-
-        
-
-        // // Create the profile row, linked via the same UUID 
-        // const { error: profileError } = await supabase  
-        //     .from("users")
-        //     .insert([{
-        //         user_id: authData.user.id,
-        //         first_name: data["first_name"],
-        //         last_name: data["last_name"],
-        //         email: data.email
-        //     }]);
-
-        // if (profileError) {
-        //     console.error("Error saving profile:", profileError.message);
-        // } else {
-        //     console.log("Account Created Successfully!");
-        //     reset();
-        // }
     }
 
     return ( 
