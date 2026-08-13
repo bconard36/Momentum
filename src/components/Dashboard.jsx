@@ -21,14 +21,32 @@ import { supabase } from "../utils/supabaseClient";
 // its own internals, it just gets mounted at that route once routing
 // is wired up.
 // ============================================================
-
+/**
+ * Dashboard component constructor
+ * @param {Array<Object>} savedWorkouts - array of saved workout objects 
+ * @param {Function} deleteWorkout - deletes a specified workout from the log
+   
+ * @returns {JSX.Element}
+ */
 const Dashboard = ({ savedWorkouts, deleteWorkout }) => {
 
+    // Initialize navigation hook 
     const logOutNav = useNavigate();
 
+    /**
+     * Sign Out Handler 
+     * Calls auth.signOut() to remove a user from the browser session / log them out 
+     * Redirects to sign-in component on successful sign out 
+      
+     * @returns {Object} - sign out/error promise
+     */
     const signOut = async () => {
         try {
-            const { error } = await supabase.auth.signOut();
+            const { error } = await supabase.auth.signOut({ 
+                // Local scope - signs out current session/browser tab only
+                // Global scope logs user out of every tab/browser/device. 
+                scope: "local" 
+            }); 
 
             if (error) {
                 console.log("Error signing out:", error);
