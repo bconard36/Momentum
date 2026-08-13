@@ -1,0 +1,7 @@
+/* Style Rules for Sign In Component */
+.sign-in-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
