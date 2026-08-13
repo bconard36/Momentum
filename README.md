@@ -2,14 +2,30 @@
 **A React Fitness Tracking Application**
 
 Momentum is a React application for logging, managing, and reviewing workouts. Users can dynamically add
-or remove exercises from a workout, validate inputs using React Hook Form, and persist workout history
-in localStorage. 
+or remove exercises from a workout, validate inputs using React Hook Form, and persist workout history in localStorage. 
+
+Momentum also includes the foundation of user authentication using Supabase. Users can currently create an account,
+sign in, and sign out. Supabase Auth manages authentication while a database function and trigger automatically 
+create a corresponding user profile in the application's `public.users` table.
 
 Originally developed as the successor to [Calorie Track](https://github.com/bconard36/CalorieTrack), Momentum
 expands beyond fitness calculation into workout management while laying the foundation for a future full-stack
 fitness platform. 
 
 **Live Site**: _Coming soon!_
+
+# Current Application Status 
+Momentum is currently in active development.
+
+The application currently supports:
+
+- User account creation through Supabase Auth
+- User sign-in and sign-out
+- Automatic creation of a corresponding profile in the Supabase public.users table
+- Workout creation and management through React Hook Form
+- Workout history stored in browser localStorage
+
+Workout data has **not yet been migrated to the database.** At this stage, Supabase is being used for user authentication and profile management while workout functionality continues to use the existing client-side localStorage implementation.
 
 # Folder List
 - public
@@ -20,6 +36,8 @@ fitness platform.
             migrated into Momentum and rebuilt using `react-hook-form` for form state management and validation.  
         - Dashboard.jsx
         - NotFound.jsx
+        - SignIn.jsx
+        - SignUp.jsx
         - WorkoutForm.jsx
         - WorkoutLog.jsx
     - styles: houses all style sheets 
@@ -31,6 +49,7 @@ fitness platform.
         - workoutLog.css
     - tests: parent test folder 
     - utils: parent folder for utility functions
+        - supabaseClient.js
 - App.jsx
 - main.jsx
 - .gitignore
@@ -42,14 +61,14 @@ fitness platform.
 - vite.config.js
 
 # Features
-Current features include: 
+## Workout Management 
 - Dynamic workout creation with React Hook Form
 - Add and remove exercises using `useFieldArray`
 - Conditional workout form inputs based on workout type using `watch`
 - Built-in custom form validation
 - Workout history stored in localStorage
 - Shared workout state lifted to the `App` component and passed to child components through props
-- View previously logged workouts 
+- View previously logged workouts
 - Sort previously logged workouts by date
 - Filter previously logged workouts by month
 - Delete individual workouts
@@ -57,14 +76,30 @@ Current features include:
 - Responsive modal windows
 - Graceful empty-state messaging
 
+## Authentication 
+- User account creation through Supabase Auth
+- Email and password authentication
+- User sign-in
+- User sign-out
+- Client-side navigation between authentication and application routes
+- Automatic creation of a corresponding public.users profile through a PostgreSQL database function and trigger
+- User UUID shared between Supabase Auth and the application's public.users table
+- Foreign key relationship between the Auth user and application profile
+
 # Planned Features
+
+## Database & Backend 
+- Migrate workout data from localStorage to PostgreSQL/Supabase
+- Database-backed workout creation and retrieval
+- Database-backed workout editing and deletion
+- REST/API layer for workout data
+- Row Level Security policies for user-specific workout data
+
+## Workout Features
 - Exercise editing
 - Workout statistics
 - Progress tracking
 - Dashboard analytics
-- Database integration (SQL)
-- REST API backend
-- User accounts
 
 # Production Build
 - To view the production build locally:
@@ -144,22 +179,42 @@ row in the list was reading the same true/false flag instead of checking its own
 switching the state to hold a specific value (the workout ID) rather than a boolean, and conditionally rendering
 the delete confirmation window based on a match against that ID. 
 
+**Supabase Authentication & Database Integration**: Momentum now uses Supabase Auth for account creation and email/password authentication. A PostgreSQL database function and trigger automatically create a corresponding application profile in `public.users` whenever a new Auth user is created. This separates authentication data from application-specific user data while maintaining a shared UUID between the two records.
+
+**Database Relationships & Cascading Deletes**: The `public.users` table uses the Supabase Auth user's UUID as its identifier and maintains a foreign key relationship to `auth.users`. The relationship uses cascading deletion so that deleting an Auth user automatically removes the associated application profile.
+
+**Authentication State & Navigation**: Sign-in and sign-out functionality is integrated with React Router. Successful authentication navigates the user to the Dashboard, while successful sign-out returns the user to the sign-in route.
   
 Designing this structure with future database integration in mind makes the transition to 
 a SQL backend significantly easier. 
 
-**Future Refactoring Goals**: As Momentum evolves into a full-stack application, planned improvements include:
-- Replacing localStorage with a SQL database and REST API
+# Future Refactor Goals
+
+As Momentum evolves into a full-stack application, planned improvements include:
+- Replacing localStorage workout storage with PostgreSQL/Supabase
+- Connecting workouts to authenticated users
+- Implementing database-backed workout CRUD operations
+- Adding Row Level Security to protect user-specific workout data
+- Building a REST/API layer for workout data
 - Editing existing workouts
-- Improved state management
-- User authentication
-- Workout analytics dashboard
+- Improving application state management
+- Adding workout analytics and progress tracking
+- Expanding user profile functionality
+- Improving authentication feedback and error handling
 
 # Tools Used
 - React
 - React Hook Form
+    - `useForm`
     - `useFieldArray`
     - `watch`
+- React Router
+- Supabase
+    - Supabase Auth
+    - PostgreSQL
+    - Database functions 
+    - Database triggers 
+    - Row Level Security 
 - JavaScript (ES6+)
 - Vite
 - localStorage API
