@@ -4,8 +4,25 @@
 import { useForm } from "react-hook-form";
 import { supabase } from "../utils/supabaseClient"
 
+/**
+ * Create Account Component Constructor 
+ * Utilizes react-hook-form to capture and send form data for account creation 
+ * supabaseClient receives and handles the data 
+ * email, password, first_name, last_name sent to the auth.users table in Supabase 
+ * Stored function and trigger in DB handle auto-insert into public.users
+ * public.users receives remainder of form data as a "profile" table
+ * @returns {JSX.Element}
+ */
 const CreateAccount = () => {
 
+    /**
+     * react-hook-form controls for the Create Account form 
+     * @property {Function} register - Registers an input field for validation/tracking.
+     * @property {Function} watch - Watches a field's live value (used for real time password matching).
+     * @property {Function} handleSubmit - Wraps onSubmit with validation.
+     * @property {Object} formState - Contains errors and isSubmitSuccessful.
+     * @property {Function} reset - Resets the form to defaultValues.
+     */
     const { register, watch, handleSubmit, formState: { errors, isSubmitSuccessful }, reset } = useForm({
         defaultValues: {
             "first_name": "",
@@ -17,8 +34,17 @@ const CreateAccount = () => {
         mode: "onChange"
     });
 
+    // Store the passwordValue for real-time string matching 
     const passwordValue = watch("password", "");
 
+    /**
+     * Handles successful form submission: builds a new user record in auth.users,
+     * where the email, password, first and last names are sent.
+     * Password is hashed/encrypted (password transport ends there) by Supabase
+     * @param {Object} data - create account form data 
+     * 
+     * @returns {void}
+     */
     const onSubmit = async (data) => {
         try {
             // Create the user account in auth schema first 
@@ -33,8 +59,8 @@ const CreateAccount = () => {
                     }
                 }
             });
-            console.log("Data inserted:", data.first_name, data.last_name, data.email)
         } catch (error) {
+            // Need better error handling here — graceful modal/pop up message? 
             console.error("Account creation error", error);
         }
     }
