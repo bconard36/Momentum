@@ -8,7 +8,7 @@ const CreateAccount = () => {
             "last-name": "",
             email: "",
             password: "",
-            confirmPassword: ""
+            "confirm-password": ""
         },
         mode: "onChange"
     });
