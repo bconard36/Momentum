@@ -46,6 +46,12 @@ const SignIn = () => {
     return ( 
         <>
             <div className="sign-in-container">
+                <header className="dashboard-header">
+                    <h1 className="dashboard-title">Momentum</h1>
+                    <p className="dashboard-subtitle">
+                        Log your workouts, track your progress, and check your numbers — all in one place.
+                    </p>
+                </header>
                 <form className="sign-in-form" onSubmit={handleSubmit(onSubmit)}>
                     <div className="sign-in-form-group">
                         <label htmlFor="email">Email Address</label>

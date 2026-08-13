@@ -59,12 +59,12 @@ const Dashboard = ({ savedWorkouts, deleteWorkout }) => {
                         <path d="M14 12C14 10.3431 12.6569 9 11 9H5C3.34315 9 2 10.3431 2 12V15H14V12Z" />
                     </svg>
                 </div>
-                <header className="dashboard-header">
+                {/* <header className="dashboard-header">
                     <h1 className="dashboard-title">Momentum</h1>
                     <p className="dashboard-subtitle">
                         Log your workouts, track your progress, and check your numbers — all in one place.
                     </p>
-                </header>
+                </header> */}
 
                 <nav className="dashboard-nav" aria-label="Main sections">
                     <Link to="/workouts" className="nav-card">
