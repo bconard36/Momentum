@@ -40,7 +40,7 @@ const Dashboard = ({ savedWorkouts, deleteWorkout }) => {
                 console.log("Error signing out:", error);
             } else {
                 console.log("Signed out!");
-                logOutNav("/sign-in", { replace: true });
+                logOutNav("/", { replace: true });
             }
         } catch (error) {
             console.error("Error signing out:", error);
