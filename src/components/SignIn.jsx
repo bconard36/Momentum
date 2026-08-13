@@ -13,7 +13,12 @@ const SignIn = () => {
                 </div>
                 <div className="sign-in-form-group">
                     <label htmlFor="password">Password</label>
-                    <input type="password" id="password" name="password"></input>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password"
+                        autoComplete="current-password" 
+                    />
                 </div>
             </div>
         </>
