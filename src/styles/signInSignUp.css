@@ -47,14 +47,55 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    position: relative;
+    width: 100%;
+    max-width: 300px;
 }
 
 .sign-in-form-group input,
 .sign-up-form-group input {
+    width: 100%;
     margin-bottom: 20px;
     border-radius: 8px;
     padding: 8px;
     font-family: "Inter", sans-serif;
+    box-sizing: border-box;
+    outline: none;
+    transition: color 0.2s ease;
+}
+
+.sign-in-form-group input:focus,
+.sign-up-form-group input:focus {
+    outline: none;
+    box-shadow: none;
+    width: 100%;
+}
+
+.sign-up-form-group input[type="password"] {
+    padding-right: 45px;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 10px;
+    bottom: 25px;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-primary);
+    transition: color 0.2s ease;
+    pointer-events: auto;
+}
+
+.password-toggle:nth-child(1) {
+    color: var(--text-primary);
+}
+
+.password-toggle:hover {
+    color: var(--accent-mint-light);
 }
 
 .sign-up-action {
