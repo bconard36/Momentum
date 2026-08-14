@@ -13,7 +13,16 @@ const SignIn = () => {
     // Initialize navigation hook 
     const navigate = useNavigate();
 
-    const { register, handleSubmit, setError, formState: { errors, isSubmitting }, reset } = useForm({
+    /**
+     * react-hook-form controls for the workout form.
+     * @property {Function} register - Registers an input field for validation/tracking.
+     * @property {Function} handleSubmit - Wraps onSubmit with validation.
+     * @property {Function} setError - Sets a single root error for invalid login
+     * @property {Function} clearErrors - Clears specified validation error
+     * @property {Object} formState - Contains errors and isSubmitting
+     * @property {Function} reset - Resets the form to defaultValues
+     */
+    const { register, handleSubmit, setError, clearErrors, formState: { errors, isSubmitting }, reset } = useForm({
         defaultValues: {
             email: "",
             password: ""
@@ -35,6 +44,7 @@ const SignIn = () => {
                 });
 
                 if (authError) {
+                    // Set error to "root" - default/best practice
                     setError("root", {
                         type: "server",
                         message: authError.message,
@@ -53,53 +63,62 @@ const SignIn = () => {
         <>
             <div className="sign-in-container">
                 <form className="sign-in-form" onSubmit={handleSubmit(onSubmit)}>
-                    <h1 className="dashboard-title" id="form-title">Momentum</h1>
-                    <div className="sign-in-form-group">
-                        <label htmlFor="email">Email Address</label>
-                        <input 
-                            type="email" 
-                            id="email" 
-                            name="email" 
-                            {...register("email", {
-                                required: "Email address is required"
-                            })}
-                        />
-                    </div>
-                    <div className="sign-in-form-group">
-                        <label htmlFor="password">Password</label>
-                        <input 
-                            type="password" 
-                            id="password" 
-                            name="password"
-                            autoComplete="current-password" 
-                            {...register("password", {
-                                required: "Password is required"
-                            })}
-                        />
-                    </div>
+                    {/* Render the sign in form when no login errors detected */}
+                    {!errors.root?.message && (
+                        <>
+                            <h1 className="dashboard-title" id="form-title">Momentum</h1>
+                            <div className="sign-in-form-group">
+                                <label htmlFor="email">Email Address</label>
+                                <input 
+                                    type="email" 
+                                    id="email" 
+                                    name="email" 
+                                    {...register("email", {
+                                        required: "Email address is required"
+                                    })}
+                                />
+                            </div>
+                            <div className="sign-in-form-group">
+                                <label htmlFor="password">Password</label>
+                                <input 
+                                    type="password" 
+                                    id="password" 
+                                    name="password"
+                                    autoComplete="current-password" 
+                                    {...register("password", {
+                                        required: "Password is required"
+                                    })}
+                                />
+                            </div>
+                            <div className="form-actions">
+                                <button 
+                                    className="primary-button sign-in-button"
+                                    type="submit"
+                                    disabled={isSubmitting}
+                                >
+                                    { isSubmitting ? "Signing in..." : "Sign In"}
+                                </button>
+                                <button 
+                                    className="secondary-button clear-button"
+                                    type="reset"
+                                >
+                                    Clear
+                                </button>
+                            </div>
+                        </>
+                    )}
+                    {/* Render the Error overlay and hide login form when errors detected */}
                     {errors.root?.message && (
-                        <p className="error-root">{errors.root.message}</p>
+                        <div className="login-error-overlay">
+                            <p className="error-message" id="sign-in-error-message">{errors.root.message}</p>
+                            <button className="primary-button" onClick={() => clearErrors("root")}>Try Again</button>
+                        </div>
                     )}
                     {emailPasswordError && (
                         <div className="error-container">
                             <span className="error-message">{emailPasswordError}</span>
                         </div>
                     )}
-                    <div className="form-actions">
-                        <button 
-                            className="primary-button sign-in-button"
-                            type="submit"
-                            disabled={isSubmitting}
-                        >
-                            { isSubmitting ? "Signing in..." : "Sign In"}
-                        </button>
-                        <button 
-                            className="secondary-button clear-button"
-                            type="reset"
-                        >
-                            Clear
-                        </button>
-                    </div>
                 </form>
                 <div className="sign-up-action">
                     <span className="no-account">Don't have an account?</span>
