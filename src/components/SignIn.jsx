@@ -13,7 +13,7 @@ const SignIn = () => {
     // Initialize navigation hook 
     const navigate = useNavigate();
 
-    const { register, handleSubmit, formState: { errors }, reset } = useForm({
+    const { register, handleSubmit, setError, formState: { errors, isSubmitting }, reset } = useForm({
         defaultValues: {
             email: "",
             password: ""
@@ -35,7 +35,10 @@ const SignIn = () => {
                 });
 
                 if (authError) {
-                    console.log("Error Signing In:", authError)
+                    setError("root", {
+                        type: "server",
+                        message: authError.message,
+                    });
                 } else {
                     // Navigate to the dashboard after successful authentication 
                     navigate("/dashboard", { replace: true });
@@ -74,6 +77,9 @@ const SignIn = () => {
                             })}
                         />
                     </div>
+                    {errors.root?.message && (
+                        <p className="error-root">{errors.root.message}</p>
+                    )}
                     {emailPasswordError && (
                         <div className="error-container">
                             <span className="error-message">{emailPasswordError}</span>
@@ -83,8 +89,9 @@ const SignIn = () => {
                         <button 
                             className="primary-button sign-in-button"
                             type="submit"
+                            disabled={isSubmitting}
                         >
-                            Sign In
+                            { isSubmitting ? "Signing in..." : "Sign In"}
                         </button>
                         <button 
                             className="secondary-button clear-button"
