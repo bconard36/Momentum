@@ -1,7 +1,7 @@
 // ============================================================
 // WorkoutForm.jsx
-// Logs one workout entry: a date plus a dynamic list of exercises
-// (name/sets/reps/weight), each row addable/removable independently.
+// Builds one workout entry consisting of a date and a dynamic list
+// of strength or duration-based exercises.
 // ============================================================
 import { useForm, useFieldArray } from "react-hook-form";
 import { useState, useEffect } from 'react';
@@ -10,10 +10,13 @@ import { Link } from "react-router";
 import { supabase } from "../utils/supabaseClient";
 
 /**
- * Form for logging a new workout (date + one or more exercises), backed by
- * react-hook-form. Persists saved workouts to localStorage and renders a
- * success modal on submit. Also hosts the WorkoutLog component so users can
- * view/delete past entries from the empty state.
+ * Form for logging a new workout consisting of a date and one or more dynamic exercises.
+ * Uses React Hook Form for form management and Supabase for authenticated user access and exercise lookup
+ * 
+ * @param {Object} props
+ * @param {Array<Object>} props.savedWorkouts - Previously saved workout data.
+ * @param {Function} props.setSavedWorkouts - Updates the saved workout state.
+ * @param {Function} props.deleteWorkout - Removes a workout from saved data.
  *
  * @returns {JSX.Element}
  */
@@ -52,31 +55,33 @@ const WorkoutForm = ({ savedWorkouts, setSavedWorkouts, deleteWorkout }) => {
     });
 
     /**
-     * Handles successful form submission: builds a new workout record, appends it
-     * to savedWorkouts, persists to localStorage, and opens the success modal.
+     * Processes a submitted workout by authenticating the current user,
+     * identifying existing exercises or generating IDs for new exercises,
+     * extracting exercise metrics, and preparing records for the
+     * workouts and workout_exercises tables.
      *
-     * @param {Object} data - Form data collected by react-hook-form (date + exercises).
-     * @returns {void}
+     * @param {Object} data - Form data containing the workout date and exercises.
+     * @returns {Promise<void>}
      */
     const onSubmit = async (data) => {
-            // Get user_id from auth.getUser to attach to workout objects
+            // Retrieve the authenticated user so the workout can be associated with their account 
             const { data: { user }, error: authError } = await supabase.auth.getUser();
-            // Prevent unauthorized submission
+
+            // Prevent unauthorized workout form submission
             if (authError || !user) {
                 alert("You must be logged in to submit this form");
                 return;
             }
             
             // Generate a unique workout ID to be shared by all exerciseList items 
-            const exerciseId = crypto.randomUUID();
             const workoutId = crypto.randomUUID();
 
             /**
-             * Checks the exercises table for an existing name 
-             * If found, existing data is attached to matching exercise object
-             * If not found, a new unique ID and normalized name are assigned
+             * Resolves each submitted exercise against the exercises table.
+             * Existing exercises reuse their database ID; new exercises receive
+             * a generated UUID and normalized name/type.
              */
-            const generateExerciseId = await Promise.all(data.exercises.map(async (exercise) => {
+            const resolvedExercises = await Promise.all(data.exercises.map(async (exercise) => {
                 const normalizedExercise = exercise.name.toLowerCase().trim();
                 const type = exercise.type.toLowerCase().trim();
                 const existingExercise = await supabase 
@@ -94,7 +99,7 @@ const WorkoutForm = ({ savedWorkouts, setSavedWorkouts, deleteWorkout }) => {
                     return repeatExercise;
                 } else {
                     const newExercise = {
-                        id: exerciseId,
+                        id: crypto.randomUUID(),
                         type: type,
                         name: normalizedExercise
                     };
@@ -102,9 +107,11 @@ const WorkoutForm = ({ savedWorkouts, setSavedWorkouts, deleteWorkout }) => {
                 }
             }));
 
-            // Object to add to workout_exercises table 
-            // Maps through exerciseList to attach each unique exercise_id with the shared workout_id
-            // user_id is not needed here because user_id not stored in 
+            /**
+             * Extracts workout-specific metrics from each submitted exercise.
+             * Strength exercises provide sets, reps, and weight.
+             * Duration exercises provide duration in minutes and seconds.
+            */ 
             const generateMetricData = data.exercises.map(exercise => {
                 const workoutMetrics = {
                     sets: exercise?.sets,
@@ -116,8 +123,12 @@ const WorkoutForm = ({ savedWorkouts, setSavedWorkouts, deleteWorkout }) => {
                 return workoutMetrics;
             });
 
-            // Combine generateExerciseId and generateMetricData for workout_exercises insertion 
-            const newWorkoutExercise = generateExerciseId.map((exercise, index) => {
+            /**
+             * Combines resolved exercise IDs with their corresponding workout metrics
+             * and shared workout ID to prepare records for the workout_exercises table 
+             */
+            const newWorkoutExercise = resolvedExercises.map((exercise, index) => {
+                // Build one workout_exercises record for the current exercise.
                 const workoutExerciseToAdd = {
                     workout_id: workoutId,
                     exercise_id: exercise.id,
@@ -131,15 +142,19 @@ const WorkoutForm = ({ savedWorkouts, setSavedWorkouts, deleteWorkout }) => {
                 return workoutExerciseToAdd;
             });
 
-            // Generate Workout Entry for workouts table
+            /**
+             * Builds the workout record for the workouts table using the authenticated
+             * user, submitted workout date, and shared workout ID.
+             */
             const workoutEntry = {
                 workout_id: workoutId,
                 user_id: user.id,
                 date: data.date
             }
 
-            console.log(newWorkoutExercise);
-            console.log(workoutEntry);
+            console.log(resolvedExercises); // exercises record
+            console.log(newWorkoutExercise); // workout_exercise record
+            console.log(workoutEntry); // workouts record
             setShowSuccess(true);
     };
 
