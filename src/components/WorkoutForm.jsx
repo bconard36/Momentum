@@ -7,6 +7,7 @@ import { useForm, useFieldArray } from "react-hook-form";
 import { useState, useEffect } from 'react';
 import WorkoutLog from "./WorkoutLog";
 import { Link } from "react-router";
+import { supabase } from "../utils/supabaseClient";
 
 /**
  * Form for logging a new workout (date + one or more exercises), backed by
@@ -57,19 +58,56 @@ const WorkoutForm = ({ savedWorkouts, setSavedWorkouts, deleteWorkout }) => {
      * @param {Object} data - Form data collected by react-hook-form (date + exercises).
      * @returns {void}
      */
-    const onSubmit = (data) => {
-            // Build the new workout with data and a unique ID
-            const newWorkout = { 
-                ...data,
-                id: crypto.randomUUID()
-            };
-            // Update localStorage with the new workout entry.
-            const updatedList = [...savedWorkouts, newWorkout];
-            // Update local React state with the new list of workouts 
-            setSavedWorkouts(updatedList);
-            setShowSuccess(true);
-            // Write the updated list to local storage - don't forget to serialize
-            localStorage.setItem("workouts", JSON.stringify(updatedList));
+    const onSubmit = async (data) => {
+            // Get user_id from auth.getUser to attach to workout objects
+            const { data: { user }, error: authError } = await supabase.auth.getUser();
+            // Prevent unauthorized submission
+            if (authError || !user) {
+                alert("You must be logged in to submit this form");
+                return;
+            }
+
+            // const nameCheck = await supabase
+            //     .from("exercises")
+            //     .select("*")
+            //     .eq("name", data);
+
+                
+
+            
+                // For each exercise data contains, normalize the name and check the DB for existing values
+                const exerciseList = data.exercises.map(async (exercise) => {
+                    const normalizedExercise = exercise.name.toLowerCase();
+                    const existingExercise = await supabase 
+                        .from("exercises")
+                        .select("*")
+                        .eq("name", normalizedExercise);
+                    console.log("Normalized Exercise: ", normalizedExercise);
+                    console.log(existingExercise);
+
+                    // if (existingExercise.length > 1) {
+                    //     // Match found, no need to assign a new ID for name already in DB
+                    // } else {
+                    //     // crypto.uuid()
+                    // }
+
+                    
+                });
+                // Build the new workout with exercise ID data and a unique workout ID
+                // const newWorkout = { 
+                //     ...exerciseList,
+                //     id: crypto.randomUUID(),
+                //     user_id: user.id
+                // };
+
+                // Insert the newWorkout 
+                setShowSuccess(true);
+                // Test blocks for workout database integration
+                // console.log(newWorkout);
+            
+
+            
+                       
     };
 
     /**
