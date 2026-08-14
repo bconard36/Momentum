@@ -66,48 +66,81 @@ const WorkoutForm = ({ savedWorkouts, setSavedWorkouts, deleteWorkout }) => {
                 alert("You must be logged in to submit this form");
                 return;
             }
+            
+            // Generate a unique workout ID to be shared by all exerciseList items 
+            const exerciseId = crypto.randomUUID();
+            const workoutId = crypto.randomUUID();
 
-            // const nameCheck = await supabase
-            //     .from("exercises")
-            //     .select("*")
-            //     .eq("name", data);
-
+            /**
+             * Checks the exercises table for an existing name 
+             * If found, existing data is attached to matching exercise object
+             * If not found, a new unique ID and normalized name are assigned
+             */
+            const generateExerciseId = await Promise.all(data.exercises.map(async (exercise) => {
+                const normalizedExercise = exercise.name.toLowerCase().trim();
+                const type = exercise.type.toLowerCase().trim();
+                const existingExercise = await supabase 
+                    .from("exercises")
+                    .select("*")
+                    .match({ name: normalizedExercise, type: type })
                 
+                // Match found, no need to assign a new ID for name already in DB
+                if (existingExercise.data.length > 0) {
+                    const repeatExercise = {
+                        id: existingExercise.data[0].exercise_id,
+                        type: existingExercise.data[0].type,
+                        name: existingExercise.data[0].name,
+                    };
+                    return repeatExercise;
+                } else {
+                    const newExercise = {
+                        id: exerciseId,
+                        type: type,
+                        name: normalizedExercise
+                    };
+                    return newExercise;
+                }
+            }));
 
-            
-                // For each exercise data contains, normalize the name and check the DB for existing values
-                const exerciseList = data.exercises.map(async (exercise) => {
-                    const normalizedExercise = exercise.name.toLowerCase();
-                    const existingExercise = await supabase 
-                        .from("exercises")
-                        .select("*")
-                        .eq("name", normalizedExercise);
-                    console.log("Normalized Exercise: ", normalizedExercise);
-                    console.log(existingExercise);
+            // Object to add to workout_exercises table 
+            // Maps through exerciseList to attach each unique exercise_id with the shared workout_id
+            // user_id is not needed here because user_id not stored in 
+            const generateMetricData = data.exercises.map(exercise => {
+                const workoutMetrics = {
+                    sets: exercise?.sets,
+                    reps: exercise?.reps,
+                    weight: exercise?.weight,
+                    duration_minutes: exercise?.["duration-minutes"],
+                    duration_seconds: exercise?.["duration-seconds"]
+                };
+                return workoutMetrics;
+            });
 
-                    // if (existingExercise.length > 1) {
-                    //     // Match found, no need to assign a new ID for name already in DB
-                    // } else {
-                    //     // crypto.uuid()
-                    // }
+            // Combine generateExerciseId and generateMetricData for workout_exercises insertion 
+            const newWorkoutExercise = generateExerciseId.map((exercise, index) => {
+                const workoutExerciseToAdd = {
+                    workout_id: workoutId,
+                    exercise_id: exercise.id,
+                    sets: generateMetricData[index].sets,
+                    reps: generateMetricData[index].reps,
+                    weight: generateMetricData[index].weight,
+                    duration_minutes: generateMetricData[index].duration_minutes,
+                    duration_seconds: generateMetricData[index].duration_seconds
 
-                    
-                });
-                // Build the new workout with exercise ID data and a unique workout ID
-                // const newWorkout = { 
-                //     ...exerciseList,
-                //     id: crypto.randomUUID(),
-                //     user_id: user.id
-                // };
+                }
+                return workoutExerciseToAdd;
+            });
 
-                // Insert the newWorkout 
-                setShowSuccess(true);
-                // Test blocks for workout database integration
-                // console.log(newWorkout);
-            
+            // Generate Workout Entry for workouts table
+            const workoutEntry = {
+                workout_id: workoutId,
+                user_id: user.id,
+                date: data.date
+            }
 
-            
-                       
+            console.log(newWorkoutExercise);
+            console.log(workoutEntry);
+            setShowSuccess(true);
     };
 
     /**
