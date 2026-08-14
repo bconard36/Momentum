@@ -1,6 +1,7 @@
-import { Link, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import WorkoutLog from "./WorkoutLog";
 import { supabase } from "../utils/supabaseClient";
+import { useState } from "react";
 
 // ============================================================
 // Dashboard.jsx
@@ -21,6 +22,16 @@ const Dashboard = ({ savedWorkouts, deleteWorkout }) => {
     // Initialize navigation hook 
     const logOutNav = useNavigate();
 
+    const [isUserOpen, setIsUserOpen] = useState(false);
+
+    const toggleUserMenu = () => {
+        if (isUserOpen) {
+            setIsUserOpen(false);
+        } else {
+            setIsUserOpen(true);
+        }
+    }
+
     /**
      * Sign Out Handler 
      * Calls Supabase Auth signOut() to end the user's current session. 
@@ -39,7 +50,7 @@ const Dashboard = ({ savedWorkouts, deleteWorkout }) => {
             if (error) {
                 console.log("Error signing out:", error);
             } else {
-                console.log("Signed out!");
+                setIsUserOpen(false);
                 logOutNav("/", { replace: true });
             }
         } catch (error) {
@@ -53,12 +64,23 @@ const Dashboard = ({ savedWorkouts, deleteWorkout }) => {
                 <div className="user-icon-container">
                     <svg width="35px" height="35px" viewBox="0 0 16 16" style={{
                             fill: "currentColor"
-                        }} xmlns="http://www.w3.org/2000/svg" onClick={signOut}>
+                        }} xmlns="http://www.w3.org/2000/svg" onClick={() => toggleUserMenu()}>
                         <path d="M8 7C9.65685 7 11 5.65685 11 4C11 2.34315 9.65685 1 8 1C6.34315 1 5 2.34315 
                             5 4C5 5.65685 6.34315 7 8 7Z" />
                         <path d="M14 12C14 10.3431 12.6569 9 11 9H5C3.34315 9 2 10.3431 2 12V15H14V12Z" />
                     </svg>
                 </div>
+                {isUserOpen && (
+                    <div className="user-menu-container" onClick={() => setIsUserOpen(false)}>
+                        <nav className="user-menu">
+                            <ul>
+                                <li className="user-menu-item" onClick={signOut}>
+                                    Sign Out
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                )}
                 {/* <header className="dashboard-header">
                     <h1 className="dashboard-title">Momentum</h1>
                     <p className="dashboard-subtitle">
