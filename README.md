@@ -61,6 +61,7 @@ Workout data has **not yet been migrated to the database.** At this stage, Supab
 - vite.config.js
 
 # Features
+
 ## Workout Management 
 - Dynamic workout creation with React Hook Form
 - Add and remove exercises using `useFieldArray`
@@ -102,12 +103,14 @@ Workout data has **not yet been migrated to the database.** At this stage, Supab
 - Dashboard analytics
 
 # Production Build
+
 - To view the production build locally:
     - npm run build
     - npm run preview
     - Open a browser and navigate to the URL shown in the terminal (typically http://localhost:5173/)
 
 # Development
+
 - Open the root folder in VS Code (or preferred code editor)
     - Momentum
 - Install dependencies 
@@ -116,6 +119,32 @@ Workout data has **not yet been migrated to the database.** At this stage, Supab
     - npm run dev
 - Open a browser of your choice and navigate to:
     - http://localhost:5173/
+
+## Backend & Database Development
+Momentum is being expanded from a front-end/localStorage application into a full-stack application using **PostgreSQL through Supabase**.
+
+The current database structure separates workout data into related tables:
+
+- **Users** — Stores authenticated user accounts.
+- **Workouts** — Stores each workout and associates it with a user.
+- **Exercises** — Stores unique exercises with their name and exercise type.
+- **Workout Exercises** — Joins workouts and exercises while storing workout-specific metrics such as sets, reps, weight, and duration.
+
+### Exercise Resolution
+When a workout is submitted, Momentum normalizes each exercise name and type before checking the `exercises` table for an existing match.
+
+If a matching exercise exists, its existing `exercise_id` is reused. If no match is found, a new UUID is generated for the exercise.
+
+Exercise matching uses both the normalized exercise name and exercise type so that exercises with the same name can still be represented separately when their types differ.
+
+### Workout Data Preparation
+Before database insertion, the submitted workout is separated into records for the related tables:
+
+- A workout record containing the workout ID, authenticated user ID, and date.
+- Workout-exercise records containing the shared workout ID, exercise ID, and exercise-specific metrics.
+- New exercise records when a submitted exercise does not already exist in the database.
+
+`Promise.all()` is used when resolving exercises asynchronously so that the resulting arrays contain the resolved exercise data rather than unresolved Promise objects.
 
 # What I Learned / Built From Scratch
 
@@ -163,7 +192,6 @@ Each exercise stores:
     - Weight
     - Sets
     - Repetitions
-
 
 **Single Source of Truth for Form Data**: A bug in the workout log modal traced back to reading 
 conditional form data from two different places (log and form) rather than one — a good reminder that
