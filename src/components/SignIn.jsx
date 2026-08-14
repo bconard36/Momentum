@@ -20,6 +20,9 @@ const SignIn = () => {
         }
     });
 
+    // Get error message for email or password fields
+    const emailPasswordError = errors.email?.message || errors.password?.message || null;
+
     /**
      * Submit Form handler 
      * @param {Object} data - user data sent to Supabase for authentication 
@@ -50,9 +53,6 @@ const SignIn = () => {
                     <h1 className="dashboard-title" id="form-title">Momentum</h1>
                     <div className="sign-in-form-group">
                         <label htmlFor="email">Email Address</label>
-                        {errors.email && (
-                            <span className="error-message">{errors.email.message}</span>
-                        )}
                         <input 
                             type="email" 
                             id="email" 
@@ -64,9 +64,6 @@ const SignIn = () => {
                     </div>
                     <div className="sign-in-form-group">
                         <label htmlFor="password">Password</label>
-                        {errors.password && (
-                            <span className="error-message">{errors.password.message}</span>
-                        )}
                         <input 
                             type="password" 
                             id="password" 
@@ -77,6 +74,11 @@ const SignIn = () => {
                             })}
                         />
                     </div>
+                    {emailPasswordError && (
+                        <div className="error-container">
+                            <span className="error-message">{emailPasswordError}</span>
+                        </div>
+                    )}
                     <div className="form-actions">
                         <button 
                             className="primary-button sign-in-button"
