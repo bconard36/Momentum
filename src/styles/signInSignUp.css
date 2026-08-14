@@ -88,6 +88,33 @@
     padding: 0 30px 30px 30px;
 }
 
+.login-error-overlay {
+    position: relative;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(4, 8, 16, 0.72);
+    backdrop-filter: blur(8px);
+    width: 300px;
+    height: 100px;
+    border-radius: var(--radius);
+    padding: 8px;
+}
+
+#sign-in-error-message {
+    margin: 10px auto;
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.login-error-overlay button {
+    margin: 10px auto;
+}
+
 /* Style Rules for Sign Up Component */
 
 .create-account-form {
