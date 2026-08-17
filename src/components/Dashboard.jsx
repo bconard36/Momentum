@@ -12,7 +12,7 @@ import { useState } from "react";
 // ============================================================
 /**
  * Dashboard component 
- * @param {Array<Object>} savedWorkouts - array containing the user's saved workouts 
+ * @param {Array<Object>} savedWorkouts - array containing authenticated user's saved workouts from Supabase
  * @param {Function} deleteWorkout - function used to remove a specified workout from the workout log
    
  * @returns {JSX.Element} - Dashboard component
