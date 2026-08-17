@@ -9,10 +9,6 @@ import SignIn from './components/SignIn'
 import SignUp from './components/SignUp'
 import { supabase } from './utils/supabaseClient'
 
-// Mon 8/17/26
-// App still reads saved workouts from localStorage
-// Need to fetch from DB instead
-
 function App() {
     /**
      * @type {[Array<Object>, Function]} All saved workouts, initialized as an empty array
@@ -54,6 +50,7 @@ function App() {
      * @returns {void} 
      */
     const deleteWorkout = (idToDelete) => {
+      // Replace localStorage logic with Database delete calls
       const updatedWorkouts = savedWorkouts.filter((workout, index) => workout.id !== idToDelete);
       setSavedWorkouts(updatedWorkouts);
       localStorage.setItem("workouts", JSON.stringify(updatedWorkouts));
@@ -72,14 +69,14 @@ function App() {
                                     deleteWorkout={deleteWorkout} /> 
                                 </ProtectedRoute>
                                   } />
-          {/* <Route path="/workouts" element={ 
+          <Route path="/workouts" element={ 
                                 <ProtectedRoute>
                                   <WorkoutForm 
                                     savedWorkouts={savedWorkouts} 
                                     deleteWorkout={deleteWorkout}
                                     />
                                 </ProtectedRoute>            
-                                  } /> */}
+                                  } />
           <Route path="/calculator" element={ <Calculator /> } />
           <Route path="*" element={<NotFound />} />
         </Routes>
