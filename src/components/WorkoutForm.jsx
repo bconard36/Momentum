@@ -88,25 +88,23 @@ const WorkoutForm = ({ savedWorkouts, setSavedWorkouts, deleteWorkout }) => {
                     .from("exercises")
                     .select("*")
                     .match({ name: normalizedExercise, type: type })
-                
                 // Match found, no need to assign a new ID for name already in DB
-                if (existingExercise.data.length > 0) {
+                if (existingExercise.data?.length > 0) {
                     const repeatExercise = {
-                        id: existingExercise.data[0].exercise_id,
+                        exercise_id: existingExercise.data[0].exercise_id,
                         type: existingExercise.data[0].type,
                         name: existingExercise.data[0].name,
                     };
                     return repeatExercise;
                 } else {
                     const newExercise = {
-                        id: crypto.randomUUID(),
+                        exercise_id: crypto.randomUUID(),
                         type: type,
                         name: normalizedExercise
                     };
                     return newExercise;
                 }
             }));
-
             /**
              * Extracts workout-specific metrics from each submitted exercise.
              * Strength exercises provide sets, reps, and weight.
@@ -131,7 +129,7 @@ const WorkoutForm = ({ savedWorkouts, setSavedWorkouts, deleteWorkout }) => {
                 // Build one workout_exercises record for the current exercise.
                 const workoutExerciseToAdd = {
                     workout_id: workoutId,
-                    exercise_id: exercise.id,
+                    exercise_id: exercise.exercise_id,
                     sets: generateMetricData[index].sets,
                     reps: generateMetricData[index].reps,
                     weight: generateMetricData[index].weight,
@@ -143,18 +141,27 @@ const WorkoutForm = ({ savedWorkouts, setSavedWorkouts, deleteWorkout }) => {
             });
 
             /**
-             * Builds the workout record for the workouts table using the authenticated
-             * user, submitted workout date, and shared workout ID.
+             * Builds the workout record for the workouts table using the 
+             * submitted workout date, and shared workout ID.
              */
             const workoutEntry = {
                 workout_id: workoutId,
                 date: data.date
             }
 
-            console.log(resolvedExercises); // exercises record
-            console.log(newWorkoutExercise); // workout_exercise record
-            console.log(workoutEntry); // workouts record
-            setShowSuccess(true);
+            // Insert workout data into respective tables using DB Function 
+            const { data: workoutData, error: insertError } = await supabase.rpc("save_workout", {
+                workout_entry: workoutEntry,
+                resolved_exercises: resolvedExercises,
+                workout_exercise_list: newWorkoutExercise
+            });
+
+            if (insertError) {
+                console.error("Error invoking RPC: ", insertError.message);
+            } else {
+                console.log("Successful insertion!");
+                setShowSuccess(true);
+            }
     };
 
     /**
