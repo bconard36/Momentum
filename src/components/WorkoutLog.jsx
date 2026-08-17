@@ -245,7 +245,7 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout }) => {
                                 <div className="exercise-list">
                                     {workout.exercises.map((exercise, index) => (
                                         <div key={index} className="exercise-item">
-                                            {exercise.type === "Strength" && (
+                                            {exercise.type === "strength" && (
                                                 <>
                                                     <p>Type: {exercise.type}</p>
                                                     <p>Exercise: {exercise.name}</p>
@@ -254,11 +254,11 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout }) => {
                                                     <p>Reps: {exercise.reps}</p>                                                    
                                                 </>
                                             )}
-                                            {exercise.type === "Duration" && (
+                                            {exercise.type === "duration" && (
                                                 <>
                                                     <p>Type: {exercise.type}</p>
                                                     <p>Exercise: {exercise.name}</p>
-                                                    <p>Time: {formatDuration(exercise["duration-minutes"], exercise["duration-seconds"])}</p>
+                                                    <p>Time: {formatDuration(exercise.duration_minutes, exercise.duration_seconds)}</p>
                                                 </>
                                             )}
                                         </div>
