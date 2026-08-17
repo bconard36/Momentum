@@ -8,9 +8,11 @@ import NotFound from './components/NotFound'
 import SignIn from './components/SignIn'
 import SignUp from './components/SignUp'
 
-function App() {
+// Mon 8/17/26
+// App still reads saved workouts from localStorage
+// Need to fetch from DB instead
 
-  
+function App() {
     /**
      * @type {[Array<Object>, Function]} All saved workouts, hydrated from localStorage on mount.
      * Each workout: { id, date, exercises: Array<Object> }.
@@ -45,11 +47,15 @@ function App() {
                                     deleteWorkout={deleteWorkout} /> 
                                 </ProtectedRoute>
                                   } />
-          <Route path="/workouts" element={ <WorkoutForm 
-                                            savedWorkouts={savedWorkouts} 
-                                            setSavedWorkouts={setSavedWorkouts}
-                                            deleteWorkout={deleteWorkout}
-                                            />} />
+          <Route path="/workouts" element={ 
+                                <ProtectedRoute>
+                                  <WorkoutForm 
+                                    savedWorkouts={savedWorkouts} 
+                                    setSavedWorkouts={setSavedWorkouts}
+                                    deleteWorkout={deleteWorkout}
+                                    />
+                                </ProtectedRoute>            
+                                  } />
           <Route path="/calculator" element={ <Calculator /> } />
           <Route path="*" element={<NotFound />} />
         </Routes>
