@@ -6,9 +6,9 @@ import { useState } from "react";
 // ============================================================
 // Dashboard.jsx
 // 
-// Dashboard landing page for Momentum. Provies navigation to the Workouts 
-// and Fitness Calculator routes, displays workout history, and handles local 
-// Supabase authentication sign-out 
+// Dashboard landing page for Momentum. Provides navigation to the Workouts 
+// and Fitness Calculator routes, a button to display workout history (when applicable), 
+// and handles local Supabase authentication sign-out 
 // ============================================================
 /**
  * Dashboard component 
@@ -22,8 +22,12 @@ const Dashboard = ({ savedWorkouts, deleteWorkout }) => {
     // Initialize navigation hook 
     const logOutNav = useNavigate();
 
+    // Initialize state of user menu
     const [isUserOpen, setIsUserOpen] = useState(false);
 
+    /**
+     * Toggles open/closed state of user menu
+     */
     const toggleUserMenu = () => {
         if (isUserOpen) {
             setIsUserOpen(false);
@@ -83,12 +87,7 @@ const Dashboard = ({ savedWorkouts, deleteWorkout }) => {
                         </nav>
                     </div>
                 )}
-                {/* <header className="dashboard-header">
-                    <h1 className="dashboard-title">Momentum</h1>
-                    <p className="dashboard-subtitle">
-                        Log your workouts, track your progress, and check your numbers — all in one place.
-                    </p>
-                </header> */}
+                {/* Insert Dynamic Header with Logged In User's Name Included */}
 
                 <nav className="dashboard-nav" aria-label="Main sections">
                     <Link to="/workouts" className="nav-card">
