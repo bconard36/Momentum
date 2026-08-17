@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import ProtectedRoute from './components/ProtectedRoute'
 import Dashboard from './components/Dashboard'
 import Calculator from './components/CalorieTrack/components/CalculatorForm'
@@ -7,6 +7,7 @@ import WorkoutForm from './components/WorkoutForm'
 import NotFound from './components/NotFound'
 import SignIn from './components/SignIn'
 import SignUp from './components/SignUp'
+import { supabase } from './utils/supabaseClient'
 
 // Mon 8/17/26
 // App still reads saved workouts from localStorage
@@ -14,14 +15,38 @@ import SignUp from './components/SignUp'
 
 function App() {
     /**
-     * @type {[Array<Object>, Function]} All saved workouts, hydrated from localStorage on mount.
+     * @type {[Array<Object>, Function]} All saved workouts, initialized as an empty array
      * Each workout: { id, date, exercises: Array<Object> }.
      */
-    const [savedWorkouts, setSavedWorkouts] = useState(() => {
-        const saved = localStorage.getItem("workouts");
-        // Return parsed, saved workouts if they exist, otherwise an empty array
-        return saved ? JSON.parse(saved) : [];
-    });
+    const [savedWorkouts, setSavedWorkouts] = useState([]);
+
+    /**
+     * Fetches workout history from Supabase
+     * Invokes a remote procedure call (rpc) that executes a custom SQL query
+     * @returns {[Array<Object>]} - saved workouts object returned from Supabase
+     */
+    const fetchWorkoutLog = async () => {
+
+      try {
+        // Custom get_user_workouts SQL function in Supabase 
+        const { data, error } = await supabase.rpc("get_user_workouts");
+      
+        if (error) {
+          console.error("error fetching workouts: ", error.message);
+          return;
+        }
+        // Set saved workouts to data returned from SQL function
+        setSavedWorkouts(data);
+
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    // Fetch the workout log with useEffect()
+    useEffect(() => {
+      fetchWorkoutLog();
+    }, []);
 
     /**
      * Deletes a specified workout from the workout log  
@@ -47,15 +72,14 @@ function App() {
                                     deleteWorkout={deleteWorkout} /> 
                                 </ProtectedRoute>
                                   } />
-          <Route path="/workouts" element={ 
+          {/* <Route path="/workouts" element={ 
                                 <ProtectedRoute>
                                   <WorkoutForm 
                                     savedWorkouts={savedWorkouts} 
-                                    setSavedWorkouts={setSavedWorkouts}
                                     deleteWorkout={deleteWorkout}
                                     />
                                 </ProtectedRoute>            
-                                  } />
+                                  } /> */}
           <Route path="/calculator" element={ <Calculator /> } />
           <Route path="*" element={<NotFound />} />
         </Routes>
