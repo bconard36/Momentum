@@ -64,12 +64,15 @@ const SignUp = () => {
             });
 
             if (authError) {
-                    console.log("Error signing up:", authError)
+                // Insert graceful pop up for error handling here
+                    console.log("Error signing up:", authError);
             } else {
-                console.log("Successful account creation!")
+                // Redirect to SignIn after successful account creation
+                // Timeout with a message, message on Sign In, etc.
+                console.log("Successful account creation!");
             }
         } catch (error) {
-            // Need better error handling here — graceful modal/pop up message? 
+            // Insert graceful pop up for error handling here  
             console.error("Account creation error", error);
         }
     }
@@ -81,9 +84,8 @@ const SignUp = () => {
                     <Link to="/" className="return-link" id="sign-in-return">Return to Sign In</Link>
                 </div>
 
-                <h1 className="dashboard-title" id="sign-up-title">Momentum</h1>
                 <p className="dashboard-subtitle" id="sign-up-subtitle">
-                    Log workouts | Track progress | All in one place
+                    Log Workouts | Track Progress | Build Momentum
                 </p>
 
                 <form className="create-account-form" onSubmit={handleSubmit(onSubmit)}>
