@@ -11,11 +11,10 @@ import Results from './Results';
 import { useState } from 'react';
 
 /**
- * Form for calculating BMI, BMR, & TDEE metrics, backed by react-hook-form. Validates
- * inputs before submission and renders specific error messages gracefully. Calculates
- * the metric values using imported calculations, passing in the form data for the missing 
- * values. Validation methods were left out to reduce boilerplate — react-hook-form uses
- * built-in validation methods. 
+ * Form for calculating BMI, BMR, & TDEE metrics, backed by React Hook Form. Uses built-in 
+ * React Hook Form validation along with custom validation on inputs before submission 
+ * and renders specific error messages gracefully. Calculates the metric values using imported 
+ * calculations, passing in the form data for the missing values. 
  * 
  * @returns {JSX.Element}
  */
