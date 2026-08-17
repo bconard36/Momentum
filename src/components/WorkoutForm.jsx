@@ -15,12 +15,11 @@ import { supabase } from "../utils/supabaseClient";
  * 
  * @param {Object} props
  * @param {Array<Object>} props.savedWorkouts - Previously saved workout data.
- * @param {Function} props.setSavedWorkouts - Updates the saved workout state.
  * @param {Function} props.deleteWorkout - Removes a workout from saved data.
  *
  * @returns {JSX.Element}
  */
-const WorkoutForm = ({ savedWorkouts, setSavedWorkouts, deleteWorkout }) => {
+const WorkoutForm = ({ savedWorkouts, deleteWorkout }) => {
 
     /** @type {boolean} Controls save workout error state */
     const [saveError, setSaveError] = useState(false);
@@ -171,18 +170,6 @@ const WorkoutForm = ({ savedWorkouts, setSavedWorkouts, deleteWorkout }) => {
                 setShowSuccess(true);
             }
     };
-
-    // /**
-    //  * Resets the form fields back to defaultValues whenever a submission succeeds,
-    //  * so the next entry starts from a clean slate.
-    //  */
-    // useEffect(() => {
-    //     if (isSubmitSuccessful) {
-    //         reset();
-    //     } else {
-    //         return;
-    //     }
-    // }, [isSubmitSuccessful, reset]);
 
     /**
      * Closes the success modal and returns the user to the workout form by
