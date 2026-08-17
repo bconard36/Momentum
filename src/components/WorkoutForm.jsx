@@ -84,16 +84,18 @@ const WorkoutForm = ({ savedWorkouts, setSavedWorkouts, deleteWorkout }) => {
             const resolvedExercises = await Promise.all(data.exercises.map(async (exercise) => {
                 const normalizedExercise = exercise.name.toLowerCase().trim();
                 const type = exercise.type.toLowerCase().trim();
-                const existingExercise = await supabase 
+                const { data: existingExercise, error: exerciseError } = await supabase 
                     .from("exercises")
                     .select("*")
                     .match({ name: normalizedExercise, type: type })
                 // Match found, no need to assign a new ID for name already in DB
-                if (existingExercise.data?.length > 0) {
+                // console.log("Exercise lookup:", existingExercise);
+                // console.log("Exercise lookup error:", exerciseError);
+                if (existingExercise?.length > 0) {
                     const repeatExercise = {
-                        exercise_id: existingExercise.data[0].exercise_id,
-                        type: existingExercise.data[0].type,
-                        name: existingExercise.data[0].name,
+                        exercise_id: existingExercise[0].exercise_id,
+                        type: existingExercise[0].type,
+                        name: existingExercise[0].name,
                     };
                     return repeatExercise;
                 } else {
@@ -148,7 +150,8 @@ const WorkoutForm = ({ savedWorkouts, setSavedWorkouts, deleteWorkout }) => {
                 workout_id: workoutId,
                 date: data.date
             }
-
+            console.log("RESOLVED EXERCISES:", resolvedExercises);
+            console.log("WORKOUT EXERCISES:", newWorkoutExercise);
             // Insert workout data into respective tables using DB Function 
             const { data: workoutData, error: insertError } = await supabase.rpc("save_workout", {
                 workout_entry: workoutEntry,
