@@ -21,6 +21,10 @@ import { supabase } from "../utils/supabaseClient";
  * @returns {JSX.Element}
  */
 const WorkoutForm = ({ savedWorkouts, setSavedWorkouts, deleteWorkout }) => {
+
+    /** @type {boolean} Controls save workout error state */
+    const [saveError, setSaveError] = useState(false);
+
     /** @type {string} Today's date as "YYYY-MM-DD", used to cap the date input from allowing future dates. */
     const todayStr = new Date().toISOString().split("T")[0];
 
@@ -150,8 +154,7 @@ const WorkoutForm = ({ savedWorkouts, setSavedWorkouts, deleteWorkout }) => {
                 workout_id: workoutId,
                 date: data.date
             }
-            console.log("RESOLVED EXERCISES:", resolvedExercises);
-            console.log("WORKOUT EXERCISES:", newWorkoutExercise);
+
             // Insert workout data into respective tables using DB Function 
             const { data: workoutData, error: insertError } = await supabase.rpc("save_workout", {
                 workout_entry: workoutEntry,
@@ -160,22 +163,26 @@ const WorkoutForm = ({ savedWorkouts, setSavedWorkouts, deleteWorkout }) => {
             });
 
             if (insertError) {
-                console.error("Error invoking RPC: ", insertError.message);
+                console.error("Insert error: ", insertError.message);
+                setSaveError(true)
             } else {
-                console.log("Successful insertion!");
+                reset();
+                setSaveError(false)
                 setShowSuccess(true);
             }
     };
 
-    /**
-     * Resets the form fields back to defaultValues whenever a submission succeeds,
-     * so the next entry starts from a clean slate.
-     */
-    useEffect(() => {
-        if (isSubmitSuccessful) {
-            reset();
-        }
-    }, [isSubmitSuccessful, reset]);
+    // /**
+    //  * Resets the form fields back to defaultValues whenever a submission succeeds,
+    //  * so the next entry starts from a clean slate.
+    //  */
+    // useEffect(() => {
+    //     if (isSubmitSuccessful) {
+    //         reset();
+    //     } else {
+    //         return;
+    //     }
+    // }, [isSubmitSuccessful, reset]);
 
     /**
      * Closes the success modal and returns the user to the workout form by
@@ -211,6 +218,16 @@ const WorkoutForm = ({ savedWorkouts, setSavedWorkouts, deleteWorkout }) => {
                                 <button className="secondary-button success-redirect" type="button" onClick={handleCloseModal}>
                                     Build New Workout
                                 </button>                                
+                            </div>
+                        </div>
+                    )}
+                    {saveError && (
+                        <div className="workout-modal-overlay" onClick={() => setSaveError(false)}>
+                            <p className="error-message">Error Saving Workout</p>
+                            <div className="error-return-container">
+                                <button className="secondary-button error-redirect" type="button" onClick={() => setSaveError(false)}>
+                                    Try Again
+                                </button> 
                             </div>
                         </div>
                     )}
