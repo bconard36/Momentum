@@ -148,7 +148,6 @@ const WorkoutForm = ({ savedWorkouts, setSavedWorkouts, deleteWorkout }) => {
              */
             const workoutEntry = {
                 workout_id: workoutId,
-                user_id: user.id,
                 date: data.date
             }
 
