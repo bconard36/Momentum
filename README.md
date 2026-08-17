@@ -2,14 +2,15 @@
 **A React Fitness Tracking Application**
 
 Momentum is a React application for logging, managing, and reviewing workouts. Users can dynamically add
-or remove exercises from a workout, validate inputs using React Hook Form, and persist workout history in localStorage. 
+or remove exercises from a workout, validate inputs using React Hook Form, and store workout history in a 
+PostgreSQL database through Supabase.
 
-Momentum also includes the foundation of user authentication using Supabase. Users can currently create an account,
-sign in, and sign out. Supabase Auth manages authentication while a database function and trigger automatically 
-create a corresponding user profile in the application's `public.users` table.
+Momentum includes user authentication through Supabase. Users can create an account, sign in, and sign out.
+Supabase Auth manages authentication while a PostgreSQL function & trigger automatically create a corresponding
+user profile in the application's `public.users` table.
 
 Originally developed as the successor to [Calorie Track](https://github.com/bconard36/CalorieTrack), Momentum
-expands beyond fitness calculation into workout management while laying the foundation for a future full-stack
+expands beyond fitness calculation into workout management while laying the foundation for a full-stack
 fitness platform. 
 
 **Live Site**: _Coming soon!_
@@ -23,9 +24,12 @@ The application currently supports:
 - User sign-in and sign-out
 - Automatic creation of a corresponding profile in the Supabase public.users table
 - Workout creation and management through React Hook Form
-- Workout history stored in browser localStorage
+- Saving workouts to PostgreSQL through Supabase
+- Fetching authenticated users' workout history from PostgreSQL
+- Viewing, sorting, and filtering workout history
 
-Workout data has **not yet been migrated to the database.** At this stage, Supabase is being used for user authentication and profile management while workout functionality continues to use the existing client-side localStorage implementation.
+Workout data has **has been migrated to the database.** Supabase is now responsible for authentication, user profiles, 
+and workout storage and retrieval.
 
 # Folder List
 - public
@@ -67,187 +71,104 @@ Workout data has **not yet been migrated to the database.** At this stage, Supab
 - Add and remove exercises using `useFieldArray`
 - Conditional workout form inputs based on workout type using `watch`
 - Built-in custom form validation
-- Workout history stored in localStorage
-- Shared workout state lifted to the `App` component and passed to child components through props
+- Save workouts to PostgreSQL through Supabase
+- Retrieve workout history from the database
 - View previously logged workouts
-- Sort previously logged workouts by date
-- Filter previously logged workouts by month
-- Delete individual workouts
-- Duration formatting in workout history using `Xm Xs` and `Xh Xm Xs` formats
+- Sort workouts by date
+- Filter workouts by month
+- Duration formatting using `Xm Xs` and `Xh Xm Xs` formats
 - Responsive modal windows
 - Graceful empty-state messaging
 
 ## Authentication 
 - User account creation through Supabase Auth
 - Email and password authentication
-- User sign-in
-- User sign-out
-- Client-side navigation between authentication and application routes
-- Automatic creation of a corresponding public.users profile through a PostgreSQL database function and trigger
-- User UUID shared between Supabase Auth and the application's public.users table
+- User sign-in and sign-out
+- Protected application routes
+- Automatic creation of a corresponding `public.users` profile through a PostgreSQL function and trigger
+- Shared UUID between the Supabase Auth user and application profile
 - Foreign key relationship between the Auth user and application profile
 
-# Planned Features
-
-## Database & Backend 
-- Migrate workout data from localStorage to PostgreSQL/Supabase
-- Database-backed workout creation and retrieval
-- Database-backed workout editing and deletion
-- REST/API layer for workout data
-- Row Level Security policies for user-specific workout data
-
-## Workout Features
-- Exercise editing
-- Workout statistics
-- Progress tracking
-- Dashboard analytics
-
-# Production Build
-
-- To view the production build locally:
-    - npm run build
-    - npm run preview
-    - Open a browser and navigate to the URL shown in the terminal (typically http://localhost:5173/)
-
-# Development
-
-- Open the root folder in VS Code (or preferred code editor)
-    - Momentum
-- Install dependencies 
-    - npm install
-- Run the development server
-    - npm run dev
-- Open a browser of your choice and navigate to:
-    - http://localhost:5173/
-
 ## Backend & Database Development
-Momentum is being expanded from a front-end/localStorage application into a full-stack application using **PostgreSQL through Supabase**.
+Momentum uses **PostgreSQL through Supabase** for persistent application data.
 
-The current database structure separates workout data into related tables:
+The database separates workout data into related tables:
 
 - **Users** — Stores authenticated user accounts.
 - **Workouts** — Stores each workout and associates it with a user.
 - **Exercises** — Stores unique exercises with their name and exercise type.
 - **Workout Exercises** — Joins workouts and exercises while storing workout-specific metrics such as sets, reps, weight, and duration.
 
-### Exercise Resolution
+## Exercise Resolution
 When a workout is submitted, Momentum normalizes each exercise name and type before checking the `exercises` table for an existing match.
 
 If a matching exercise exists, its existing `exercise_id` is reused. If no match is found, a new UUID is generated for the exercise.
 
 Exercise matching uses both the normalized exercise name and exercise type so that exercises with the same name can still be represented separately when their types differ.
 
-### Workout Data Preparation
+## Workout Data Preparation & Insertion
 Before database insertion, the submitted workout is separated into records for the related tables:
 
 - A workout record containing the workout ID, authenticated user ID, and date.
 - Workout-exercise records containing the shared workout ID, exercise ID, and exercise-specific metrics.
 - New exercise records when a submitted exercise does not already exist in the database.
+    - `Promise.all()` is used when resolving exercises asynchronously so that the resulting arrays contain the resolved exercise data rather than unresolved Promise objects.
 
-`Promise.all()` is used when resolving exercises asynchronously so that the resulting arrays contain the resolved exercise data rather than unresolved Promise objects.
+A custom PGSQL function then handles the inserts of all records into their respective tables.
+
+## Workout Data Retrieval
+A PostgreSQL function retrieves the authenticated user's workouts and builds the related workout and exercise data into a JSON response.
+
+The function uses the authenticated user's Supabase UUID to ensure the returned workouts belong to the current user.
+
+The resulting data is passed through the React application and into `WorkoutLog`, where workouts can be sorted and filtered for display.
+
+## Row Level Security
+Supabase Row Level Security and database permissions are used to control access to workout-related tables.
+
+Authenticated users are granted the required database permissions, while RLS policies control access to the data.
 
 # What I Learned / Built From Scratch
 
-**React Hook Form**: Rather than manually managing every input with `useState`, this 
-project uses React Hook Form to register, validate, and track form values. This 
-significantly reduces boilerplate while improving performance by minimizing unnecessary
-component re-renders. Additionally, this project features a refactored version of the original
-CalorieTrack calculator, replacing manually managed form state and prop-drilling with React
-Hook Form. 
+**React Hook Form**: Rather than manually managing every input with `useState`, this project uses React Hook Form to register, validate, and track form values. This reduces boilerplate while minimizing unnecessary component re-renders. The original CalorieTrack calculator was also refactored from manually managed form state and prop drilling to React Hook Form.
 
-**Dynamic Forms with `useFieldArray`**: Exercises are managed as a dynamic array, allowing users 
-to add or remove any number of exercises during a workout. This introduced a different way of 
-thinking about forms, where the form structure itself changes over time instead of remaining fixed.
+**Dynamic Forms with `useFieldArray`**: Exercises are managed as a dynamic array, allowing users to add or remove any number of exercises during a workout. This introduced a different approach to forms where the form structure itself changes over time.
 
-**Conditional Form Displays with `watch`**: Workout forms are displayed based on workout type, 
-allowing users to log workouts of different styles with different metrics to track. This was solved
-by using React Form's `watch` API to subscribe to the workout-type field and re-render the relevant
-form inputs whenever it changes. 
+**Conditional Form Displays with `watch`**: Workout forms display different inputs based on workout type. React Hook Form's `watch` API monitors the workout-type field and allows the relevant inputs to update dynamically.
 
-**Local Data Persistence**: Workout history is stored in browser localStorage, allowing users 
-to close and reopen the application without losing their logged workouts. This also provided 
-experience serializing application data and synchronizing React state with browser storage. 
+**Local Data Persistence & Migration**: Momentum originally stored workout history in browser localStorage. This provided experience serializing application data and synchronizing React state with browser storage before the application was migrated to PostgreSQL through Supabase.
 
-**Shared Application State**: Workout state was lifted to the `App` component so that localStorage
-could be read and managed by a shared parent component. The saved workout data and related functions 
-are then passed to child components through props. This established a single source of truth for 
-saved workout data while keeping the current application structure simple, avoiding unnecessary
-state-mamagement libraries.
+**Shared Application State**: Workout state was initially lifted to the `App` component so that saved workout data could be managed centrally and passed to child components through props. As the application transitioned to database-backed storage, this structure provided a foundation for passing retrieved workout data through the application.
 
-**Workout History Filtering & Sorting**: The workout log includes filtering by month and sorting by 
-workout date. Filtered data is derived from the saved workout state before being sorted for display, 
-allowing users to narrow their workout history while preserving the original saved data. 
+**Workout History Filtering & Sorting**: The workout log derives filtered data from the saved workout collection before sorting it for display. This allows users to narrow their workout history without modifying the underlying data.
 
-**Data Modeling**: Each workout is represented as a single object containing: 
-- Unique identifier
-- Workout date
-- Collection of exercises
-  
-Each exercise stores: 
-- Type
-- Name
-- _For Duration-Based Exercises_:
-    - Duration in minutes and seconds
-- _For Strength-Based Exercises_:
-    - Weight
-    - Sets
-    - Repetitions
+**Data Modeling**: Moving workout data from a single nested object structure into a relational database required separating users, workouts, exercises, and workout-specific exercise data into related tables. This provided practical experience with primary keys, foreign keys, join tables, and normalized data.
 
-**Single Source of Truth for Form Data**: A bug in the workout log modal traced back to reading 
-conditional form data from two different places (log and form) rather than one — a good reminder that
-once state needs to be consistent across components, it should flow from one single source of truth rather than 
-being re-read independently in more than one place. 
+**Database Integration**: Momentum's frontend communicates with PostgreSQL through Supabase. Workout creation, exercise resolution, and workout retrieval are handled through database functions and authenticated requests.
 
-**State Identity in Repeated Components**: A separate bug was found in the delete workout confirmation overlay — 
-regardless of what workout was selected for deletion, the delete button in the confirmation overlay
-always deleted the _last_ workout in the array. This was traced back to how state was managed across repeated 
-modal instances of a list. Previously, one piece of state was being used to represent the specific workout
-pending deletion. However, that state was a Boolean, which could never hold a value like a workout ID — so every
-row in the list was reading the same true/false flag instead of checking its own identity. This was remedied by 
-switching the state to hold a specific value (the workout ID) rather than a boolean, and conditionally rendering
-the delete confirmation window based on a match against that ID. 
-
-**Supabase Authentication & Database Integration**: Momentum now uses Supabase Auth for account creation and email/password authentication. A PostgreSQL database function and trigger automatically create a corresponding application profile in `public.users` whenever a new Auth user is created. This separates authentication data from application-specific user data while maintaining a shared UUID between the two records.
-
-**Database Relationships & Cascading Deletes**: The `public.users` table uses the Supabase Auth user's UUID as its identifier and maintains a foreign key relationship to `auth.users`. The relationship uses cascading deletion so that deleting an Auth user automatically removes the associated application profile.
+**Supabase Authentication & Database Integration**: Momentum uses Supabase Auth for account creation and email/password authentication. A PostgreSQL function and trigger automatically create a corresponding application profile in `public.users` whenever a new Auth user is created. This separates authentication data from application-specific user data while maintaining a shared UUID between the two records.
 
 **Authentication State & Navigation**: Sign-in and sign-out functionality is integrated with React Router. Successful authentication navigates the user to the Dashboard, while successful sign-out returns the user to the sign-in route.
-  
-Designing this structure with future database integration in mind makes the transition to 
-a SQL backend significantly easier. 
 
-# Future Refactor Goals
+**State Identity in Repeated Components**: A bug in the workout deletion confirmation modal demonstrated the importance of storing the identity of a selected item rather than a simple boolean. The confirmation state was changed to hold the specific workout ID, allowing each repeated workout row to determine whether it was the selected item.
 
-As Momentum evolves into a full-stack application, planned improvements include:
-- Replacing localStorage workout storage with PostgreSQL/Supabase
-- Connecting workouts to authenticated users
-- Implementing database-backed workout CRUD operations
-- Adding Row Level Security to protect user-specific workout data
-- Building a REST/API layer for workout data
-- Editing existing workouts
-- Improving application state management
-- Adding workout analytics and progress tracking
-- Expanding user profile functionality
-- Improving authentication feedback and error handling
+# Future Development
 
-# Tools Used
-- React
-- React Hook Form
-    - `useForm`
-    - `useFieldArray`
-    - `watch`
-- React Router
-- Supabase
-    - Supabase Auth
-    - PostgreSQL
-    - Database functions 
-    - Database triggers 
-    - Row Level Security 
-- JavaScript (ES6+)
-- Vite
-- localStorage API
-- npm
-- CSS3
-- VS Code
-- Git 
-- GitHub
+As Momentum continues to evolve, planned improvements include:
+
+- Complete database-backed workout deletion
+- Edit existing workouts
+- Workout statistics and progress tracking
+- Dashboard analytics
+- Expanded user profile functionality
+- Improved authentication feedback and error handling
+- Further application state management improvements
+- Production deployment
+
+# Production Build
+
+To view the production build locally:
+
+```bash
+npm run build
+npm run preview
