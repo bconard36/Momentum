@@ -5,6 +5,7 @@
  * Incorporates state to track array status and to remove workouts from localStorage
  */
 import { useState } from 'react';
+import EditWorkout from './EditWorkout';
 
 /**
  * Renders a modal displaying all saved workouts, with sorting, filtering and deletion support.
@@ -35,6 +36,9 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout }) => {
 
     /** @type {[Array, Function]} Dictates which workouts will be displayed based on filter */
     const [selectedMonths, setSelectedMonths] = useState([]);
+
+    /** @type {[number, Function]} Dictates which workout to edit */
+    const [pendingEdit, setPendingEdit] = useState(null);
 
     /**
      * Formats a "YYYY-MM-DD" date string into a human-readable "Month Day, Year" string.
@@ -161,7 +165,7 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout }) => {
         setIsAscending(!isAscending);
         setSortOrder(sortOrder === "asc" ? "desc" : "asc");
     }
-
+    
     return ( 
         <>
             <div className="workout-log-button-container">
@@ -261,9 +265,22 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout }) => {
                                                     <p>Time: {formatDuration(exercise.duration_minutes, exercise.duration_seconds)}</p>
                                                 </>
                                             )}
+                                            {/* {editFormOpen && (
+                                                <EditWorkout 
+                                                    workout={workout}
+                                                    exercise={exercise}
+                                                />
+                                            )} */}
                                         </div>
                                     ))}
                                 </div>
+                                <button type="button" className="secondary-button edit-workout" onClick={() => setPendingEdit(workout)}>Edit Workout</button>
+                                {pendingEdit && pendingEdit.id === workout.id && (
+                                    <EditWorkout
+                                        workout={pendingEdit}
+                                        deleteWorkout={deleteWorkout}
+                                    />
+                                )}
                                 <button type="button" className="secondary-button delete-workout" onClick={() => setPendingDelete(workout.id)}>Delete Workout</button>
                                 {/* Delete confirmation modal window */}
                                 {pendingDelete === workout.id && (
