@@ -43,6 +43,7 @@ const EditWorkout = ({ workout, deleteWorkout, isEditing, setIsEditing }) => {
 
     const onSubmit = (data) => {
         setIsEditing(false);
+        console.log(workout.id);
         console.log("Updated workout data: ", data);
         // Update database with new data values 
         // Custom RPC for UPDATE call here
@@ -80,7 +81,6 @@ const EditWorkout = ({ workout, deleteWorkout, isEditing, setIsEditing }) => {
                                 />
                     </div>
                     
-                    
                         {fields.map((exercise, index) => {
                             const isExistingExercise = Boolean(exercise.exercise_id);
                             const exerciseType = watch(`exercises.${index}.type`);
@@ -97,8 +97,8 @@ const EditWorkout = ({ workout, deleteWorkout, isEditing, setIsEditing }) => {
                                         <input
                                             id={`exercise-name-${index}`}
                                             type="text"
-                                            value={exercise.name}
                                             readOnly
+                                            {...register(`exercises.${index}.name`)}
                                         />
                                     ) : (
                                         <input
@@ -127,8 +127,8 @@ const EditWorkout = ({ workout, deleteWorkout, isEditing, setIsEditing }) => {
                                         <input
                                             id={`exercise-type-${index}`}
                                             type="text"
-                                            value={exercise.type}
                                             readOnly
+                                            {...register(`exercises.${index}.type`)}
                                         />
                                     ) : (
                                         <select
