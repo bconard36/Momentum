@@ -4,7 +4,7 @@
  * If localStorage is empty, then a message appears
  * Incorporates state to track array status and to remove workouts from localStorage
  */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import EditWorkout from './EditWorkout';
 
@@ -19,6 +19,16 @@ import EditWorkout from './EditWorkout';
  * @returns {JSX.Element}
  */
 const WorkoutLog = ({ savedWorkouts, deleteWorkout }) => {
+
+    useEffect(() => {
+        document.documentElement.classList.add("workout-log-page");
+        document.body.classList.add("workout-log-page");
+
+        return () => {
+            document.documentElement.classList.remove("workout-log-page");
+            document.body.classList.remove("workout-log-page");
+        };
+    }, []);
 
     /** @type {[number, Function]} Dictates which workout will be deleted */
     const [pendingDelete, setPendingDelete] = useState(null);
@@ -35,6 +45,8 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout }) => {
     /** @type {[Array, Function]} Dictates which workouts will be displayed based on filter */
     const [selectedMonths, setSelectedMonths] = useState([]);
 
+    /** @type {[boolean, Function]} Controls whether edit modal is open */
+    const [isEditing, setIsEditing] = useState(false); 
     /** @type {[number, Function]} Dictates which workout to edit */
     const [pendingEdit, setPendingEdit] = useState(null);
 
@@ -163,6 +175,11 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout }) => {
         setIsAscending(!isAscending);
         setSortOrder(sortOrder === "asc" ? "desc" : "asc");
     }
+
+    const editWorkout = (workout) => {
+        setPendingEdit(workout);
+        setIsEditing(true);
+    }
     
     return ( 
         <>
@@ -184,7 +201,7 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout }) => {
             )}
 
             {savedWorkouts?.length > 0 && (
-                <div className="workout-overlay">
+                <div className="log-panel">
                     <div className="workout-panel" role="dialog" aria-modal="true" aria-label="Workout Log Results" onClick={(e) => e.stopPropagation()}>
                         <div className="filter-container icon-container">                         
                             <svg width="35px" height="35px" viewBox="0 -0.5 25 25" fill="none" 
@@ -275,11 +292,13 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout }) => {
                                         </div>
                                     ))}
                                 </div>
-                                <button type="button" className="secondary-button edit-workout" onClick={() => setPendingEdit(workout)}>Edit Workout</button>
-                                {pendingEdit && pendingEdit.id === workout.id && (
+                                <button type="button" className="secondary-button edit-workout" onClick={() => editWorkout(workout)}>Edit Workout</button>
+                                {pendingEdit && pendingEdit.id === workout.id && isEditing && (
                                     <EditWorkout
                                         workout={pendingEdit}
                                         deleteWorkout={deleteWorkout}
+                                        isEditing={isEditing}
+                                        setIsEditing={setIsEditing}
                                     />
                                 )}
                                 <button type="button" className="secondary-button delete-workout" onClick={() => setPendingDelete(workout.id)}>Delete Workout</button>
