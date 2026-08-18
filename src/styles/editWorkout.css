@@ -48,6 +48,31 @@
     text-shadow: 0 4px 12px rgba(96, 165, 250, 0.25);
 }
 
+#edit-workout-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px auto;
+}
+
+#edit-workout-button:hover,
+#edit-workout-button:focus-visible {
+    border-color: var(--accent-blue-light);
+    transform: translateY(-2px);
+    text-shadow: 0 4px 12px rgba(96, 165, 250, 0.25);
+}
+
+.edit-modal-overlay select {
+    max-width: 50%;
+}
+
+@media (min-width: 601px) {
+    .edit-modal-overlay .edit-workout-form input {
+        margin-right: auto;
+        margin-left: auto;
+    }
+}
+
 @media (max-width: 600px) {
     .edit-modal-overlay {
         padding: 16px;
