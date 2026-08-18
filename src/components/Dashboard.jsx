@@ -104,7 +104,7 @@ const Dashboard = ({ savedWorkouts, deleteWorkout }) => {
                         </span>
                     </Link>
                     
-                    <Link to="/logs" className="nav-card">
+                    <Link to="/logs" className="nav-card dashboard-log">
                         <span className="nav-card-label">Workout History</span>
                         <button className="secondary-button">View Workout Log</button>
                     </Link>
