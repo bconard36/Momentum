@@ -44,18 +44,20 @@ load base.css first.
   flex-wrap: nowrap;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
+  width: 50%;
+  margin: 0 auto;
   gap: 12px;
 }
 
 .filter-container {
   position: relative;
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   gap: 12px;
   flex-wrap: nowrap;
-  width: 100%;
+  width: 50%;
+  margin: 0 auto;
 }
 
 .filter-label-container {
