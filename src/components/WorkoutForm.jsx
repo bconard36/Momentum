@@ -199,9 +199,12 @@ const WorkoutForm = ({ savedWorkouts, deleteWorkout }) => {
 
                 {/* Pass savedWorkouts array and deleteWorkout method down as props to workout log */}
                 {/* This keeps all form data true to this component */}
-                <WorkoutLog 
+                <div className="workout-log-button-container">
+                    <WorkoutLog 
                     savedWorkouts={savedWorkouts}
                     deleteWorkout={deleteWorkout} />
+                </div>
+                
 
                 <form className="workout-form" onSubmit={handleSubmit(onSubmit)}>
                     {showSuccess && (

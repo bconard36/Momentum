@@ -63,6 +63,15 @@ in base.css's :root — load base.css first.
   justify-content: center;
 }
 
+.workout-log-button-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  padding-bottom: 10px;
+}
+
+
 .workout-form {
   display: flex;
   flex-direction: column;
