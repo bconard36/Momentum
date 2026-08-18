@@ -122,3 +122,14 @@ input[type="checkbox"] {
   border-radius: 8px;
   margin: 0 auto;
 }
+
+html.workout-log-page,
+body.workout-log-page {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html.workout-log-page::-webkit-scrollbar,
+body.workout-log-page::-webkit-scrollbar {
+  display: none;
+}
