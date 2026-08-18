@@ -197,6 +197,12 @@ const WorkoutForm = ({ savedWorkouts, deleteWorkout }) => {
                     </p>
                 </header>
 
+                {/* Pass savedWorkouts array and deleteWorkout method down as props to workout log */}
+                {/* This keeps all form data true to this component */}
+                <WorkoutLog 
+                    savedWorkouts={savedWorkouts}
+                    deleteWorkout={deleteWorkout} />
+
                 <form className="workout-form" onSubmit={handleSubmit(onSubmit)}>
                     {showSuccess && (
                         <div className="workout-modal-overlay success-overlay" onClick={() => setShowSuccess(false)}>
@@ -228,11 +234,6 @@ const WorkoutForm = ({ savedWorkouts, deleteWorkout }) => {
                                 >
                                     Build New Workout
                                 </button>
-                                {/* Pass savedWorkouts array and deleteWorkout method down as props to workout log */}
-                                {/* This keeps all form data true to this component */}
-                                <WorkoutLog 
-                                    savedWorkouts={savedWorkouts}
-                                    deleteWorkout={deleteWorkout} />
                             </div>
                         </div>
                     ) : (
