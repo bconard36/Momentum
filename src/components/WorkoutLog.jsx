@@ -5,6 +5,7 @@
  * Incorporates state to track array status and to remove workouts from localStorage
  */
 import { useState } from 'react';
+import { Link, useNavigate } from 'react-router';
 import EditWorkout from './EditWorkout';
 
 /**
@@ -18,9 +19,6 @@ import EditWorkout from './EditWorkout';
  * @returns {JSX.Element}
  */
 const WorkoutLog = ({ savedWorkouts, deleteWorkout }) => {
-    
-    /** @type {[boolean, Function]} Controls whether the workout log modal is open. */
-    const [isOpen, setIsOpen] = useState(false); 
 
     /** @type {[number, Function]} Dictates which workout will be deleted */
     const [pendingDelete, setPendingDelete] = useState(null);
@@ -168,23 +166,26 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout }) => {
     
     return ( 
         <>
-            <div className="workout-log-button-container">
-                <button className="secondary-button" type="button" onClick={() => setIsOpen(true)}>
-                    View Workout Log
-                </button>
-            </div>
+        {/* Change workout-header calls to log-header/something similar */}
+            <header className="workout-header">
 
-            {savedWorkouts?.length === 0 && isOpen && (
-                <div className="workout-modal-overlay" onClick={() => setIsOpen(false)}>
-                    <div className="workout-modal-panel" role="dialog" aria-modal="true" aria-label="Workout Log Results" onClick={(e) => e.stopPropagation()}>
+                <div className="return-container">
+                    <Link to="/dashboard" className="return-link" id="workout-return">Return to Dashboard</Link>
+                </div>
+
+                <h1 className="workout-title">Workout Log</h1>
+            </header>
+            {savedWorkouts?.length === 0 && (
+                <div className="workout-modal-overlay">
+                    <div className="workout-panel" role="dialog" aria-modal="true" aria-label="Workout Log Results" onClick={(e) => e.stopPropagation()}>
                         <p>No workouts logged yet.</p>
                     </div>
                 </div>
             )}
 
-            {savedWorkouts?.length > 0 && isOpen && (
-                <div className="workout-modal-overlay" onClick={() => setIsOpen(false)}>
-                    <div className="workout-modal-panel" role="dialog" aria-modal="true" aria-label="Workout Log Results" onClick={(e) => e.stopPropagation()}>
+            {savedWorkouts?.length > 0 && (
+                <div className="workout-overlay">
+                    <div className="workout-panel" role="dialog" aria-modal="true" aria-label="Workout Log Results" onClick={(e) => e.stopPropagation()}>
                         <div className="filter-container icon-container">                         
                             <svg width="35px" height="35px" viewBox="0 -0.5 25 25" fill="none" 
                                 xmlns="http://www.w3.org/2000/svg" id="filter" className="filter-icon"

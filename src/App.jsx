@@ -8,6 +8,7 @@ import NotFound from './components/NotFound'
 import SignIn from './components/SignIn'
 import SignUp from './components/SignUp'
 import { supabase } from './utils/supabaseClient'
+import WorkoutLog from './components/WorkoutLog'
 
 function App() {
     /**
@@ -77,6 +78,14 @@ function App() {
                                     />
                                 </ProtectedRoute>            
                                   } />
+          <Route path="/logs" element={
+                                <ProtectedRoute>
+                                  <WorkoutLog
+                                    savedWorkouts={savedWorkouts} 
+                                    deleteWorkout={deleteWorkout}
+                                  />
+                                </ProtectedRoute>
+          } />
           <Route path="/calculator" element={ <Calculator /> } />
           <Route path="*" element={<NotFound />} />
         </Routes>
