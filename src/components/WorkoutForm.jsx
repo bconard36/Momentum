@@ -12,14 +12,10 @@ import { supabase } from "../utils/supabaseClient";
 /**
  * Form for logging a new workout consisting of a date and one or more dynamic exercises.
  * Uses React Hook Form for form management and Supabase for authenticated user access and exercise lookup
- * 
- * @param {Object} props
- * @param {Array<Object>} props.savedWorkouts - Previously saved workout data.
- * @param {Function} props.deleteWorkout - Removes a workout from saved data.
  *
  * @returns {JSX.Element}
  */
-const WorkoutForm = ({ savedWorkouts, deleteWorkout }) => {
+const WorkoutForm = () => {
 
     /** @type {boolean} Controls save workout error state */
     const [saveError, setSaveError] = useState(false);
