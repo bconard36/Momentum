@@ -103,15 +103,11 @@ const Dashboard = ({ savedWorkouts, deleteWorkout }) => {
                             Check your BMI, BMR, and daily calorie targets.
                         </span>
                     </Link>
-    
-                    <div className="dashboard-log">
-                        <span className="nav-card-label">Workout History</span>
-                        <WorkoutLog 
-                            savedWorkouts={savedWorkouts}
-                            deleteWorkout={deleteWorkout}
-                        />
-                    </div>
                     
+                    <Link to="/logs" className="nav-card">
+                        <span className="nav-card-label">Workout History</span>
+                        <button className="secondary-button">View Workout Log</button>
+                    </Link>
                 </nav>
             </div>
         </>
