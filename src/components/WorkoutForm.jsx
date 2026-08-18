@@ -199,10 +199,14 @@ const WorkoutForm = ({ savedWorkouts, deleteWorkout }) => {
 
                 {/* Pass savedWorkouts array and deleteWorkout method down as props to workout log */}
                 {/* This keeps all form data true to this component */}
+                
                 <div className="workout-log-button-container">
-                    <WorkoutLog 
+                    <Link to="/logs">
+                        <button className="secondary-button">View Workout Log</button> 
+                    </Link>
+                    {/* <WorkoutLog 
                     savedWorkouts={savedWorkouts}
-                    deleteWorkout={deleteWorkout} />
+                    deleteWorkout={deleteWorkout} /> */}
                 </div>
                 
 
