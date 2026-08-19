@@ -47,6 +47,7 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout }) => {
 
     /** @type {[boolean, Function]} Controls whether edit modal is open */
     const [isEditing, setIsEditing] = useState(false); 
+    
     /** @type {[number, Function]} Dictates which workout to edit */
     const [pendingEdit, setPendingEdit] = useState(null);
 
@@ -196,6 +197,9 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout }) => {
                 <div className="workout-modal-overlay">
                     <div className="workout-panel" role="dialog" aria-modal="true" aria-label="Workout Log Results" onClick={(e) => e.stopPropagation()}>
                         <p>No workouts logged yet.</p>
+                        <div className="empty-log-return">
+                            <Link to="/dashboard">Return to Dashboard</Link>
+                        </div>
                     </div>
                 </div>
             )}
@@ -283,16 +287,11 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout }) => {
                                                     <p>Time: {formatDuration(exercise.duration_minutes, exercise.duration_seconds)}</p>
                                                 </>
                                             )}
-                                            {/* {editFormOpen && (
-                                                <EditWorkout 
-                                                    workout={workout}
-                                                    exercise={exercise}
-                                                />
-                                            )} */}
                                         </div>
                                     ))}
                                 </div>
                                 <button type="button" className="secondary-button" id="edit-workout-button" onClick={() => editWorkout(workout)}>Edit Workout</button>
+                                {/* <button type="button" className="secondary-button" id="edit-workout-button" onClick={() => console.log(workout.workout_id)}>Edit Workout</button> */}
                                 {pendingEdit && pendingEdit.id === workout.id && isEditing && (
                                     <EditWorkout
                                         workout={pendingEdit}
@@ -301,15 +300,15 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout }) => {
                                         setIsEditing={setIsEditing}
                                     />
                                 )}
-                                <button type="button" className="secondary-button delete-workout" onClick={() => setPendingDelete(workout.id)}>Delete Workout</button>
+                                <button type="button" className="secondary-button delete-workout" onClick={() => setPendingDelete(workout.workout_id)}>Delete Workout</button>
                                 {/* Delete confirmation modal window */}
-                                {pendingDelete === workout.id && (
+                                {pendingDelete === workout.workout_id && (
                                     <div className="workout-modal-overlay delete-overlay">
                                         <p>Delete workout?</p>
                                         <button type="button" className="secondary-button confirm-delete-workout" 
                                             onClick={() => {
                                             deleteWorkout(pendingDelete);
-                                            setPendingDelete(null)
+                                            setPendingDelete(null);
                                         }}>
                                             Delete Workout
                                         </button>
