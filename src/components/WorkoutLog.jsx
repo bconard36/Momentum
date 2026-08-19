@@ -291,7 +291,6 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout }) => {
                                     ))}
                                 </div>
                                 <button type="button" className="secondary-button" id="edit-workout-button" onClick={() => editWorkout(workout)}>Edit Workout</button>
-                                {/* <button type="button" className="secondary-button" id="edit-workout-button" onClick={() => console.log(workout.workout_id)}>Edit Workout</button> */}
                                 {pendingEdit && pendingEdit.id === workout.id && isEditing && (
                                     <EditWorkout
                                         workout={pendingEdit}
