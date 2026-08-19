@@ -50,11 +50,26 @@ function App() {
      * @param {String} idToDelete - randomly generated UUID string for workout to delete from log 
      * @returns {void} 
      */
-    const deleteWorkout = (idToDelete) => {
-      // Replace localStorage logic with Database delete calls
-      const updatedWorkouts = savedWorkouts.filter((workout, index) => workout.workout_id !== idToDelete);
-      setSavedWorkouts(updatedWorkouts);
-      localStorage.setItem("workouts", JSON.stringify(updatedWorkouts));
+    const deleteWorkout = async (idToDelete) => {
+      try {
+        // Custom delete_workout function in Supabase
+        const { error: deleteError } = await supabase.rpc("delete_workout", {
+          p_workout_id: idToDelete
+        });
+
+        if (deleteError) {
+          // Custom error handling here
+            console.error("Error deleting workout: ", deleteError);
+            return;
+        }
+
+        // If no error, no data to return — simply fetchWorkoutLog()
+        fetchWorkoutLog();
+      } catch (error) {
+        // Custom error handling here 
+          console.error(error);
+      }
+      
     }
 
   return (
