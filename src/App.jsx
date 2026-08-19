@@ -52,7 +52,7 @@ function App() {
      */
     const deleteWorkout = (idToDelete) => {
       // Replace localStorage logic with Database delete calls
-      const updatedWorkouts = savedWorkouts.filter((workout, index) => workout.id !== idToDelete);
+      const updatedWorkouts = savedWorkouts.filter((workout, index) => workout.workout_id !== idToDelete);
       setSavedWorkouts(updatedWorkouts);
       localStorage.setItem("workouts", JSON.stringify(updatedWorkouts));
     }
