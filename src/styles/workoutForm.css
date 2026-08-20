@@ -288,6 +288,13 @@ in base.css's :root — load base.css first.
   backdrop-filter: blur(8px);
   scrollbar-width: none;
   -ms-overflow-style: none;
+  width: 100%;
+  height: 100%;
+  margin: 15px auto 15px ;
+  max-width: 800px;
+  max-height: 805px;
+  top: 3.5%;
+  border-radius: var(--radius);
 }
 
 .workout-modal-overlay::-webkit-scrollbar,
