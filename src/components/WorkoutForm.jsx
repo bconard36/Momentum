@@ -4,8 +4,7 @@
 // of strength or duration-based exercises.
 // ============================================================
 import { useForm, useFieldArray } from "react-hook-form";
-import { useState, useEffect } from 'react';
-import WorkoutLog from "./WorkoutLog";
+import { useState } from 'react';
 import { Link } from "react-router";
 import { supabase } from "../utils/supabaseClient";
 
@@ -15,7 +14,7 @@ import { supabase } from "../utils/supabaseClient";
  *
  * @returns {JSX.Element}
  */
-const WorkoutForm = () => {
+const WorkoutForm = ({ fetchWorkoutLog }) => {
 
     /** @type {boolean} Controls save workout error state */
     const [saveError, setSaveError] = useState(false);
@@ -164,6 +163,7 @@ const WorkoutForm = () => {
                 reset();
                 setSaveError(false)
                 setShowSuccess(true);
+                fetchWorkoutLog();
             }
     };
 
