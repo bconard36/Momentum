@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router";
 import { useFieldArray, useForm } from "react-hook-form";
+import { supabase } from "../utils/supabaseClient";
 
 /**
  * Edit Workout Component
@@ -15,6 +16,8 @@ import { useFieldArray, useForm } from "react-hook-form";
  */
 
 const EditWorkout = ({ workout, deleteWorkout, isEditing, setIsEditing }) => {
+
+    const workoutId =  workout.workout_id;
 
     /**
      * * react-hook-form controls for the edit workout form.
@@ -41,10 +44,25 @@ const EditWorkout = ({ workout, deleteWorkout, isEditing, setIsEditing }) => {
         name: "exercises"
     });
 
-    const onSubmit = (data) => {
+    const onSubmit = async (data) => {
+        try {
+            const { data: newWorkout, error } = await supabase.rpc("edit_workout", {
+                p_workout_id: workoutId,
+                resolved_workout: data
+            });
+
+            if (error) {
+                console.log("Error editing workout: ", error);
+            } else {
+                console.log(data);
+                console.log('got here');
+            }
+        } catch (error) {
+            console.log("Error: ", error)
+        }
         setIsEditing(false);
-        console.log(workout.id);
-        console.log("Updated workout data: ", data);
+        // console.log(workout.workout_id);
+        // console.log("Updated workout data: ", data);
         // Update database with new data values 
         // Custom RPC for UPDATE call here
         // Display success message when edit is successful
