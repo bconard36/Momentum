@@ -5,7 +5,7 @@
  * Incorporates state to track array status and to remove workouts from localStorage
  */
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router';
+import { Link } from 'react-router';
 import EditWorkout from './EditWorkout';
 
 /**
@@ -294,8 +294,6 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout }) => {
                                 {pendingEdit && pendingEdit.id === workout.id && isEditing && (
                                     <EditWorkout
                                         workout={pendingEdit}
-                                        deleteWorkout={deleteWorkout}
-                                        isEditing={isEditing}
                                         setIsEditing={setIsEditing}
                                     />
                                 )}
