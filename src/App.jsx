@@ -98,6 +98,7 @@ function App() {
                                   <WorkoutLog
                                     savedWorkouts={savedWorkouts} 
                                     deleteWorkout={deleteWorkout}
+                                    fetchWorkoutLog={fetchWorkoutLog}
                                   />
                                 </ProtectedRoute>
           } />
