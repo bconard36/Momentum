@@ -113,7 +113,6 @@ const EditWorkout = ({ workout, setIsEditing, fetchWorkoutLog }) => {
             console.log("Error: ", error)
         }   
         fetchWorkoutLog(); 
-        console.log(resolvedExerciseData);
     }
     
     return ( 
