@@ -68,15 +68,21 @@ const EditWorkout = ({ workout, setIsEditing }) => {
                     if (editData?.length > 0) {
                         const noChange = {
                             exercise_id: editData[0].exercise_id,
-                            type: editData[0].type,
-                            name: editData[0].name
+                            sets: exercise.sets,
+                            reps: exercise.reps,
+                            weight: exercise.weight,
+                            duration_minutes: exercise.duration_minutes,
+                            duration_seconds: exercise.duration_seconds
                         };
                         return noChange;
                     } else {
                         const exerciseAdd = {
                             exercise_id: crypto.randomUUID(),
-                            type: type,
-                            name: name
+                            sets: exercise.sets,
+                            reps: exercise.reps,
+                            weight: exercise.weight,
+                            duration_minutes: exercise.duration_minutes,
+                            duration_seconds: exercise.duration_seconds
                         };
                         return exerciseAdd;
                     }
