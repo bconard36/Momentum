@@ -1,5 +1,3 @@
-import { useState } from "react";
-import { Link } from "react-router";
 import { useFieldArray, useForm } from "react-hook-form";
 import { supabase } from "../utils/supabaseClient";
 
@@ -7,16 +5,14 @@ import { supabase } from "../utils/supabaseClient";
  * Edit Workout Component
  * @param {Object} props
  * @param {Array<Object>} props.workout - Single workout object with an array of exercises to edit 
- * @param {(idToDelete: string) => void} props.deleteWorkout - Callback invoked with a workout's
- *   id when the user confirms deletion
- * @param {Boolean<Object>} props.isEditing - Boolean state of edit workout modal; default - true
  * @param {Function<Object>} props.setIsEditing - Sets boolean state of edit workout modal
  * 
  * @returns {JSX.Element}
  */
 
-const EditWorkout = ({ workout, deleteWorkout, isEditing, setIsEditing }) => {
+const EditWorkout = ({ workout, setIsEditing }) => {
 
+    // Store workout_id for onSubmit supabase.rpc call 
     const workoutId =  workout.workout_id;
 
     /**
@@ -46,6 +42,7 @@ const EditWorkout = ({ workout, deleteWorkout, isEditing, setIsEditing }) => {
 
     const onSubmit = async (data) => {
         try {
+            // RPC for custom edit_workout function 
             const { data: newWorkout, error } = await supabase.rpc("edit_workout", {
                 p_workout_id: workoutId,
                 resolved_workout: data
@@ -54,6 +51,7 @@ const EditWorkout = ({ workout, deleteWorkout, isEditing, setIsEditing }) => {
             if (error) {
                 console.log("Error editing workout: ", error);
             } else {
+                // Success message / Redirect / Re-render workout-log 
                 console.log(data);
                 console.log('got here');
             }
@@ -61,11 +59,6 @@ const EditWorkout = ({ workout, deleteWorkout, isEditing, setIsEditing }) => {
             console.log("Error: ", error)
         }
         setIsEditing(false);
-        // console.log(workout.workout_id);
-        // console.log("Updated workout data: ", data);
-        // Update database with new data values 
-        // Custom RPC for UPDATE call here
-        // Display success message when edit is successful
     }
     
     return ( 
