@@ -81,15 +81,13 @@ function App() {
           <Route path="/dashboard" element={ 
                                 <ProtectedRoute>
                                   <Dashboard 
-                                    savedWorkouts={savedWorkouts}
-                                    deleteWorkout={deleteWorkout} /> 
+                                    /> 
                                 </ProtectedRoute>
                                   } />
           <Route path="/workouts" element={ 
                                 <ProtectedRoute>
                                   <WorkoutForm 
-                                    savedWorkouts={savedWorkouts} 
-                                    deleteWorkout={deleteWorkout}
+                                    fetchWorkoutLog={fetchWorkoutLog}
                                     />
                                 </ProtectedRoute>            
                                   } />
