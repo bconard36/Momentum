@@ -18,7 +18,7 @@ import EditWorkout from './EditWorkout';
  *   id when the user confirms deletion; parent component handles removing it from state/localStorage.
  * @returns {JSX.Element}
  */
-const WorkoutLog = ({ savedWorkouts, deleteWorkout }) => {
+const WorkoutLog = ({ savedWorkouts, deleteWorkout, fetchWorkoutLog }) => {
 
     useEffect(() => {
         document.documentElement.classList.add("workout-log-page");
@@ -295,6 +295,7 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout }) => {
                                     <EditWorkout
                                         workout={pendingEdit}
                                         setIsEditing={setIsEditing}
+                                        fetchWorkoutLog={fetchWorkoutLog}
                                     />
                                 )}
                                 <button type="button" className="secondary-button delete-workout" onClick={() => setPendingDelete(workout.workout_id)}>Delete Workout</button>
