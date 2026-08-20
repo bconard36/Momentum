@@ -17,13 +17,15 @@ import { useState } from "react";
    
  * @returns {JSX.Element} - Dashboard component
  */
-const Dashboard = ({ savedWorkouts, deleteWorkout }) => {
+const Dashboard = () => {
 
     // Initialize navigation hook 
     const logOutNav = useNavigate();
 
     // Initialize state of user menu
     const [isUserOpen, setIsUserOpen] = useState(false);
+
+    // Fetch the workout log
 
     /**
      * Toggles open/closed state of user menu
