@@ -10,7 +10,7 @@ import { supabase } from "../utils/supabaseClient";
  * @returns {JSX.Element}
  */
 
-const EditWorkout = ({ workout, setIsEditing }) => {
+const EditWorkout = ({ workout, setIsEditing, fetchWorkoutLog }) => {
 
     // Store workout_id for onSubmit supabase.rpc call 
     const workoutId =  workout.workout_id;
@@ -22,7 +22,7 @@ const EditWorkout = ({ workout, setIsEditing }) => {
      * @property {Function} handleSubmit - Wraps onSubmit with validation.
      * @property {Object} formState - Contains errors and isSubmitSuccessful.
      */
-    const { register, control, watch, handleSubmit, formState: { errors, isSubmitSuccessful } } = useForm({
+    const { register, control, watch, handleSubmit, formState: { errors, isSubmitted } } = useForm({
         defaultValues: {
             date: workout.date,
             exercises: workout.exercises
@@ -76,6 +76,8 @@ const EditWorkout = ({ workout, setIsEditing }) => {
                     } else {
                         const exerciseAdd = {
                             exercise_id: crypto.randomUUID(),
+                            type: type,
+                            name: name,
                             sets: exercise.sets,
                             reps: exercise.reps,
                             weight: exercise.weight,
@@ -109,8 +111,8 @@ const EditWorkout = ({ workout, setIsEditing }) => {
             }
         } catch (error) {
             console.log("Error: ", error)
-        }    
-        setIsEditing(false);
+        }   
+        fetchWorkoutLog(); 
         console.log(resolvedExerciseData);
     }
     
@@ -375,7 +377,7 @@ const EditWorkout = ({ workout, setIsEditing }) => {
                             );
                         })}
                         <div className="workout-button-container">
-                            <button className="secondary-button" onClick={() => append({ 
+                            <button className="secondary-button" type="button" onClick={() => append({ 
                                 exercise_id: null,
                                 date: workout.date,
                                 name: "",
@@ -386,7 +388,7 @@ const EditWorkout = ({ workout, setIsEditing }) => {
                                 duration_minutes: undefined,
                                 duration_seconds: undefined
                             })}>Add Another Exercise</button>
-                            <button className="secondary-button" onClick={() => setIsEditing(false)}>
+                            <button className="secondary-button" type="button" onClick={() => setIsEditing(false)}>
                                 Back
                             </button>
                             <button className="primary-button" type="submit">
@@ -394,16 +396,16 @@ const EditWorkout = ({ workout, setIsEditing }) => {
                             </button>
                         </div>
                 </form>
-                {isSubmitSuccessful && (
-                        <div className="workout-modal-overlay success-overlay" onClick={() => setIsEditing(false)}>
-                            <p className="success-message">Success! Workout Edited!</p>
-                            <div className="success-return-container">
-                                <button className="secondary-button success-redirect" type="button" onClick={() => setIsEditing(false)}>
-                                    Back to Workout Log
-                                </button>                                
-                            </div>
+                {isSubmitted && (
+                    <div className="workout-modal-overlay success-overlay" onClick={() => setIsEditing(false)}>
+                        <p className="success-message">Success! Workout Edited!</p>
+                        <div className="success-return-container">
+                            <button className="secondary-button success-redirect" type="button" onClick={() => setIsEditing(false)}>
+                                Back to Workout Log
+                            </button>                                
                         </div>
-                    )}
+                    </div>
+                )}
             </div>
         </>
     );
