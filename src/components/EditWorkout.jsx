@@ -46,15 +46,13 @@ const EditWorkout = ({ workout, setIsEditing }) => {
             alert('A workout needs at least one exercise. Delete the workout instead if you wish to remove it entirely.');
             return;
         }
-
+        
+        
         let resolvedData = [];
-        // Assign exercise_ids where 'null' values are found 
-        // DB insert error - violates non-null constraint 
-        // Check length of form data against length of original workout data
-        // Assign new IDs if form data exercise array is greater than workout data exercise array
         if (data.exercises.length > workout.exercises.length) {
-            // Inspect incoming data for null exercise_id values 
-            // Wait for promises to be resolved
+            // Inspect incoming data exercise arraty discrepancies 
+            // Assign UUIDs for null exercise_id values 
+            // Same process as WorkoutForm, different data structure
             resolvedData = await Promise.all(data.exercises.map(async (exercise) => {
                 if (exercise.exercise_id === null) {
                     // Map through null exercise IDs to find matching names and types in the DB
@@ -91,12 +89,15 @@ const EditWorkout = ({ workout, setIsEditing }) => {
                 return exercise; 
             }));
         } else {
+            // If exercise list is the same length or shorter (i.e. exercises were removed or workouts were unchanged)
             resolvedData = data.exercises;
         }
         try {
             // RPC for custom edit_workout function 
             const { error } = await supabase.rpc("edit_workout", {
                 p_workout_id: workoutId,
+                // Deconstruct resolvedWorkout - date is expected
+                // Extract from data, then assign resolvedData to exercises
                 resolved_workout: { date: data.date, exercises: resolvedData }
             });
 
@@ -104,15 +105,12 @@ const EditWorkout = ({ workout, setIsEditing }) => {
                 console.log("Error editing workout: ", error);
             } else {
                 // Success message / Redirect / Re-render workout-log 
-                // console.log(data);
-                // console.log('Exercise list: ', data.exercises);
                 console.log('Success!');
             }
         } catch (error) {
             console.log("Error: ", error)
         }    
         setIsEditing(false);
-        console.log(resolvedData);
     }
     
     return ( 
