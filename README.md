@@ -25,6 +25,8 @@ The application currently supports:
 - Automatic creation of a corresponding profile in the Supabase public.users table
 - Workout creation and management through React Hook Form
 - Saving workouts to PostgreSQL through Supabase
+- Editing existing workouts, including adding, updating, and removing exercises
+- Deleting workouts
 - Fetching authenticated users' workout history from PostgreSQL
 - Viewing, sorting, and filtering workout history
 
@@ -39,6 +41,7 @@ and workout storage and retrieval.
             - refactored from the original [Calorie Track](https://github.com/bconard36/CalorieTrack), 
             migrated into Momentum and rebuilt using `react-hook-form` for form state management and validation.  
         - Dashboard.jsx
+        - EditWorkout.jsx
         - NotFound.jsx
         - SignIn.jsx
         - SignUp.jsx
@@ -47,6 +50,7 @@ and workout storage and retrieval.
     - styles: houses all style sheets 
         - base.css
         - calculator.css
+        - editWorkout.css
         - notFound.css
         - success.css
         - workoutForm.css
@@ -72,6 +76,8 @@ and workout storage and retrieval.
 - Conditional workout form inputs based on workout type using `watch`
 - Built-in custom form validation
 - Save workouts to PostgreSQL through Supabase
+- Edit existing workouts, including adding new exercises, updating existing exercise metrics, and removing exercises
+- Delete workouts
 - Retrieve workout history from the database
 - View previously logged workouts
 - Sort workouts by date
@@ -116,6 +122,21 @@ Before database insertion, the submitted workout is separated into records for t
 
 A custom PGSQL function then handles the inserts of all records into their respective tables.
 
+## Workout Editing
+Editing a workout is handled through a dedicated PostgreSQl function (`edit_workout`) that reconciles the submitted form data against the current database in a single transaction.
+
+The function evaluates each exercise in the submitted workout against four possible cases: 
+
+1. **Already linked and unchanged/uupdated** — the exercise is already attacked to this workout, and its metrics (sets, reps, etc.) are updated in place
+2. **Exists elsewhere, newly added to this workout** — the exercise already exists in the `exercises` table (from another workout) but isn't yet linked to this one, so only a new link is created.
+3. **Entirely new exercise** — the exercise doesn't exist anywhere yet, so it's inserted into `exercises` first, then linked to the workout.
+4. **Removed from the workout** — an exercise that exists in the database for this workout but is no longer present in the submitted data is unlinked (deleted from the linking workout_exercises table only; the exercise definition itself and the workout remain intact).
+
+The function begins with an ownership guard clause, confirming the workout belongs to the authenticated user before any changes are made, and raises an exception otherwise. 
+
+## Workout Deletion 
+Deleting a workout is handled through a dedicated PostgreSQL function (`delete_workout`) that verifies the workout belongs to the authenticated user before removing it. Deleting a workout cascades to remove its associated workout_exercise links, while the underlying exercise definitions (shared, reusable data) remain untouched.
+
 ## Workout Data Retrieval
 A PostgreSQL function retrieves the authenticated user's workouts and builds the related workout and exercise data into a JSON response.
 
@@ -126,7 +147,7 @@ The resulting data is passed through the React application and into `WorkoutLog`
 ## Row Level Security
 Supabase Row Level Security and database permissions are used to control access to workout-related tables.
 
-Authenticated users are granted the required database permissions, while RLS policies control access to the data.
+Authenticated users are granted the required database permissions, while RLS policies control access to the data. Ownership-based policies restrict users to their own workouts and workout_exercise records, verified through a correlated subquery against the `workouts` table where a direct `user_id` column isn't available (as on the workout_exercises join table). Shared reference data, such as exercise details, remains readable by all authenticated users, since exercises are not user-owned.
 
 # What I Learned / Built From Scratch
 
@@ -146,18 +167,22 @@ Authenticated users are granted the required database permissions, while RLS pol
 
 **Database Integration**: Momentum's frontend communicates with PostgreSQL through Supabase. Workout creation, exercise resolution, and workout retrieval are handled through database functions and authenticated requests.
 
+**PL/pgSQL & Reconciliation Logic**: Building the edit_workout function required learning PL/pgSQL's procedural constructs (guard clauses, loops, exception handling) and designing set-based reconciliation logic using correlated EXISTS/NOT EXISTS subqueries to determine which records to update, insert, or delete based on differences between submitted and existing data.
+
+**Row Level Security Behavior**: Debugging an overly permissive policy revealed that Postgres evaluates multiple permissive RLS policies on the same table with OR logic rather than AND — meaning a single broad policy can silently override a more restrictive one on the same table. This led to consolidating ownership checks into single, precise policies per table.
+
 **Supabase Authentication & Database Integration**: Momentum uses Supabase Auth for account creation and email/password authentication. A PostgreSQL function and trigger automatically create a corresponding application profile in `public.users` whenever a new Auth user is created. This separates authentication data from application-specific user data while maintaining a shared UUID between the two records.
 
 **Authentication State & Navigation**: Sign-in and sign-out functionality is integrated with React Router. Successful authentication navigates the user to the Dashboard, while successful sign-out returns the user to the sign-in route.
 
 **State Identity in Repeated Components**: A bug in the workout deletion confirmation modal demonstrated the importance of storing the identity of a selected item rather than a simple boolean. The confirmation state was changed to hold the specific workout ID, allowing each repeated workout row to determine whether it was the selected item.
 
+Debugging Across the Stack: Tracing bugs in this project frequently required distinguishing between database logic, RLS/permissions, API caching, and client-side JavaScript as separate possible causes — including a case where a PostgREST schema cache issue and a mismatched JSON payload shape produced identical-looking symptoms but required entirely different fixes.
+
 # Future Development
 
 As Momentum continues to evolve, planned improvements include:
 
-- Complete database-backed workout deletion
-- Edit existing workouts
 - Workout statistics and progress tracking
 - Dashboard analytics
 - Expanded user profile functionality
