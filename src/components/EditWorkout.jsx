@@ -48,12 +48,12 @@ const EditWorkout = ({ workout, setIsEditing }) => {
         }
         
         
-        let resolvedData = [];
+        let resolvedExerciseData = [];
         if (data.exercises.length > workout.exercises.length) {
             // Inspect incoming data exercise arraty discrepancies 
             // Assign UUIDs for null exercise_id values 
             // Same process as WorkoutForm, different data structure
-            resolvedData = await Promise.all(data.exercises.map(async (exercise) => {
+            resolvedExerciseData = await Promise.all(data.exercises.map(async (exercise) => {
                 if (exercise.exercise_id === null) {
                     // Map through null exercise IDs to find matching names and types in the DB
                     const name = exercise.name.toLowerCase().trim();
@@ -90,7 +90,7 @@ const EditWorkout = ({ workout, setIsEditing }) => {
             }));
         } else {
             // If exercise list is the same length or shorter (i.e. exercises were removed or workouts were unchanged)
-            resolvedData = data.exercises;
+            resolvedExerciseData = data.exercises;
         }
         try {
             // RPC for custom edit_workout function 
@@ -98,7 +98,7 @@ const EditWorkout = ({ workout, setIsEditing }) => {
                 p_workout_id: workoutId,
                 // Deconstruct resolvedWorkout - date is expected
                 // Extract from data, then assign resolvedData to exercises
-                resolved_workout: { date: data.date, exercises: resolvedData }
+                resolved_workout: { date: data.date, exercises: resolvedExerciseData }
             });
 
             if (error) {
@@ -111,6 +111,7 @@ const EditWorkout = ({ workout, setIsEditing }) => {
             console.log("Error: ", error)
         }    
         setIsEditing(false);
+        console.log(resolvedExerciseData);
     }
     
     return ( 
