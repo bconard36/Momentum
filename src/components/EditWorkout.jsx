@@ -41,24 +41,72 @@ const EditWorkout = ({ workout, setIsEditing }) => {
     });
 
     const onSubmit = async (data) => {
+        // Prevent submission if exercise array is empty
+        if (data.exercises.length === 0) {
+            alert('A workout needs at least one exercise. Delete the workout instead if you wish to remove it entirely.');
+            return;
+        }
+
+        let resolvedData = [];
+        // Assign exercise_ids where 'null' values are found 
+        // DB insert error - violates non-null constraint 
+        // Check length of form data against length of original workout data
+        // Assign new IDs if form data exercise array is greater than workout data exercise array
+        if (data.exercises.length > workout.exercises.length) {
+            // Inspect incoming data for null exercise_id values 
+            // Wait for promises to be resolved
+            resolvedData = await Promise.all(data.exercises.map(async (exercise) => {
+                if (exercise.exercise_id === null) {
+                    // Map through null exercise IDs to find matching names and types in the DB
+                    const name = exercise.name.toLowerCase().trim();
+                    const type = exercise.type.toLowerCase().trim();
+                    const { data: editData, error: editError } = await supabase
+                        .from("exercises")
+                        .select("*")
+                        .match({ name: name, type: type });
+                    
+                    if (editData?.length > 0) {
+                        const noChange = {
+                            exercise_id: editData[0].exercise_id,
+                            type: editData[0].type,
+                            name: editData[0].name
+                        };
+                        return noChange;
+                    } else {
+                        const exerciseAdd = {
+                            exercise_id: crypto.randomUUID(),
+                            type: type,
+                            name: name
+                        };
+                        return exerciseAdd;
+                    }
+                }
+
+                return exercise; 
+            }));
+        } else {
+            resolvedData = data.exercises;
+        }
         try {
             // RPC for custom edit_workout function 
-            const { data: newWorkout, error } = await supabase.rpc("edit_workout", {
+            const { error } = await supabase.rpc("edit_workout", {
                 p_workout_id: workoutId,
-                resolved_workout: data
+                resolved_workout: { date: data.date, exercises: resolvedData }
             });
 
             if (error) {
                 console.log("Error editing workout: ", error);
             } else {
                 // Success message / Redirect / Re-render workout-log 
-                console.log(data);
-                console.log('got here');
+                // console.log(data);
+                // console.log('Exercise list: ', data.exercises);
+                console.log('Success!');
             }
         } catch (error) {
             console.log("Error: ", error)
-        }
+        }    
         setIsEditing(false);
+        console.log(resolvedData);
     }
     
     return ( 
@@ -66,16 +114,18 @@ const EditWorkout = ({ workout, setIsEditing }) => {
             {/* Use built-in validate method to ensure date is not in the future */}
             <div className="edit-modal-overlay">
                 <form className="workout-form edit-workout-form" onSubmit={handleSubmit(onSubmit)}>
-                    
-                <p className="edit-return-link" onClick={() => setIsEditing(false)}>Back</p>
                     <div className="field-card date-card">
                         <label className="field-label workout-date-label" htmlFor="workout-date">Workout Date</label>
                         {/* {errors.date && (
                             <span className="error-message">{errors.date.message}</span>
                         )} */}
+                        {/* Date is read only in edit workout - SQL function does not handle date (yet?)
+                            How often will a user need to change a workout date?
+                        */}
                         <input 
                             id="workout-date" 
                             type="date" 
+                            readOnly
                             {...register("date", {
                                 required: "Workout date is required.",
                                 // max: {
@@ -309,15 +359,20 @@ const EditWorkout = ({ workout, setIsEditing }) => {
                                     )}
 
                                     {/* Remove Exercise */}
-                                    <button type="button" className="secondary-button" onClick={() => remove(index)}>
+                                    {/* Only enable when exercise list is greater than one */}
+                                    {/* A workout needs one exercise — remove button when only 1 is left in array */}
+                                    {fields.length > 1 && (
+                                        <button type="button" className="secondary-button" onClick={() => remove(index)}>
                                         Remove Exercise
                                     </button>
+                                    )}
                                 </div>
                             );
                         })}
                         <div className="workout-button-container">
                             <button className="secondary-button" onClick={() => append({ 
                                 exercise_id: null,
+                                date: workout.date,
                                 name: "",
                                 type: "",
                                 sets: undefined,
@@ -326,11 +381,24 @@ const EditWorkout = ({ workout, setIsEditing }) => {
                                 duration_minutes: undefined,
                                 duration_seconds: undefined
                             })}>Add Another Exercise</button>
+                            <button className="secondary-button" onClick={() => setIsEditing(false)}>
+                                Back
+                            </button>
                             <button className="primary-button" type="submit">
                                 Save Changes
                             </button>
                         </div>
                 </form>
+                {isSubmitSuccessful && (
+                        <div className="workout-modal-overlay success-overlay" onClick={() => setIsEditing(false)}>
+                            <p className="success-message">Success! Workout Edited!</p>
+                            <div className="success-return-container">
+                                <button className="secondary-button success-redirect" type="button" onClick={() => setIsEditing(false)}>
+                                    Back to Workout Log
+                                </button>                                
+                            </div>
+                        </div>
+                    )}
             </div>
         </>
     );
