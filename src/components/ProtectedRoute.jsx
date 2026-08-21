@@ -26,7 +26,11 @@ const ProtectedRoute = ({ children }) => {
     }, []);
 
     if (loading) {
-        return <div className="loading-message">Loading...</div>
+        return (
+            <div className="loading-message-container">
+                <div className="loading-message">Loading...</div>
+            </div>
+        );
     }
 
     if (!authenticated) {
