@@ -200,9 +200,6 @@ const WorkoutForm = ({ fetchWorkoutLog }) => {
                     <Link to="/logs">
                         <button className="secondary-button">View Workout Log</button> 
                     </Link>
-                    {/* <WorkoutLog 
-                    savedWorkouts={savedWorkouts}
-                    deleteWorkout={deleteWorkout} /> */}
                 </div>
                 
 
