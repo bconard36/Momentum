@@ -53,6 +53,12 @@ button, a {
 }
 
 /* Style Rules for the Dashboard */
+.loading-message-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
 
 .dashboard {
   max-width: 720px;
