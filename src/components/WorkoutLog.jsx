@@ -168,7 +168,7 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout, fetchWorkoutLog }) => {
         // Otherwise, return the descending (newer dates first)
         return sortOrder === 'asc' ? timeA - timeB : timeB - timeA;
     });
-
+    
      /**
      * Toggles sort order between ascending and descending, and flips the
      * sort icon's rotation state to match.

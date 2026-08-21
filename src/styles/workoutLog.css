@@ -25,6 +25,7 @@ load base.css first.
 .exercise-item p {
   color: var(--text-secondary);
   font-size: 0.95rem;
+  text-transform: capitalize;
 }
 
 .delete-workout {
