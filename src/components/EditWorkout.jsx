@@ -1,5 +1,6 @@
 import { useFieldArray, useForm } from "react-hook-form";
 import { supabase } from "../utils/supabaseClient";
+import { useState } from "react";
 
 /**
  * Edit Workout Component
@@ -10,7 +11,7 @@ import { supabase } from "../utils/supabaseClient";
  * @returns {JSX.Element}
  */
 
-const EditWorkout = ({ workout, setIsEditing, fetchWorkoutLog }) => {
+const EditWorkout = ({ workout, setIsEditing, fetchWorkoutLog, onUpdateSuccess }) => {
 
     // Store workout_id for onSubmit supabase.rpc call 
     const workoutId =  workout.workout_id;
@@ -22,13 +23,15 @@ const EditWorkout = ({ workout, setIsEditing, fetchWorkoutLog }) => {
      * @property {Function} handleSubmit - Wraps onSubmit with validation.
      * @property {Object} formState - Contains errors and isSubmitSuccessful.
      */
-    const { register, control, watch, handleSubmit, formState: { errors, isSubmitted } } = useForm({
+    const { register, control, watch, handleSubmit, formState: { errors } } = useForm({
         defaultValues: {
             date: workout.date,
             exercises: workout.exercises
         }
     });
 
+    const [editSuccess, setEditSuccess] = useState(false);
+ 
     /**
      * Field array bindings for the dynamic "exercises" list.
      * @property {Array<Object>} fields - Current exercise rows (each with a stable field.id).
@@ -105,13 +108,13 @@ const EditWorkout = ({ workout, setIsEditing, fetchWorkoutLog }) => {
 
             if (error) {
                 console.log("Error editing workout: ", error);
-            } else {
-                // Success message / Redirect / Re-render workout-log 
-                console.log('Success!');
-            }
+            } 
         } catch (error) {
             console.log("Error: ", error)
         }   
+        
+        setEditSuccess(true);
+        onUpdateSuccess();
         fetchWorkoutLog(); 
     }
     
@@ -122,9 +125,6 @@ const EditWorkout = ({ workout, setIsEditing, fetchWorkoutLog }) => {
                 <form className="workout-form edit-workout-form" onSubmit={handleSubmit(onSubmit)}>
                     <div className="field-card date-card">
                         <label className="field-label workout-date-label" htmlFor="workout-date">Workout Date</label>
-                        {/* {errors.date && (
-                            <span className="error-message">{errors.date.message}</span>
-                        )} */}
                         {/* Date is read only in edit workout - SQL function does not handle date (yet?)
                             How often will a user need to change a workout date?
                         */}
@@ -383,16 +383,6 @@ const EditWorkout = ({ workout, setIsEditing, fetchWorkoutLog }) => {
                             </button>
                         </div>
                 </form>
-                {isSubmitted && (
-                    <div className="workout-modal-overlay success-overlay" onClick={() => setIsEditing(false)}>
-                        <p className="success-message">Success! Workout Edited!</p>
-                        <div className="success-return-container">
-                            <button className="secondary-button success-redirect" type="button" onClick={() => setIsEditing(false)}>
-                                Back to Workout Log
-                            </button>                                
-                        </div>
-                    </div>
-                )}
             </div>
         </>
     );

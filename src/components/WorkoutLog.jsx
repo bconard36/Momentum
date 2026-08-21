@@ -54,8 +54,14 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout, fetchWorkoutLog, isLoading, 
     /** @type {[number, Function]} Dictates which workout to edit */
     const [pendingEdit, setPendingEdit] = useState(null);
 
+    /** @type {[boolean, Function]} Dictates state of delete confirm modal */
     const [deleteConfirm, setDeleteConfirm] = useState(false);
+
+    /** @type {[Object, Function]} Stores the delete error object */
     const [deleteError, setDeleteError] = useState(null);
+
+    /** @type {[boolean, Function]} Dictates the state of the edit success modal */
+    const [editSuccess, setEditSuccess] = useState(false);
 
     /**
      * Formats a "YYYY-MM-DD" date string into a human-readable "Month Day, Year" string.
@@ -221,6 +227,19 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout, fetchWorkoutLog, isLoading, 
             </div>
         );
     }
+
+    if (editSuccess) {
+        return (
+            <div className="workout-modal-overlay success-overlay" onClick={() => setEditSuccess(false)}>
+                <p className="success-message">Success! Workout Edited!</p>
+                <div className="success-return-container">
+                    <button className="secondary-button success-redirect" type="button" onClick={() => setIsEditing(false)}>
+                        Back to Workout Log
+                    </button>                                
+                </div>
+            </div>
+        )
+    }
     
     return ( 
         <>
@@ -353,6 +372,7 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout, fetchWorkoutLog, isLoading, 
                                                 workout={pendingEdit}
                                                 setIsEditing={setIsEditing}
                                                 fetchWorkoutLog={fetchWorkoutLog}
+                                                onUpdateSuccess={() => setEditSuccess(true)}
                                             />
                                         )}
                                         <button type="button" className="secondary-button delete-workout" onClick={() => setPendingDelete(workout.workout_id)}>Delete Workout</button>
