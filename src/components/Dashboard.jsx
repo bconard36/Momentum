@@ -1,5 +1,4 @@
 import { Link, useNavigate } from "react-router";
-import WorkoutLog from "./WorkoutLog";
 import { supabase } from "../utils/supabaseClient";
 import { useState } from "react";
 
