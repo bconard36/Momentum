@@ -18,9 +18,9 @@ const ProtectedRoute = ({ children }) => {
     const [authenticated, setAuthenticated] = useState(false);
 
     useEffect(() => {
-        supabase.auth.getSession() // Retrieves user session data
-            .then(({ data: { session } }) => {
-                setAuthenticated(!!session); // Convert session value to a boolean: session exists = authenticated 
+        supabase.auth.getUser() // Retrieves user session data
+            .then(({ data: { user } }) => {
+                setAuthenticated(!!user); // Convert session value to a boolean: session exists = authenticated 
                 setLoading(false);
             });
     }, []);
