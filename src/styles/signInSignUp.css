@@ -138,7 +138,6 @@
     align-items: center;
     justify-content: center;
     padding: 20px;
-    background: rgba(4, 8, 16, 0.72);
     backdrop-filter: blur(8px);
     width: 300px;
     height: 100px;
