@@ -48,6 +48,7 @@ in base.css's :root — load base.css first.
   letter-spacing: -0.02em;
   color: var(--text-primary);
   text-shadow: 0 2px 18px rgba(96, 165, 250, 0.14);
+  padding-top: 30px;
 }
 
 .workout-subtitle {
