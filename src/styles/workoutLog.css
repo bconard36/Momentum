@@ -181,3 +181,18 @@ body.workout-log-page::-webkit-scrollbar {
 .empty-return:focus-visible {
   color: var(--accent-mint-light);
 }
+
+.log-fetch-error-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  min-height: 100vh;
+  gap: 50px;
+  background: linear-gradient(135deg, var(--bg-primary), var(--bg-secondary));
+}
+
+.log-fetch-error-container p {
+  font-size: 1.25rem;
+}
