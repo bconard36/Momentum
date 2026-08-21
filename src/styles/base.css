@@ -71,17 +71,9 @@ button, a {
   letter-spacing: -0.02em;
   color: var(--text-primary);
   text-shadow: 0 2px 18px rgba(96, 165, 250, 0.14);
+  margin-bottom: 25px;
 }
 
-.dashboard-subtitle {
-  margin-top: 0.75rem;
-  color: var(--text-secondary);
-  font-size: 1.05rem;
-  line-height: 1.7;
-  max-width: 520px;
-  margin-left: auto;
-  margin-right: auto;
-}
 
 .dashboard-nav {
   display: grid;
@@ -141,6 +133,14 @@ button, a {
   color: var(--text-secondary);
   font-size: 0.9rem;
   line-height: 1.6;
+}
+
+.dashboard-header-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
 }
 
 .dashboard-log {

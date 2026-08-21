@@ -38,12 +38,13 @@ const Header = () => {
 
     return ( 
         <header>
-            <h2>Momentum</h2>
             <div>
                 {loading ? (
                     <span>Loading...</span>
                 ) : (
-                    <span>Welcome, {firstName}</span>
+                    <div className="dashboard-header-container">
+                        <span className="dashboard-title">Welcome, {firstName}</span>
+                    </div>
                 )}
             </div>
         </header>
