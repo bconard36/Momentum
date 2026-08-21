@@ -136,3 +136,19 @@ html.workout-log-page::-webkit-scrollbar,
 body.workout-log-page::-webkit-scrollbar {
   display: none;
 }
+
+.empty-log-return {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.empty-return {
+  margin-top: 20px;
+}
+
+.empty-return:hover,
+.empty-return:focus-visible {
+  color: var(--accent-mint-light);
+}
