@@ -143,6 +143,18 @@ input[type="checkbox"] {
   margin: 0 auto;
 }
 
+.delete-overlay p {
+  text-align: center;
+}
+
+.delete-overlay p:last-of-type {
+  font-style: italic;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  color: #C85A53;
+}
+
 html.workout-log-page,
 body.workout-log-page {
   scrollbar-width: none;
