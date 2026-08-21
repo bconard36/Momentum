@@ -24,8 +24,6 @@ const Dashboard = () => {
     // Initialize state of user menu
     const [isUserOpen, setIsUserOpen] = useState(false);
 
-    // Fetch the workout log
-
     /**
      * Toggles open/closed state of user menu
      */
@@ -88,7 +86,7 @@ const Dashboard = () => {
                         </nav>
                     </div>
                 )}
-                {/* Insert Dynamic Header with Logged In User's Name Included */}
+                {/* Insert Dynamic Header Component with Logged In User's Name Included */}
 
                 <nav className="dashboard-nav" aria-label="Main sections">
                     <Link to="/workouts" className="nav-card">

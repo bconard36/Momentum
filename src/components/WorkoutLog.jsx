@@ -20,6 +20,9 @@ import EditWorkout from './EditWorkout';
  */
 const WorkoutLog = ({ savedWorkouts, deleteWorkout, fetchWorkoutLog }) => {
 
+    /**
+     * DOM classlist toggles to remove visible scroll bar from log
+     */
     useEffect(() => {
         document.documentElement.classList.add("workout-log-page");
         document.body.classList.add("workout-log-page");
