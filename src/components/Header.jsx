@@ -7,21 +7,24 @@ const Header = () => {
     const [loading, setLoading] = useState(true);
 
     const fetchFirstName = async (idToQuery) => {
-        const { data: name, error: fetchError } = await supabase   
+        try {
+            const { data: user, error: fetchError } = await supabase   
             .from("users")
             .select("first_name")
             .eq("user_id", idToQuery)
             .single();
 
-        if (name) {
-            setFirstName(name.first_name);
+            if (fetchError) throw fetchError;
+            setFirstName(user.first_name)
+        } catch (error) {
+            console.error(`Unable to load user's name: ${error}`);
+        } finally {
             setLoading(false);
         }
-
-        if (fetchError) console.log(fetchError);
+        
+        
     }
-    
-    
+        
     useEffect(() => {
         const fetchUser = async() => {
             const { data: { user }, error } = await supabase.auth.getUser();
@@ -40,7 +43,7 @@ const Header = () => {
         <header>
             <div>
                 {loading ? (
-                    <span>Loading...</span>
+                    <div className="loading-message-container"></div>
                 ) : (
                     <div className="dashboard-header-container">
                         <span className="dashboard-title">Welcome, {firstName}</span>
