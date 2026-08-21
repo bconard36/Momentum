@@ -18,7 +18,7 @@ import EditWorkout from './EditWorkout';
  *   id when the user confirms deletion; parent component handles removing it from state/localStorage.
  * @returns {JSX.Element}
  */
-const WorkoutLog = ({ savedWorkouts, deleteWorkout, fetchWorkoutLog }) => {
+const WorkoutLog = ({ savedWorkouts, deleteWorkout, fetchWorkoutLog, isLoading, workoutError }) => {
 
     /**
      * DOM classlist toggles to remove visible scroll bar from log
@@ -55,6 +55,7 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout, fetchWorkoutLog }) => {
     const [pendingEdit, setPendingEdit] = useState(null);
 
     const [deleteConfirm, setDeleteConfirm] = useState(false);
+    const [deleteError, setDeleteError] = useState(null);
 
     /**
      * Formats a "YYYY-MM-DD" date string into a human-readable "Month Day, Year" string.
@@ -187,10 +188,38 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout, fetchWorkoutLog }) => {
         setIsEditing(true);
     }
 
-    const renderDeleteConfirm = (id) => {
-        deleteWorkout(id);
-        setPendingDelete(null);
-        setDeleteConfirm(true);
+    const handleDelete = async (id) => {
+        setDeleteError(null);
+
+        const result = await deleteWorkout(id);
+
+        if (!result?.success) {
+            setDeleteError(result?.error ?? "Unable to delete this workout.");
+            return;
+        } else {
+            setPendingDelete(null);
+            setDeleteConfirm(true);
+        }
+
+    }
+
+    // Handle Loading and Error Messages Here 
+    // Too messy in the JSX 
+    if (isLoading) {
+        return (
+            <div className="log-fetch-error-container">
+                <p className="error-message">Loading...</p>
+            </div>
+        );
+    }
+
+    if (workoutError) {
+        return (
+            <div className="log-fetch-error-container">
+                <p className="error-message">{workoutError}</p>
+                <button className="secondary-button" onClick={fetchWorkoutLog}>Try Again</button>
+            </div>
+        );
     }
     
     return ( 
@@ -332,8 +361,15 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout, fetchWorkoutLog }) => {
                                             <div className="workout-modal-overlay delete-overlay">
                                                 <p>Delete workout?</p>
                                                 <p>This action cannot be undone.</p>
+
+                                                {deleteError && (
+                                                    <p role="alert" className="error-message">
+                                                        {deleteError}
+                                                    </p>
+                                                )}
+
                                                 <button type="button" className="secondary-button confirm-delete-workout" 
-                                                    onClick={() => renderDeleteConfirm(pendingDelete)}>
+                                                    onClick={() => handleDelete(pendingDelete)}>
                                                     Delete Workout
                                                 </button>
                                                 <button type="button" className="secondary-button" onClick={() => setPendingDelete(null)}>Cancel</button>
@@ -345,11 +381,10 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout, fetchWorkoutLog }) => {
                         </div>
                     </>
                 )}
-                    
                 </>
             )}
         </>
      );
-}
+};
  
 export default WorkoutLog;
