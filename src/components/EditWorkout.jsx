@@ -375,7 +375,10 @@ const EditWorkout = ({ workout, setIsEditing, fetchWorkoutLog }) => {
                                 </div>
                             );
                         })}
-                        <div className="workout-button-container">
+                        <div className="edit-workout-button-container">
+                            <button className="secondary-button" id="back-to-edit-button" type="button" onClick={() => setIsEditing(false)}>
+                                Back
+                            </button>
                             <button className="secondary-button" type="button" onClick={() => append({ 
                                 exercise_id: null,
                                 date: workout.date,
@@ -387,9 +390,6 @@ const EditWorkout = ({ workout, setIsEditing, fetchWorkoutLog }) => {
                                 duration_minutes: undefined,
                                 duration_seconds: undefined
                             })}>Add Another Exercise</button>
-                            <button className="secondary-button" type="button" onClick={() => setIsEditing(false)}>
-                                Back
-                            </button>
                             <button className="primary-button" type="submit">
                                 Save Changes
                             </button>
