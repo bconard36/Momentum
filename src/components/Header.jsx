@@ -3,38 +3,47 @@ import { supabase } from "../utils/supabaseClient";
 
 const Header = () => {
 
-    const [username, setUsername] = useState("guest");
-    const [isLoading, setIsLoading] = useState(true);
+    const [firstName, setFirstName] = useState('');
+    const [loading, setLoading] = useState(true);
 
+    const fetchFirstName = async (idToQuery) => {
+        const { data: name, error: fetchError } = await supabase   
+            .from("users")
+            .select("first_name")
+            .eq("user_id", idToQuery)
+            .single();
+
+        if (name) {
+            setFirstName(name.first_name);
+            setLoading(false);
+        }
+
+        if (fetchError) console.log(fetchError);
+    }
+    
+    
     useEffect(() => {
-        const fetchUser = async () => {
-            const { data: {user}, error } = await supabase.auth.getUser();
+        const fetchUser = async() => {
+            const { data: { user }, error } = await supabase.auth.getUser();
 
             if (user) {
-                const fetchUsername = async () => {
-                    const { data: username, error: userError } = await supabase
-                        .from("users")
-                        .select("first_name")
-                        .eq("user_id", user.id);
-
-                    if (userError) throw error;
-                    if (username) {
-                        setUsername(username);
-                        setIsLoading(false);
-                    }
-                }
+                fetchFirstName(user.id);
             }
+
+            if (error) console.log(error);
         }
-    })
+        fetchUser();
+    }, []);
+
 
     return ( 
         <header>
             <h2>Momentum</h2>
             <div>
-                {isLoading ? (
+                {loading ? (
                     <span>Loading...</span>
                 ) : (
-                    <span>Welcome, {username}</span>
+                    <span>Welcome, {firstName}</span>
                 )}
             </div>
         </header>
