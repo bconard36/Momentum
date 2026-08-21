@@ -17,26 +17,33 @@ function App() {
      */
     const [savedWorkouts, setSavedWorkouts] = useState([]);
 
+    const [isLoadingWorkouts, setIsLoadingWorkouts] = useState(true);
+    const [workoutError, setWorkoutError] = useState(null);
+
     /**
      * Fetches workout history from Supabase
      * Invokes a remote procedure call (rpc) that executes a custom SQL query
      * @returns {[Array<Object>]} - saved workouts object returned from Supabase
      */
     const fetchWorkoutLog = async () => {
+      setIsLoadingWorkouts(true);
+      setWorkoutError(null);
 
       try {
         // Custom get_user_workouts SQL function in Supabase 
         const { data, error } = await supabase.rpc("get_user_workouts");
       
         if (error) {
-          console.error("error fetching workouts: ", error.message);
-          return;
+          throw error;
         }
         // Set saved workouts to data returned from SQL function
-        setSavedWorkouts(data);
+        setSavedWorkouts(data ?? []);
 
       } catch (error) {
-        console.error(error);
+        console.error(`Error fetching workouts: ${error}`);
+        setWorkoutError("Unable to load your workouts. Please try again.");
+      } finally {
+        setIsLoadingWorkouts(false);
       }
     }
 
@@ -58,19 +65,20 @@ function App() {
         });
 
         if (deleteError) {
-          // Custom error handling here
-            console.error("Error deleting workout: ", deleteError);
-            return;
+          throw deleteError;
         }
-
         // If no error, no data to return — simply fetchWorkoutLog()
         fetchWorkoutLog();
+        return { success: true };
       } catch (error) {
         // Custom error handling here 
-          console.error(error);
+          console.error(`Error deleting workout: ${error}`);
+          return {
+            success: false,
+            error: "Unable to delete this workout. Please try again."
+          };
       }
-      
-    }
+    };
 
   return (
     <>
@@ -97,6 +105,8 @@ function App() {
                                     savedWorkouts={savedWorkouts} 
                                     deleteWorkout={deleteWorkout}
                                     fetchWorkoutLog={fetchWorkoutLog}
+                                    isLoading={isLoadingWorkouts}
+                                    workoutError={workoutError}
                                   />
                                 </ProtectedRoute>
           } />
