@@ -69,7 +69,7 @@ describe("SignUp", () => {
         await user.type(screen.getByLabelText(/^email/i), "billy@example.com");
         await user.type(screen.getByLabelText(/^password/i), "MatchingPass123!!");
         await user.type(screen.getByLabelText(/confirm password/i), "MatchingPass123!!");
-        await user.type(screen.getByRole("button", { name: /create account/i }));
+        await user.click(screen.getByRole("button", { name: /create account/i }));
 
         await waitFor(() => {
             expect(supabase.auth.signUp).toHaveBeenCalledWith({
