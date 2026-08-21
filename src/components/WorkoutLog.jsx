@@ -343,8 +343,8 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout, fetchWorkoutLog, isLoading, 
                                                 <div key={index} className="exercise-item">
                                                     {exercise.type === "strength" && (
                                                         <>
-                                                            <p>Type: {exercise.type}</p>
                                                             <p>Exercise: {exercise.name}</p>
+                                                            <p>Type: {exercise.type}</p>
                                                             {exercise.weight === 0 && (
                                                                 <p>Weight: {exercise.weight} <span>lbs (bodyweight)</span> </p>
                                                             )}
@@ -358,8 +358,8 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout, fetchWorkoutLog, isLoading, 
                                                     )}
                                                     {exercise.type === "duration" && (
                                                         <>
-                                                            <p>Type: {exercise.type}</p>
                                                             <p>Exercise: {exercise.name}</p>
+                                                            <p>Type: {exercise.type}</p>
                                                             <p>Time: {formatDuration(exercise.duration_minutes, exercise.duration_seconds)}</p>
                                                         </>
                                                     )}
