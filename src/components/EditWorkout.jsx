@@ -132,19 +132,7 @@ const EditWorkout = ({ workout, setIsEditing, fetchWorkoutLog }) => {
                             id="workout-date" 
                             type="date" 
                             readOnly
-                            {...register("date", {
-                                required: "Workout date is required.",
-                                // max: {
-                                //     value: todayStr,
-                                //     message: "Date cannot be in the future."
-                                // }, 
-                                // validate: (value) => {
-                                //     const selected = new Date(value);
-                                //     const today = new Date;
-                                //     today.setHours(0, 0, 0, 0);
-                                //     return selected <= today || "Cannot pick a future date.";
-                                // }
-                            })}
+                            {...register("date")}
                                 />
                     </div>
                     
