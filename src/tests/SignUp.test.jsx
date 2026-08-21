@@ -1,3 +1,20 @@
+/**
+ * SignUp.test.jsx
+ * Unit tests for the SignUp component.
+ *
+ * Mocks `supabase.auth.signUp` so no real network requests reach Supabase.
+ *
+ * Coverage:
+ *  - Renders all required form fields and the submit button
+ *  - Blocks submission on client-side validation failure (mismatched passwords)
+ *    and confirms signUp is never called in that case
+ *  - Submits the correct payload shape to supabase.auth.signUp on valid input
+ *
+ * Not covered (intentionally deferred):
+ *  - Additional format edge cases (email pattern boundaries, password length limits)
+ *  - Rendering behavior on a failed signUp response from Supabase
+ */
+
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';

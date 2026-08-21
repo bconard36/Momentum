@@ -1,3 +1,22 @@
+/**
+ * SignIn.test.jsx
+ * Unit tests for the SignIn component.
+ *
+ * Mocks `supabase.auth.signInWithPassword` so no real network requests reach Supabase.
+ *
+ * Coverage:
+ *  - Renders all required form fields and both buttons (Sign In, Clear)
+ *  - Blocks submission on client-side validation failure (missing required fields)
+ *    and confirms signInWithPassword is never called in that case
+ *  - Surfaces a visible error message (via setError/"root") when Supabase returns
+ *    an authentication error, without navigating away
+ *  - Submits the correct payload shape to signInWithPassword and proceeds on success
+ *
+ * Not covered (intentionally deferred):
+ *  - Asserting the actual navigate("/dashboard") call on success
+ *  - Additional input format edge cases
+ */
+
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
