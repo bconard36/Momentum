@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router";
 import { supabase } from "../utils/supabaseClient";
 import { useState } from "react";
+import Header from "./Header";
 
 // ============================================================
 // Dashboard.jsx
@@ -87,6 +88,7 @@ const Dashboard = () => {
                     </div>
                 )}
                 {/* Insert Dynamic Header Component with Logged In User's Name Included */}
+                <Header />
 
                 <nav className="dashboard-nav" aria-label="Main sections">
                     <Link to="/workouts" className="nav-card">
