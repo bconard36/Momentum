@@ -130,14 +130,17 @@ describe("EditWorkout", () => {
         renderEditWorkout();
 
         // Mimic user events that capture invalid inputs
-        // User changes pre-loaded form data to input "0" or empty seconds
+        // User changes pre-loaded form data to input "0" or empty 
+        const weight = screen.getByLabelText(/Weight \(lbs\)/i);
         const durationSeconds = screen.getByLabelText(/Duration \(seconds\)/i);
+        await user.clear(weight);
         await user.clear(durationSeconds);
 
         // Mock click edit workout 
         await user.click(screen.getByRole("button", { name: /Save Changes/i }));
         
         // Expect an error message and the edit function to not be called
+        expect(await screen.findByText(/Weight is required\./i)).toBeInTheDocument();
         expect(await screen.findByText(/Duration \(seconds\) is required\./i)).toBeInTheDocument();
         expect(mockRpc).not.toHaveBeenCalled();
     })
