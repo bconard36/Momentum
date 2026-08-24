@@ -124,7 +124,7 @@ describe("EditWorkout", () => {
         expect(screen.getAllByText(/Remove Exercise/i)).toHaveLength(2);
     });
 
-    // Test 5: Client-side validation should block submission before Supabase is contacted
+    // Test 6: Client-side validation should block submission before Supabase is contacted
     it("shows errors when edit workout has empty or invalid inputs", async () => {
         const user = userEvent.setup();
         renderEditWorkout();
@@ -143,5 +143,21 @@ describe("EditWorkout", () => {
         expect(await screen.findByText(/Weight is required\./i)).toBeInTheDocument();
         expect(await screen.findByText(/Duration \(seconds\) is required\./i)).toBeInTheDocument();
         expect(mockRpc).not.toHaveBeenCalled();
-    })
+    });
+
+    // Test 7: Remove Exercise button hidden with only one exercise listed 
+    it("hides remove exercise button when only one exercise remains", async () => {
+        const user = userEvent.setup();
+        renderEditWorkout();
+
+        const removeExerciseButtons = screen.getAllByRole("button", { name: /Remove Exercise/ });
+
+        // Mimic user clicking remove exercise 
+        // 2 exercises in test data, this should drop down to one 
+        // Mimic a user click of the second button
+        await user.click(removeExerciseButtons[1]);
+
+        // Then expect the first button to disappear
+        expect(removeExerciseButtons[0]).not.toBeInTheDocument();
+    });
 });
