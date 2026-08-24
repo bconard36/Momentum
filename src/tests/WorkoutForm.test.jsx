@@ -3,8 +3,6 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router';
 import WorkoutForm from '../components/WorkoutForm';
-import { supabase } from '../utils/supabaseClient';
-
 
 // Create spy/test objects for the chained methods 
 
