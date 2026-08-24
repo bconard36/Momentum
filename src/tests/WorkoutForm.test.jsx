@@ -40,7 +40,10 @@ const renderWorkoutForm = () => {
     );
 };
 
-// beforeEach to reset the mock call 
+/**
+ * Reset mockCall history before each test 
+ * Also resets mock return and resolve values for Supabase From, Select, Match, and RPC methods
+ */
 beforeEach(() => {
     vi.clearAllMocks();
 
@@ -186,6 +189,8 @@ describe("WorkoutForm", () => {
             await user.click(screen.getByRole("button", { name: /Save Workout/i }));
 
             // Store the 'payload' - form data 
+            // Form data must match the exact data structure of DB 
+            // 3 tables - workouts, exercises, then workout_exercises
             const mockPayload = {
                 workout_entry: {
                     workout_id: expect.stringMatching(
@@ -215,6 +220,7 @@ describe("WorkoutForm", () => {
                 }]
             };
 
+            // Wait for RPC named save_workout to be called with the mock payload data
             await waitFor(() => {
                 expect(mockRpc).toHaveBeenCalledWith(
                     "save_workout",
