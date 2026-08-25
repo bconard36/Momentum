@@ -30,6 +30,7 @@ in base.css's :root — load base.css first.
 .workout-header {
   margin-bottom: 24px;
   display: flex;
+  flex-wrap: wrap;
   flex-direction: column;
   align-items: center;
   justify-content: center;
