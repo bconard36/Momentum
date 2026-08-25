@@ -273,7 +273,7 @@ const WorkoutLog = ({ savedWorkouts, deleteWorkout, fetchWorkoutLog, isLoading, 
                             <div className="return-container">
                                 <Link to="/dashboard" className="return-link" id="workout-return">Return to Dashboard</Link>
                             </div>
-                            <h1 className="workout-title">Workout Log</h1>
+                            <h1 className="workout-title" id="workout-log-title">Workout Log</h1>
                         </header>
                         <div className="log-panel">
                             <div className="workout-panel" role="dialog" aria-modal="true" aria-label="Workout Log Results" onClick={(e) => e.stopPropagation()}>
