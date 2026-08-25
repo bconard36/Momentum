@@ -1,13 +1,12 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router';
 import WorkoutLog from '../components/WorkoutLog'
 
-const { mockFetchWorkoutLog, mockDelete, mockRpc } = vi.hoisted(() => ({
+const { mockFetchWorkoutLog, mockDelete } = vi.hoisted(() => ({
     mockFetchWorkoutLog: vi.fn(),
-    mockDelete: vi.fn(),
-    mockRpc: vi.fn()
+    mockDelete: vi.fn()
 }));
 
 const mockWorkouts = [
@@ -90,12 +89,11 @@ const mockWorkouts = [
             }
         ],
     }
-    
-]
+];
 
 vi.mock('../utils/supabaseClient', () => ({
     supabase: {
-        rpc: mockRpc
+        delete: mockDelete
     }
 }));
 
@@ -113,11 +111,6 @@ const renderWorkoutLog = () => {
 
 beforeEach(() => {
     vi.clearAllMocks();
-
-    mockRpc.mockResolvedValue({
-        data: null,
-        error: null
-    });
 });
 
 describe("DeleteWorkout", () => {
@@ -127,13 +120,38 @@ describe("DeleteWorkout", () => {
         const user = userEvent.setup();
         renderWorkoutLog();
 
-        const deleteButton = screen.getByRole("button", {  name: /delete workout/i });
-
-        await user.click(deleteButton);
+        // One delete (log) and one confirm delete (modal)
+        // Capture both and await the userClick on the first button 
+        const deleteButton = screen.getAllByRole("button", {  name: /delete workout/i });
+        await user.click(deleteButton[0]);
 
         expect(await screen.findByText("Delete workout?")).toBeInTheDocument();
         expect(await screen.findByText(/this action cannot be undone\./i)).toBeInTheDocument();
+    });
 
-    })
-   
+    // Test 2: Workout is successfully deleted 
+    it("successfully deletes a workout", async () => {
+
+        const user = userEvent.setup();
+        renderWorkoutLog();
+        const idToDelete = '5722dcd3-7219-4613-99e5-79fae1971404';
+
+        // One delete (log) and one confirm delete (modal)
+        // Capture both and await the userClick on the first button (first workout) 
+        const deleteButton = screen.getAllByRole("button", {  name: /delete workout/i });
+        await user.click(deleteButton[0]);
+
+        const modalHeading = await screen.findByText("Delete workout?");
+        const modal = modalHeading.closest(".delete-overlay");
+
+        const confirmButton = within(modal).getByRole("button", { name: /delete workout/i });
+        await user.click(confirmButton);
+
+        // Trigger the delete event by clicking the second delete button 
+        await user.click(deleteButton[1]);
+
+        await waitFor(() => {
+            expect(mockDelete).toHaveBeenCalledWith(idToDelete);
+        });
+    });
 });
