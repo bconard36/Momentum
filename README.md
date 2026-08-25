@@ -22,7 +22,7 @@ fitness platform.
 
 # Current Application Status 
 
-**Live Site**: _Coming soon!_
+**Live Site**: [Momentum Workout Tracking](https://momentum-workout-tracking.vercel.app/)
 
 The application currently supports:
 
