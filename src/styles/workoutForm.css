@@ -243,6 +243,7 @@ in base.css's :root — load base.css first.
   border-radius: var(--radius-sm);
   padding: 10px 16px;
   font-weight: 600;
+  font-size: 20px;
   transition: all 0.2s ease;
 }
 
