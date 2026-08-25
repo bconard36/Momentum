@@ -5,9 +5,7 @@ import EditWorkout from '../components/EditWorkout';
 
 // Create a test workout object to be used in the test
 const testWorkout= {
-    workout_id: expect.stringMatching(
-        /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
-    ),
+    workout_id: '5722dcd3-7219-4613-99e5-79fae1971404',
     date: "2026-08-24",
     exercises: [
         {
@@ -29,22 +27,19 @@ const testWorkout= {
 }
 // Create spy/test objects for the chained methods
 // These will be used to mock the behaviour/functions of EditWorkout
-const { mockFetchWorkoutLog, 
-        mockIsEditing,
-        mockSuccess,
-        mockSelect, 
+const { mockFetchWorkoutLog,
         mockFrom, 
-        mockUpdate, 
-        mockInsert, 
+        mockSelect,
+        mockMatch,
         mockRpc, 
-        mockGetUser, 
+        mockSuccess,
         mockDelete } = vi.hoisted(() => ({
             mockFetchWorkoutLog: vi.fn(),
-            mockSelect: vi.fn(),
             mockFrom: vi.fn(),
-            mockUpdate: vi.fn(),
-            mockInsert: vi.fn(),
+            mockSelect: vi.fn(),
+            mockMatch: vi.fn(),
             mockRpc: vi.fn(),
+            mockSuccess: vi.fn(),
             // mockGetUser: vi.fn(), Does this get the user? Or simply compare a value of auth.uid() in the DB?
             mockDelete: vi.fn(),
         }));
@@ -65,6 +60,7 @@ const renderEditWorkout = () => {
         <EditWorkout 
             fetchWorkoutLog={mockFetchWorkoutLog}
             workout={testWorkout}
+            onUpdateSuccess={mockSuccess}
         />
     );
 };
@@ -76,6 +72,24 @@ const renderEditWorkout = () => {
  */
 beforeEach(() => {
     vi.clearAllMocks();
+
+    mockFrom.mockReturnValue({
+        select: mockSelect
+    });
+
+    mockSelect.mockReturnValue({
+        match: mockMatch
+    });
+
+    mockMatch.mockResolvedValue({
+        data: [],
+        error: null,
+    });
+
+    mockRpc.mockResolvedValue({
+        data: null,
+        error: null
+    });
 });
 
 describe("EditWorkout", () => {
@@ -157,7 +171,202 @@ describe("EditWorkout", () => {
         // Mimic a user click of the second button
         await user.click(removeExerciseButtons[1]);
 
-        // Then expect the first button to disappear
-        expect(removeExerciseButtons[0]).not.toBeInTheDocument();
+        // // Then expect the first button to disappear
+        expect(screen.queryByRole("button", { name: /Remove Exercise/ })).not.toBeInTheDocument();
+    });
+
+    // Test 8: valid updated form data should reach supabase with the correct shape
+    it("calls supabase.rpc() with the correct data upon form submission", async () => {
+        const user = userEvent.setup();
+        renderEditWorkout();
+
+        // User makes changes to the workout metrics 
+        await user.clear(screen.getByLabelText(/Sets/i));
+        await user.type(screen.getByLabelText(/Sets/i), "5");
+
+        await user.clear(screen.getByLabelText(/Reps/i));
+        await user.type(screen.getByLabelText(/Reps/i), "5");
+
+        await user.clear(screen.getByLabelText(/Weight \(lbs\)/i));
+        await user.type(screen.getByLabelText(/Weight \(lbs\)/i), "210");
+
+        await user.clear(screen.getByLabelText(/Duration \(minutes\)/i));
+        await user.type(screen.getByLabelText(/Duration \(minutes\)/i), "75");
+
+        await user.clear(screen.getByLabelText(/Duration \(seconds\)/i));
+        await user.type(screen.getByLabelText(/Duration \(seconds\)/i), "30");
+
+        const mockPayload = {
+            p_workout_id: expect.stringMatching(
+                /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+            ),
+            resolved_workout: {
+                date: "2026-08-24",
+                exercises: [
+                    {
+                        exercise_id: expect.stringMatching(
+                            /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+                        ),
+                        name: "Back Squat",
+                        type: "strength",
+                        sets: 5,
+                        reps: 5,
+                        weight: 210
+                    },
+                    {
+                        exercise_id: expect.stringMatching(
+                            /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+                        ),
+                        name: "Trail running",
+                        type: "duration",
+                        duration_minutes: 75,
+                        duration_seconds: 30
+                    }
+                ]
+            }
+        };
+
+        await user.click(screen.getByRole("button", { name: /save changes/i }));
+
+        await waitFor(() => {
+            expect(mockRpc).toHaveBeenCalledWith(
+                "edit_workout",
+                mockPayload
+            );
+        });
+
+        await waitFor(() => {
+            expect(mockSuccess).toHaveBeenCalled();
+        });
+    });
+
+    // Test 9: valid form data with a new exercise reaches supabase with the correct shape for insert and update
+    it("inserts a new exercise (if found) when a new exercise is added", async () => {
+        const user = userEvent.setup();
+        renderEditWorkout();
+        await user.click(screen.getByRole("button", { name: /add another exercise/i }));
+
+        // User types exercise name and selects a new exercise type
+        // That type will conditionally render the new exercise input fields
+        const exerciseNames = screen.getAllByLabelText("Exercise Name");
+        await user.type(exerciseNames[2], "hamstring curls");
+
+        const newExerciseType = screen.getByRole('combobox');
+        await user.selectOptions(newExerciseType, 'strength');
+         
+        const weights = await screen.findAllByLabelText(/Weight \(lbs\)/i);
+        const sets = await screen.findAllByLabelText(/Sets/i);
+        const reps = await screen.findAllByLabelText(/Reps/i);
+
+        await user.type(weights[1], "100");
+        await user.type(sets[1], "5");
+        await user.type(reps[1], "5");
+
+        const newExercisePayload = {
+            p_workout_id: expect.stringMatching(
+                /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+            ),
+            resolved_workout: {
+                date: "2026-08-24",
+                exercises: [
+                    {
+                        exercise_id: expect.stringMatching(
+                            /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+                        ),
+                        name: "Back Squat",
+                        type: "strength",
+                        sets: 3,
+                        reps: 10,
+                        weight: 210,
+                        duration_minutes: undefined,
+                        duration_seconds: undefined,
+                    },
+                    {
+                        exercise_id: expect.stringMatching(
+                            /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+                        ),
+                        name: "Trail running",
+                        type: "duration",
+                        sets: undefined,
+                        reps: undefined,
+                        weight: undefined,
+                        duration_minutes: 45,
+                        duration_seconds: 22
+                    },
+                    {   
+                        exercise_id: expect.stringMatching(
+                            /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+                        ),
+                        name: "hamstring curls",
+                        type: "strength",
+                        sets: 5,
+                        reps: 5,
+                        weight: 100,
+                        duration_minutes: undefined,
+                        duration_seconds: undefined
+                    }
+                ]
+            }
+        };
+
+        // Save changes
+        await user.click(screen.getByRole("button", { name: /save changes/i }));
+
+         await waitFor(() => {
+            expect(mockRpc).toHaveBeenCalledWith(
+                "edit_workout",
+                newExercisePayload
+            );
+        });
+
+        await waitFor(() => {
+            expect(mockSuccess).toHaveBeenCalled();
+        });
+    });
+
+    // Test 10: Removing of an exercise from a workout 
+    it("removes an exercise and sends updated data to supabase with the correct shape", async () => {
+        const user = userEvent.setup();
+        renderEditWorkout();
+
+        const removeExerciseButtons = screen.getAllByRole("button", { name: /Remove Exercise/ });
+
+        // User removes first exercise 
+        await user.click(removeExerciseButtons[0]);
+
+        // 
+        const updatedPayload= {
+            p_workout_id: expect.stringMatching(
+                /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+            ),
+            resolved_workout: {
+                date: "2026-08-24",
+                exercises: [                
+                    {
+                        exercise_id: expect.stringMatching(
+                            /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+                        ),
+                        name: "Trail running",
+                        type: "duration",
+                        duration_minutes: 45,
+                        duration_seconds: 22
+                    }
+                ]
+            }
+        }
+
+         // Save changes
+        await user.click(screen.getByRole("button", { name: /save changes/i }));
+
+         await waitFor(() => {
+            expect(mockRpc).toHaveBeenCalledWith(
+                "edit_workout",
+                updatedPayload
+            );
+        })
+
+        await waitFor(() => {
+            expect(mockSuccess).toHaveBeenCalled();
+        });
     });
 });
