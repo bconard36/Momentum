@@ -33,15 +33,13 @@ const { mockFetchWorkoutLog,
         mockMatch,
         mockRpc, 
         mockSuccess,
-        mockDelete } = vi.hoisted(() => ({
+         } = vi.hoisted(() => ({
             mockFetchWorkoutLog: vi.fn(),
             mockFrom: vi.fn(),
             mockSelect: vi.fn(),
             mockMatch: vi.fn(),
             mockRpc: vi.fn(),
-            mockSuccess: vi.fn(),
-            // mockGetUser: vi.fn(), Does this get the user? Or simply compare a value of auth.uid() in the DB?
-            mockDelete: vi.fn(),
+            mockSuccess: vi.fn()
         }));
 
 /**
