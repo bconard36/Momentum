@@ -98,8 +98,8 @@ const SignUp = () => {
                 <div className="workout-modal-overlay success-overlay" id="create-success-overlay">
                     <p className="success-message">Success! Account Created!</p>
                     <div className="create-return-container">
-                        <Link to="/" className="create-return-link">
-                            <button type="button" className="secondary-button">Return to Sign In</button>
+                        <Link to="/dashboard" className="create-return-link">
+                            <button type="button" className="secondary-button">Go to Dashboard</button>
                         </Link>
                     </div>
                 </div>
