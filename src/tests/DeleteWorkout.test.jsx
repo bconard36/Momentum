@@ -1,3 +1,18 @@
+/**
+ * DeleteWorkout.test.jsx
+ * Unit tests for deleting a workout.
+ *
+ * Mocks Supabase so no real network requests reach Supabase.
+ *  - fetchWorkoutLog, deleteWorkout
+ *
+ * Coverage:
+ *  - Renders the delete confirmation window once delete workout is clicked
+ *  - Successfully deletes a workout 
+ *  - Successfully renders a confirmation window after deletion
+ *
+ * Not covered (intentionally deferred):
+ *  - Cancelling a workout delete removes delete confirm
+ */
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor, within } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
@@ -9,6 +24,7 @@ const { mockFetchWorkoutLog, mockDelete } = vi.hoisted(() => ({
     mockDelete: vi.fn()
 }));
 
+// Create and store mock workout data with multiple exercises
 const mockWorkouts = [
     {
         workout_id: '5722dcd3-7219-4613-99e5-79fae1971404',
@@ -91,12 +107,18 @@ const mockWorkouts = [
     }
 ];
 
+// 
 vi.mock('../utils/supabaseClient', () => ({
     supabase: {
         delete: mockDelete
     }
 }));
 
+/**
+ * WorkoutLog renders a <Link> to WorkoutLog
+ * Router context to avoid errors 
+ * Spy objects used as props 
+ */
 const renderWorkoutLog = () => {
     render(
         <MemoryRouter>
@@ -109,9 +131,18 @@ const renderWorkoutLog = () => {
     );
 };
 
+/**
+ * Reset mockCall history before each test 
+ * Resets mock resolve values for deleteWorkout
+ */
 beforeEach(() => {
     vi.clearAllMocks();
-});
+    mockDelete.mockResolvedValue({ 
+        data: null,
+        error: null,
+        success: true 
+    });
+   });
 
 describe("DeleteWorkout", () => {
 
@@ -147,11 +178,35 @@ describe("DeleteWorkout", () => {
         const confirmButton = within(modal).getByRole("button", { name: /delete workout/i });
         await user.click(confirmButton);
 
-        // Trigger the delete event by clicking the second delete button 
-        await user.click(deleteButton[1]);
+        await waitFor(() => {
+            expect(mockDelete).toHaveBeenCalledWith(idToDelete);
+        });
+    });
+
+    // Test 3 - renders a confirmation window after successful deletion 
+    it("shows a success message after a workout is deleted", async () => {
+        const user = userEvent.setup();
+        renderWorkoutLog();
+        const idToDelete = '5722dcd3-7219-4613-99e5-79fae1971404';
+
+        const deleteButton = screen.getAllByRole("button", {  name: /delete workout/i });
+        await user.click(deleteButton[0]);
+
+         const modalHeading = await screen.findByText("Delete workout?");
+        const modal = modalHeading.closest(".delete-overlay");
+
+        const confirmButton = within(modal).getByRole("button", { name: /delete workout/i });
+        await user.click(confirmButton);
 
         await waitFor(() => {
             expect(mockDelete).toHaveBeenCalledWith(idToDelete);
         });
+
+        const successModalHeading = await screen.findByText("Your workout has been deleted.");
+        const successModal = successModalHeading.closest(".success-overlay");
+        const returnButton = within(successModal).getByRole("button", { name: /back to workout log/i });
+
+        expect(successModalHeading).toBeInTheDocument();
+        expect(returnButton).toBeInTheDocument();
     });
 });
