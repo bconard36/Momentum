@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router'
 import { useState, useEffect } from 'react'
 import ProtectedRoute from './components/ProtectedRoute'
 import Dashboard from './components/Dashboard'
@@ -9,6 +9,41 @@ import SignIn from './components/SignIn'
 import SignUp from './components/SignUp'
 import { supabase } from './utils/supabaseClient'
 import WorkoutLog from './components/WorkoutLog'
+
+/**
+ * Home Route Component
+ * Checks whether a user currently has an authenticated Supabase session.
+ * Redirects authenticated users to their dashboard and displays the sign-in
+ * component for unauthenticated users.
+ * Displays a loading state while authentication is being checked.
+ * @returns {JSX.Element} Loading state, dashboard redirect, or sign-in component
+ */
+function HomeRedirect() {
+  const [loading, setLoading] = useState(true);
+  const [authenticated, setAuthenticated] = useState(false);
+
+  useEffect(() => {
+      supabase.auth.getUser()
+          .then(({ data: { user } }) => {
+              setAuthenticated(!!user);
+              setLoading(false);
+          });
+  }, []);
+
+  if (loading) {
+      return (
+          <div className="loading-message-container">
+              <div className="loading-message">Loading...</div>
+          </div>
+      );
+  }
+
+  if (authenticated) {
+      return <Navigate to="/dashboard" replace />;
+  }
+
+  return <SignIn />;
+}
 
 function App() {
     /**
@@ -84,7 +119,7 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={ <SignIn /> } />
+          <Route path="/" element={ <HomeRedirect /> } />
           <Route path="/sign-up" element={ <SignUp /> } />
           <Route path="/dashboard" element={ 
                                 <ProtectedRoute>
