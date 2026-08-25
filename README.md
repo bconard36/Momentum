@@ -84,8 +84,20 @@ Supabase handles the following responsibilities:
         - WorkoutForm.test.jsx
     - utils: parent folder for utility functions
         - supabaseClient.js
-- App.jsx
-- main.jsx
+    - App.jsx
+    - main.jsx
+- supabase: parent folder for all DB logic 
+    - functions: parent folder for all SQL/PGSQL functions 
+        - delete_workout.sql
+        - edit_workout.sql
+        - get_user_workouts.sql
+        - save_workout.sql
+        - user_insert_function.sql
+    - permissions: parent folder for all grants and policies
+        - grants.sql
+        - permissions.sql
+    - triggers: parent folder for all DB triggers 
+        - user_insert_trigger.sql
 - .gitignore
 - eslint.config.js
 - index.html
