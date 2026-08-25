@@ -38,8 +38,9 @@ const SignUp = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirm, setShowConfirm] = useState(false);
 
-    // Create account success state management 
+    // Create account success/failure state management 
     const [createSuccess, setCreateSuccess] = useState(false);
+    const [createFail, setCreateFail] = useState(false);
 
     // Watch password field so confirm-password can validate against its current value 
     const passwordValue = watch("password", "");
@@ -68,20 +69,31 @@ const SignUp = () => {
 
             if (authError) {
                 // Insert graceful pop up for error handling here
-                    console.log("Error signing up:", authError);
+                    setCreateFail(true);
+                    setCreateSuccess(false);
             } else {
                 // Redirect to SignIn after successful account creation
                 // Timeout with a message, message on Sign In, etc.
                 setCreateSuccess(true);
+                setCreateFail(false);
             }
         } catch (error) {
             // Insert graceful pop up for error handling here  
-            console.error("Account creation error", error);
+            setCreateFail(true);
+            setCreateSuccess(false);
         }
     }
 
     return ( 
         <>
+            {createFail && (
+                <div className="workout-modal-overlay success-overlay" id="create-success-overlay">
+                    <p className="success-message">Unable to create your account</p>
+                    <div className="create-return-container">
+                            <button type="button" className="secondary-button" onClick={() => setCreateFail(false)}>Return to Sign In</button>
+                    </div>
+                </div>
+            )}
             {createSuccess && (
                 <div className="workout-modal-overlay success-overlay" id="create-success-overlay">
                     <p className="success-message">Success! Account Created!</p>
@@ -92,7 +104,7 @@ const SignUp = () => {
                     </div>
                 </div>
             )} 
-            {!createSuccess && (
+            {!createSuccess && !createFail && (
                 <>
                     <header className="workout-header" id="create-account-header">
                         <div className="return-container">
