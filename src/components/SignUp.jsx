@@ -210,6 +210,7 @@ const SignUp = () => {
                         </button>
                         <button 
                             className="secondary-button clear-button"
+                            id="clear-button"
                             type="reset"
                         >
                             Clear
