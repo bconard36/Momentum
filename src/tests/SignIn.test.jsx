@@ -30,12 +30,6 @@ vi.mock('../utils/supabaseClient', () => ({
         auth: {
             signInWithPassword: vi.fn(),
         },
-        from: vi.fn(() => ({
-            select: vi.fn().mockReturnThis(),
-            match: vi.fn().mockReturnThis(),
-            eq: vi.fn().mockReturnThis(),
-            single: vi.fn(),
-        })),
     },
 }));
 
@@ -59,7 +53,7 @@ describe("SignIn", () => {
     it("renders all required form fields", () => {
         renderSignIn();
 
-        expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/email address/i)).toBeInTheDocument();
         expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
         expect(screen.getByRole("button", { name: /sign in/i })).toBeInTheDocument();
         expect(screen.getByRole("button", { name: /clear/i })).toBeInTheDocument();
@@ -74,11 +68,14 @@ describe("SignIn", () => {
 
         // Trigger action that calls setError
         const button = screen.getByRole("button", { name: /sign in/i });
-        await userEvent.click(button);
+        await user.click(button);
         
         // Query to find the error message
         const errorMessage = await screen.findByText(/email address is required/i);
         expect(errorMessage).toBeInTheDocument();
+
+        // Ensure signInWithPassword is not called
+        expect(supabase.auth.signInWithPassword).not.toHaveBeenCalled();
     });
 
     // Test 3 - invalid email and password combination blocked by supabase
@@ -95,7 +92,7 @@ describe("SignIn", () => {
 
         // Trigger action that calls setError
         const button = screen.getByRole("button", { name: /sign in/i });
-        await userEvent.click(button);
+        await user.click(button);
 
         await waitFor(() => {
             expect(supabase.auth.signInWithPassword).toHaveBeenCalledWith(
@@ -127,7 +124,7 @@ describe("SignIn", () => {
 
         // Trigger action
         const button = screen.getByRole("button", { name: /sign in/i });
-        await userEvent.click(button);
+        await user.click(button);
 
         await waitFor(() => {
             expect(supabase.auth.signInWithPassword).toHaveBeenCalledWith({
