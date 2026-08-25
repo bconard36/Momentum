@@ -62,6 +62,7 @@
     box-sizing: border-box;
     outline: none;
     transition: color 0.2s ease;
+    font-size: 16px;
 }
 
 .sign-in-form-group input:focus,
