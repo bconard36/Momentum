@@ -13,41 +13,55 @@ Originally developed as the successor to [Calorie Track](https://github.com/bcon
 expands beyond fitness calculation into workout management while laying the foundation for a full-stack
 fitness platform. 
 
-**Live Site**: _Coming soon!_
+# Contents
+- [Current Status](#current-application-status)
+- [Features](#features)
+- [Backend & Database](#backend--database-development)
+- [What I Learned](#what-i-learned--built-from-scratch)
+- [Future Development](#future-development)
 
 # Current Application Status 
-Momentum is currently in active development.
+
+**Live Site**: _Coming soon!_
 
 The application currently supports:
 
 - User account creation through Supabase Auth
 - User sign-in and sign-out
-- Automatic creation of a corresponding profile in the Supabase public.users table
+- Automatic creation of a corresponding profile in the Supabase `public.users` table
 - A dynamic, personalized dashboard header that greets the authenticated user by first name
 - Route protection verified against Supabase's Auth server, not just cached session data
 - Workout creation and management through React Hook Form
 - Saving workouts to PostgreSQL through Supabase
+- Fetching authenticated users' workout history from PostgreSQL
 - Editing existing workouts, including adding, updating, and removing exercises
 - Deleting workouts
-- Fetching authenticated users' workout history from PostgreSQL
 - Viewing, sorting, and filtering workout history
 - User-facing error messaging for failed workout operations
-- Unit test coverage for the sign-up and sign-in flows
+- Unit test coverage for:
+    - Creating an account (SignUp)
+    - Signing in (SignIn)
+    - Saving Workouts (WorkoutLog)
+    - Editing Workouts (EditWorkout)
+    - Deleting Workouts
 
-Workout data has **been migrated to the database.** Supabase is now responsible for authentication, user profiles, 
-and workout storage, retrieval, editing, and deletion.
+Supabase handles the following responsibilities:
+    - _authentication_
+    - _user profiles_
+    - _workout storage, retrieval, edits, and deletion_
 
 # Folder List
 - public
 - src: parent folder for components, stylesheets, and assets
     - components: parent folder for individual components
-        - CalorieTrack: Calculator component 
+        - CalorieTrack: Fitness calculator component 
             - refactored from the original [Calorie Track](https://github.com/bconard36/CalorieTrack), 
             migrated into Momentum and rebuilt using `react-hook-form` for form state management and validation.  
         - Dashboard.jsx
         - EditWorkout.jsx
         - Header.jsx
         - NotFound.jsx
+        - ProtectedRoute.jsx
         - SignIn.jsx
         - SignUp.jsx
         - WorkoutForm.jsx
@@ -55,14 +69,19 @@ and workout storage, retrieval, editing, and deletion.
     - styles: houses all style sheets 
         - base.css
         - calculator.css
+        - editWorkout.css
         - notFound.css
+        - signInSignUp.css
         - success.css
         - workoutForm.css
         - workoutLog.css
     - tests: parent test folder 
+        - DeleteWorkout.test.jsx
+        - EditWorkout.test.jsx
+        - setup.js
         - SignUp.test.jsx
         - SignIn.test.jsx
-        - setup.js
+        - WorkoutForm.test.jsx
     - utils: parent folder for utility functions
         - supabaseClient.js
 - App.jsx
@@ -74,17 +93,16 @@ and workout storage, retrieval, editing, and deletion.
 - package.json
 - README.md
 - vite.config.js
-- Vitest
 
 # Features
 
 ## Workout Management 
 - Dynamic workout creation with React Hook Form
-- Add and remove exercises using `useFieldArray`
+- Add, edit and remove exercises using `useFieldArray`
 - Conditional workout form inputs based on workout type using `watch`
 - Built-in custom form validation
 - Save workouts to PostgreSQL through Supabase
-- Edit existing workouts, including adding new exercises, updating existing exercise metrics, and removing exercises
+- Edit existing workouts
 - Delete workouts
 - Retrieve workout history from the database
 - View previously logged workouts
@@ -100,8 +118,6 @@ and workout storage, retrieval, editing, and deletion.
 - Email and password authentication
 - User sign-in and sign-out
 - Protected application routes, verified using `supabase.auth.getUser()`
-    - `getUser()` re-verifies the user's JWT against the Supabase Auth server on each check, rather than trusting
-    unverified, cached session data the way `getSession()` does
 - Automatic creation of a corresponding `public.users` profile through a PostgreSQL function and trigger
 - Shared UUID between the Supabase Auth user and application profile
 - Foreign key relationship between the Auth user and application profile
@@ -153,7 +169,7 @@ The function begins with an ownership guard clause, confirming the workout belon
 Deleting a workout is handled through a dedicated PostgreSQL function (`delete_workout`) that verifies the workout belongs to the authenticated user before removing it. Deleting a workout cascades to remove its associated workout-exercise links, while the underlying exercise definitions (shared, reusable data) remain untouched.
 
 ## Workout Data Retrieval
-A PostgreSQL function retrieves the authenticated user's workouts and builds the related workout and exercise data into a JSON response.
+A custom PostgreSQL function (`get_user_workouts`) retrieves the authenticated user's workouts and builds the related workout and exercise data into a JSON response.
 
 The function uses the authenticated user's Supabase UUID to ensure the returned workouts belong to the current user.
 
@@ -164,19 +180,19 @@ Supabase Row Level Security and database permissions are used to control access 
 
 Authenticated users are granted the required database permissions, while RLS policies control access to the data. Ownership-based policies restrict users to their own workouts and workout-exercise records, verified through a correlated subquery against the `workouts` table where a direct `user_id` column isn't available (as on the `workout_exercises` join table). Shared reference data, such as exercise definitions, remains readable by all authenticated users, since exercises are not user-owned.
 
-The `public.users` table also required its own explicit `GRANT` and RLS `SELECT` policy once it began being queried directly (for the dashboard header) rather than only through a `SECURITY DEFINER` function — a reminder that RLS silently returns zero rows rather than throwing an error when no policy grants access, which can look identical to an empty database if the two aren't distinguished carefully.
+
 
 ## Unit Testing
 Momentum uses **Vitest** and **React Testing Library** for component-level unit tests, chosen over Jest for its native integration with the existing Vite build pipeline.
 
 Supabase calls are mocked at the module level (`vi.mock`) on a per-file basis, scoped to only the methods each component actually calls, so tests run without touching the real database.
 
-Current coverage includes the sign-up and sign-in flows:
-
-- Form rendering and field presence
-- Client-side validation blocking submission before Supabase is contacted
-- Correct payload shape sent to Supabase on valid submission
-- Error handling and messaging when Supabase returns an authentication failure
+Current coverage includes sign up, sign in, save workout, edit workout, and delete workout flows:
+    - Form rendering and field presence
+    - Client-side validation blocking submission before Supabase is contacted
+    - Correct payload shape sent to Supabase on valid submission
+    - Error handling and messaging when Supabase returns an authentication failure
+    - Conditional success message displays
 
 # What I Learned / Built From Scratch
 
@@ -194,11 +210,11 @@ Current coverage includes the sign-up and sign-in flows:
 
 **Data Modeling**: Moving workout data from a single nested object structure into a relational database required separating users, workouts, exercises, and workout-specific exercise data into related tables. This provided practical experience with primary keys, foreign keys, join tables, and normalized data.
 
-**Database Integration**: Momentum's frontend communicates with PostgreSQL through Supabase. Workout creation, editing, deletion, exercise resolution, and workout retrieval are handled through database functions and authenticated requests.
+**Database Integration**: Momentum's frontend communicates with PostgreSQL through Supabase. Workout creation, editing, deletion, exercise resolution, and workout retrieval are handled through custom database functions and authenticated requests.
 
 **PL/pgSQL & Reconciliation Logic**: Building the `edit_workout` function required learning PL/pgSQL's procedural constructs (guard clauses, loops, exception handling) and designing set-based reconciliation logic using correlated `EXISTS`/`NOT EXISTS` subqueries to determine which records to update, insert, or delete based on differences between submitted and existing data.
 
-**Row Level Security Behavior**: Debugging an overly permissive policy revealed that Postgres evaluates multiple permissive RLS policies on the same table with OR logic rather than AND — meaning a single broad policy can silently override a more restrictive one on the same table. A separate RLS gap on `public.users` reinforced that a missing policy fails silently (an empty result, not an error), which required deliberately ruling out client-side causes before identifying the database as the actual source.
+**Row Level Security Behavior**: Debugging an overly permissive policy revealed that Postgres evaluates multiple permissive RLS policies on the same table with OR logic rather than AND — meaning a single broad policy can silently override a more restrictive one on the same table. A separate RLS gap on `public.users` reinforced that a missing policy fails silently (an empty result, not an error), which required deliberately ruling out client-side causes before identifying the database as the actual source. 
 
 **Authentication Verification**: Replaced `supabase.auth.getSession()` with `supabase.auth.getUser()` for route protection. `getSession()` reads cached, unverified session data from storage, while `getUser()` makes a live request to the Auth server to re-verify the user's JWT, closing a gap where stale or tampered local session data could otherwise be trusted.
 
@@ -210,13 +226,12 @@ Current coverage includes the sign-up and sign-in flows:
 
 **Debugging Across the Stack**: Tracing bugs in this project frequently required distinguishing between database logic, RLS/permissions, API caching, and client-side JavaScript as separate possible causes — including a case where a PostgREST schema cache issue and a mismatched JSON payload shape produced identical-looking symptoms but required entirely different fixes.
 
-**Unit Testing Async, Network-Dependent Components**: Writing tests for the sign-up and sign-in forms required learning to mock Supabase at the module level and explicitly configure each mock's resolved value per test case, since an unconfigured mock silently resolves to `undefined` rather than throwing — meaning a "failure path" test will silently exercise the success path instead unless the mock is deliberately told to fail.
+**Unit Testing Async, Network-Dependent Components**: Writing unit tests required learning to mock Supabase at the module level and explicitly configuring and resetting each mock's resolved value per test case, since an unconfigured mock silently resolves to `undefined` rather than throwing. 
 
 # Future Development
 
 As Momentum continues to evolve, planned improvements include:
 
-- Unit test coverage for `WorkoutForm` and `EditWorkout`
 - Workout statistics and progress tracking
 - Dashboard analytics
 - Expanded user profile functionality
