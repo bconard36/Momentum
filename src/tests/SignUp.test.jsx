@@ -40,15 +40,14 @@ const renderSignUp = () => {
     );
 };
 
-// Reset mock call history before each test so results from one test
-// don't leak into the next 
+// Reset mock call history before each test so results from one test don't leak into the next 
 beforeEach(() => {
     vi.clearAllMocks();
 });
 
 describe("SignUp", () => {
 
-    // Test 1 - form actually renders 
+    // Test 1 - sign up form actually renders 
     it("renders all required form fields", () => {
         renderSignUp();
 
@@ -61,7 +60,7 @@ describe("SignUp", () => {
     });
 
     // Test 2 - client-side validation should block submission before Supabase is contacted 
-    it("shows an error when passwords do not match, and does not call signUp", async () => {
+    it("shows a real-time error when passwords do not match, and does not call signUp when Create Account is clicked", async () => {
         const user = userEvent.setup();
         renderSignUp();
 
@@ -71,8 +70,11 @@ describe("SignUp", () => {
         await user.type(screen.getByLabelText(/^password/i), "DoesNotMatch123!!");
         await user.type(screen.getByLabelText(/confirm password/i), "NotTheSame1234!!!");
 
-        // findBy waits for the error to appear, since validation runs after the click
+        // findBy waits for the error to appear
         expect(await screen.findByText(/passwords do not match/i)).toBeInTheDocument();
+        
+        // Password still doesn't match — confirm clicking submit doesn't call signUp
+        await user.click(screen.getByRole("button", { name: /Create Account/i }));
         expect(supabase.auth.signUp).not.toHaveBeenCalled();
     });
 
