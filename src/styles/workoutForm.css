@@ -9,7 +9,7 @@ in base.css's :root — load base.css first.
 
 /* Style Rules for Workout Form */
 .workout-page {
-  min-height: 100vh;
+  min-height: 100dvh;
   padding: 60px 20px 80px;
   background:
     radial-gradient(circle at top left, rgba(59, 130, 246, 0.14), transparent 10%),
@@ -77,7 +77,7 @@ in base.css's :root — load base.css first.
 .workout-form {
   display: flex;
   flex-direction: column;
-  width: 70%;
+  width: 100%;
   max-width: 650px;
   gap: 16px;
   margin: 0 auto;

@@ -23,7 +23,7 @@ load base.css first.
   justify-content: center;
   align-items: center;
   margin: 0 auto;
-  width: 50%;
+  width: 100%;
   max-width: 500px;
 }
 
@@ -65,7 +65,8 @@ load base.css first.
   flex-wrap: nowrap;
   align-items: center;
   justify-content: space-between;
-  width: 50%;
+  width: 100%;
+  max-width: 500px;
   margin: 0 auto;
   gap: 12px;
 }
@@ -77,7 +78,8 @@ load base.css first.
   justify-content: center;
   gap: 12px;
   flex-wrap: nowrap;
-  width: 50%;
+  width: 100%;
+  max-width: 500px;
   margin: 0 auto;
 }
 

@@ -31,7 +31,8 @@
   padding: 0;
 }
 
-html, body {
+
+html, body, #root {
   background: linear-gradient(135deg, var(--bg-primary), var(--bg-secondary));
   color: var(--text-primary);
   font-family: 'Inter', sans-serif;
@@ -57,7 +58,7 @@ button, a {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  min-height: 100dvh;
 }
 
 .dashboard {
