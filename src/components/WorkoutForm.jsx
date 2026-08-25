@@ -188,8 +188,8 @@ const WorkoutForm = ({ fetchWorkoutLog }) => {
             <div className="workout-shell">
                 <header className="workout-header">
                     <h1 className="workout-title">Action Breeds Energy</h1>
-                    <p className="workout-subtitle">
-                        Log your workouts <strong>|</strong> Stay consistent <strong>|</strong> Build momentum
+                    <p className="workout-subtitle" id="workout-form-cta">
+                        Log workouts <strong>|</strong> Stay consistent <strong>|</strong> Build Momentum
                     </p>
                 </header>
 
