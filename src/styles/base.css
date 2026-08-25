@@ -65,6 +65,7 @@ button, a {
   max-width: 720px;
   margin: 0 auto;
   padding: 60px 20px;
+  min-height: 100dvh;
 }
 
 .dashboard-header {
