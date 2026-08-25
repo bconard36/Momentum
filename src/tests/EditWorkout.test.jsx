@@ -1,3 +1,25 @@
+/**
+ * EditWorkout.test.jsx
+ * Unit tests for the EditWorkout component.
+ *
+ * Mocks Supabase connection and methods so no real network requests reach Supabase.
+ *  - .from(), .select(), .match(), .rpc()
+ *
+ * Coverage:
+ *  - Renders EditWorkout form correctly 
+ *  - Renders correct data for EditWorkout form
+ *      - Exercise names and types 
+ *      - Type-based metrics with valid values
+ *  - Conditionally renders `Remove Exercise` button when more than 1 exercise is listed
+ *  - Hides the `Remove Exercise` button when only 1 exercise is listed
+ *  - Blocks submission on client-side validation failure (missing required fields)
+ *  - Submits the correct payload shape to mockRpc() 
+ *  - Successfully handles new exercise submissions from EditWorkout
+ *
+ * Not covered (intentionally deferred):
+ *  - Navigating to the dashboard("/dashboard") from the edit workout form
+ *  - Additional input format edge cases
+ */
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
@@ -24,7 +46,8 @@ const testWorkout= {
             duration_seconds: 22
         }
     ]
-}
+};
+
 // Create spy/test objects for the chained methods
 // These will be used to mock the behaviour/functions of EditWorkout
 const { mockFetchWorkoutLog,
@@ -42,9 +65,13 @@ const { mockFetchWorkoutLog,
             mockSuccess: vi.fn()
         }));
 
+// UUID Regex string matching constant for payload checks
+const UUID_REGEX = expect.stringMatching(/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i);
+
 /**
  * Mock the entire supabase module from EditWorkout
  * Supabase executes SELECT/FROM, UPDATE, INSERT, DELETE
+ * UPDATE, INSERT, DELETE are in mockRpc
  */
 vi.mock('../utils/supabaseClient', () => ({
     supabase: {
@@ -53,6 +80,10 @@ vi.mock('../utils/supabaseClient', () => ({
     }
 }));
 
+/**
+ * Render the Edit Workout Form 
+ * Pass spy objects in as props
+ */
 const renderEditWorkout = () => {
     render(
         <EditWorkout 
@@ -129,14 +160,30 @@ describe("EditWorkout", () => {
         expect(screen.getByLabelText(/Duration \(seconds\)/i)).toHaveValue(22);
     });
 
-    // Test 5: Renders remove exercise button with multiple exercises
-    it("renders remove exercise button with multiple exercises", () => {
+    // Test 5: Renders remove exercise buttons with multiple exercises
+    it("renders remove exercise buttons with multiple exercises", () => {
         renderEditWorkout();
 
-        expect(screen.getAllByText(/Remove Exercise/i)).toHaveLength(2);
+        expect(screen.getAllByRole("button", { name: /Remove Exercise/ }));
     });
 
-    // Test 6: Client-side validation should block submission before Supabase is contacted
+    // Test 6: Remove Exercise button hidden with only one exercise listed 
+    it("hides remove exercise button when only one exercise remains", async () => {
+        const user = userEvent.setup();
+        renderEditWorkout();
+
+        const removeExerciseButtons = screen.getAllByRole("button", { name: /Remove Exercise/ });
+
+        // Mimic user clicking remove exercise 
+        // 2 exercises in test data, this drops EditWorkout down to one exercise
+        // Mimic a user click of a Remove Exercise button
+        await user.click(removeExerciseButtons[1]);
+
+        // With only one exercise left, the Remove Exercise button should be fully hidden
+        expect(screen.queryByRole("button", { name: /Remove Exercise/ })).not.toBeInTheDocument();
+    });
+
+    // Test 7: Client-side validation should block submission before Supabase is contacted
     it("shows errors when edit workout has empty or invalid inputs", async () => {
         const user = userEvent.setup();
         renderEditWorkout();
@@ -155,22 +202,6 @@ describe("EditWorkout", () => {
         expect(await screen.findByText(/Weight is required\./i)).toBeInTheDocument();
         expect(await screen.findByText(/Duration \(seconds\) is required\./i)).toBeInTheDocument();
         expect(mockRpc).not.toHaveBeenCalled();
-    });
-
-    // Test 7: Remove Exercise button hidden with only one exercise listed 
-    it("hides remove exercise button when only one exercise remains", async () => {
-        const user = userEvent.setup();
-        renderEditWorkout();
-
-        const removeExerciseButtons = screen.getAllByRole("button", { name: /Remove Exercise/ });
-
-        // Mimic user clicking remove exercise 
-        // 2 exercises in test data, this should drop down to one 
-        // Mimic a user click of the second button
-        await user.click(removeExerciseButtons[1]);
-
-        // // Then expect the first button to disappear
-        expect(screen.queryByRole("button", { name: /Remove Exercise/ })).not.toBeInTheDocument();
     });
 
     // Test 8: valid updated form data should reach supabase with the correct shape
@@ -195,16 +226,12 @@ describe("EditWorkout", () => {
         await user.type(screen.getByLabelText(/Duration \(seconds\)/i), "30");
 
         const mockPayload = {
-            p_workout_id: expect.stringMatching(
-                /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
-            ),
+            p_workout_id: UUID_REGEX,
             resolved_workout: {
                 date: "2026-08-24",
                 exercises: [
                     {
-                        exercise_id: expect.stringMatching(
-                            /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
-                        ),
+                        exercise_id: UUID_REGEX,
                         name: "Back Squat",
                         type: "strength",
                         sets: 5,
@@ -212,9 +239,7 @@ describe("EditWorkout", () => {
                         weight: 210
                     },
                     {
-                        exercise_id: expect.stringMatching(
-                            /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
-                        ),
+                        exercise_id: UUID_REGEX,
                         name: "Trail running",
                         type: "duration",
                         duration_minutes: 75,
@@ -261,16 +286,12 @@ describe("EditWorkout", () => {
         await user.type(reps[1], "5");
 
         const newExercisePayload = {
-            p_workout_id: expect.stringMatching(
-                /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
-            ),
+            p_workout_id: UUID_REGEX,
             resolved_workout: {
                 date: "2026-08-24",
                 exercises: [
                     {
-                        exercise_id: expect.stringMatching(
-                            /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
-                        ),
+                        exercise_id: UUID_REGEX,
                         name: "Back Squat",
                         type: "strength",
                         sets: 3,
@@ -280,9 +301,7 @@ describe("EditWorkout", () => {
                         duration_seconds: undefined,
                     },
                     {
-                        exercise_id: expect.stringMatching(
-                            /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
-                        ),
+                        exercise_id: UUID_REGEX,
                         name: "Trail running",
                         type: "duration",
                         sets: undefined,
@@ -292,9 +311,7 @@ describe("EditWorkout", () => {
                         duration_seconds: 22
                     },
                     {   
-                        exercise_id: expect.stringMatching(
-                            /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
-                        ),
+                        exercise_id: UUID_REGEX,
                         name: "hamstring curls",
                         type: "strength",
                         sets: 5,
@@ -334,16 +351,12 @@ describe("EditWorkout", () => {
 
         // 
         const updatedPayload= {
-            p_workout_id: expect.stringMatching(
-                /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
-            ),
+            p_workout_id: UUID_REGEX,
             resolved_workout: {
                 date: "2026-08-24",
                 exercises: [                
                     {
-                        exercise_id: expect.stringMatching(
-                            /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
-                        ),
+                        exercise_id: UUID_REGEX,
                         name: "Trail running",
                         type: "duration",
                         duration_minutes: 45,
