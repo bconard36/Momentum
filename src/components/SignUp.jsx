@@ -80,13 +80,15 @@ const SignUp = () => {
     return ( 
         <>
 
-                <div className="return-container">
+                
+
+                <header className="workout-header" id="create-account-header">
+                    <div className="return-container">
                     <Link to="/" className="return-link" id="sign-in-return">Return to Sign In</Link>
                 </div>
-
-                <p className="dashboard-subtitle" id="sign-up-subtitle">
-                    Log Workouts | Track Progress | Build Momentum
-                </p>
+                    <h1 className="workout-title" id="workout-log-title">Create Account</h1>
+                    <p className="workout-subtitle">Please fill out all fields.</p>
+                </header>
 
                 <form className="create-account-form" onSubmit={handleSubmit(onSubmit)}>
                     <div className="sign-up-form-group">
