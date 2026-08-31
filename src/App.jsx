@@ -81,10 +81,30 @@ function App() {
     }
   };
 
-  // Fetch the workout log with useEffect()
+  // Verify the authenticated user and listed for auth state changes
+  // Fetch the workout log once a user is authenticated
+  const [user, setUser] = useState(undefined);
+
   useEffect(() => {
-    fetchWorkoutLog();
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      setUser(user);
+    });
+
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event, _session) => {
+        // re-verify instead of trusting session directly
+        supabase.auth.getUser().then(({ data: { user } }) => setUser(user));
+      },
+    );
+
+    return () => listener.subscription.unsubscribe();
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      fetchWorkoutLog();
+    }
+  }, [user]);
 
   /**
    * Deletes a specified workout from the workout log
