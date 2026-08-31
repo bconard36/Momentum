@@ -202,10 +202,35 @@
 }
 
 header.workout-header .return-container {
+  position: static;
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.75rem;
   flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+}
+
+header.workout-header .return-link {
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  opacity: 0.9;
+}
+
+#sign-in-return,
+#create-home-return {
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease,
+    text-shadow 0.2s ease;
+}
+
+#sign-in-return:hover,
+#sign-in-return:focus-visible,
+#create-home-return:hover,
+#create-home-return:focus-visible {
+  color: var(--accent-mint-light);
+  transform: translateY(-2px);
+  text-shadow: 0 4px 12px rgba(96, 165, 250, 0.25);
 }
 
 .sign-up-form-actions {
@@ -217,13 +242,6 @@ header.workout-header .return-container {
 
 #clear-button {
   margin-bottom: 20px;
-}
-
-#sign-in-return:hover,
-#sign-in-return:focus-visible {
-  color: var(--accent-mint-light);
-  transform: translateY(-2px);
-  text-shadow: 0 4px 12px rgba(96, 165, 250, 0.25);
 }
 
 #create-success-overlay {
