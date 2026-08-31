@@ -9,6 +9,7 @@ import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
 import { supabase } from "./utils/supabaseClient";
 import WorkoutLog from "./components/WorkoutLog";
+import LandingPage from "./components/LandingPage";
 
 /**
  * Home Route Component
@@ -117,7 +118,7 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          {/* <Route path="/" element={ <LandingPage /> } /> */}
+          <Route path="/" element={<LandingPage />} />
           <Route path="/sign-in" element={<HomeRedirect />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route
