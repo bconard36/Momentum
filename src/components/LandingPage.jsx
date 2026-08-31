@@ -15,10 +15,10 @@ const LandingPage = () => {
         <span className="landing-logo">Momentum</span>
         <div className="landing-nav-actions">
           <Link to="/sign-in" className="btn primary-button">
-            Sign in
+            Sign In
           </Link>
           <Link to="/sign-up" className="btn primary-button">
-            Sign up
+            Sign Up
           </Link>
         </div>
       </nav>
@@ -33,7 +33,7 @@ const LandingPage = () => {
           <DashboardPreview />
         </div>
         <div className="panel">
-          <WorkoutLogPreview />
+          <WorkoutFormPreview />
         </div> */}
         <div className="panel panel--wide">
           <CalculatorPreview />
