@@ -7,6 +7,11 @@ const LandingPage = () => {
   return (
     <div className="landing">
       <nav className="landing-nav">
+        <img
+          src="././favicon-momentum.svg"
+          alt="a white m with blue and green graphics"
+          className="landing-image"
+        />
         <span className="landing-logo">Momentum</span>
         <div className="landing-nav-actions">
           <Link to="/sign-in" className="btn primary-button">
