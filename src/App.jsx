@@ -10,6 +10,7 @@ import SignUp from "./components/SignUp";
 import { supabase } from "./utils/supabaseClient";
 import WorkoutLog from "./components/WorkoutLog";
 import LandingPage from "./components/LandingPage";
+import { useAuthUser } from "./hooks/useAuthUser";
 
 /**
  * Home Route Component
@@ -83,22 +84,7 @@ function App() {
 
   // Verify the authenticated user and listed for auth state changes
   // Fetch the workout log once a user is authenticated
-  const [user, setUser] = useState(undefined);
-
-  useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      setUser(user);
-    });
-
-    const { data: listener } = supabase.auth.onAuthStateChange(
-      (_event, _session) => {
-        // re-verify instead of trusting session directly
-        supabase.auth.getUser().then(({ data: { user } }) => setUser(user));
-      },
-    );
-
-    return () => listener.subscription.unsubscribe();
-  }, []);
+  const user = useAuthUser();
 
   useEffect(() => {
     if (user) {
