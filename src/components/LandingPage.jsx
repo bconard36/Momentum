@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import Hero from "./Hero";
 import WorkoutFormPreview from "./WorkoutFormPreview";
 import CalculatorPreview from "./CalculatorPreview";
 
@@ -17,7 +18,7 @@ const LandingPage = () => {
         </div>
       </nav>
 
-      {/* <Hero /> */}
+      <Hero />
 
       <section className="landing-grid">
         <div className="panel panel-wide">
