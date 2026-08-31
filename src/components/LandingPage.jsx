@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import WorkoutFormPreview from "./WorkoutFormPreview";
+import CalculatorPreview from "./CalculatorPreview";
 
 const LandingPage = () => {
   return (
@@ -27,10 +28,10 @@ const LandingPage = () => {
         </div>
         <div className="panel">
           <WorkoutLogPreview />
-        </div>
+        </div> */}
         <div className="panel panel--wide">
           <CalculatorPreview />
-        </div> */}
+        </div>
       </section>
     </div>
   );
