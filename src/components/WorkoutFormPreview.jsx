@@ -1,8 +1,8 @@
 import MockWorkouts from "../mock/mockWorkouts";
 
 const WorkoutFormPreview = () => {
-  const randomIndex = Math.floor(Math.random() * 3) + 1;
-  const sampleWorkout = MockWorkouts[randomIndex];
+  const sampleWorkout = MockWorkouts[2];
+  const workoutDate = sampleWorkout.date;
 
   return (
     <div className="preview preview--workout-form">
@@ -10,7 +10,7 @@ const WorkoutFormPreview = () => {
       <div className="preview__mock-form">
         <div className="mock-field">
           <label>Date</label>
-          <div className="mock-input">{sampleWorkout.date}</div>
+          <div className="mock-input">{workoutDate}</div>
         </div>
         {sampleWorkout.exercises.map((ex, i) => (
           <div className="mock-exercise" key={i}>
