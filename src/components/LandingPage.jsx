@@ -15,13 +15,13 @@ const LandingPage = () => {
         </div>
       </nav>
 
-      {/* <Hero />
+      {/* <Hero /> */}
 
       <section className="landing__grid">
         <div className="panel panel--wide">
           <WorkoutFormPreview />
         </div>
-        <div className="panel">
+        {/* <div className="panel">
           <DashboardPreview />
         </div>
         <div className="panel">
@@ -29,8 +29,8 @@ const LandingPage = () => {
         </div>
         <div className="panel panel--wide">
           <CalculatorPreview />
-        </div>
-      </section> */}
+        </div> */}
+      </section>
     </div>
   );
 };
