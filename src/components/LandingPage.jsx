@@ -1,15 +1,16 @@
 import { Link } from "react-router";
+import WorkoutFormPreview from "./WorkoutFormPreview";
 
 const LandingPage = () => {
   return (
     <div className="landing">
-      <nav className="landing__nav">
-        <span className="landing__logo">Momentum</span>
-        <div className="landing__nav-actions">
-          <Link to="/sign-in" className="btn btn--ghost">
+      <nav className="landing-nav">
+        <span className="landing-logo">Momentum</span>
+        <div className="landing-nav-actions">
+          <Link to="/sign-in" className="btn primary-button">
             Sign in
           </Link>
-          <Link to="/sign-up" className="btn btn--primary">
+          <Link to="/sign-up" className="btn primary-button">
             Sign up
           </Link>
         </div>
@@ -17,8 +18,8 @@ const LandingPage = () => {
 
       {/* <Hero /> */}
 
-      <section className="landing__grid">
-        <div className="panel panel--wide">
+      <section className="landing-grid">
+        <div className="panel panel-wide">
           <WorkoutFormPreview />
         </div>
         {/* <div className="panel">
