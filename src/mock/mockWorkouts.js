@@ -1,6 +1,6 @@
 // src/mock/mockWorkouts.js
 
-export const mockWorkouts = [
+const mockWorkouts = [
   {
     date: "2026-08-24",
     exercises: [
@@ -38,3 +38,5 @@ export const mockWorkouts = [
     ],
   },
 ];
+
+export default mockWorkouts;
