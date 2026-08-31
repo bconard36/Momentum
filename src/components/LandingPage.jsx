@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import Hero from "./Hero";
-import WorkoutFormPreview from "./WorkoutFormPreview";
+import WorkoutLogPreview from "./WorkoutLogPreview";
 import CalculatorPreview from "./CalculatorPreview";
 
 const LandingPage = () => {
@@ -27,7 +27,7 @@ const LandingPage = () => {
 
       <section className="landing-grid">
         <div className="panel panel-wide">
-          <WorkoutFormPreview />
+          <WorkoutLogPreview />
         </div>
         {/* <div className="panel">
           <DashboardPreview />
