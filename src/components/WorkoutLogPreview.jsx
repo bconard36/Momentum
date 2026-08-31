@@ -18,7 +18,7 @@ const WorkoutFormPreview = () => {
 
   return (
     <div className="preview-workout-panel preview workout-overlay">
-      <h3>Log a workout in seconds</h3>
+      <h3>Review your Progress</h3>
       <div className="preview-mock-form">
         <p className="preview-date-header">{formatDate(sampleWorkout.date)}</p>
 
