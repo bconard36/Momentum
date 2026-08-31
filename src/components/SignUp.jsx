@@ -130,6 +130,9 @@ const SignUp = () => {
               <Link to="/sign-in" className="return-link" id="sign-in-return">
                 Return to Sign In
               </Link>
+              <Link to="/" className="return-link" id="create-home-return">
+                Return to Home
+              </Link>
             </div>
             <h1 className="workout-title" id="workout-log-title">
               Create Account

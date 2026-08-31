@@ -68,12 +68,12 @@ const SignIn = () => {
 
   return (
     <>
-      <div className="return-container">
-        <Link to="/" className="return-link" id="sign-in-return">
-          Return to Home
-        </Link>
-      </div>
       <div className="sign-in-container">
+        <div className="return-container">
+          <Link to="/" className="return-link" id="sign-in-home-return">
+            Return to Home
+          </Link>
+        </div>
         <form className="sign-in-form" onSubmit={handleSubmit(onSubmit)}>
           {/* Render the sign in form when no login errors detected */}
           {!errors.root?.message && (
