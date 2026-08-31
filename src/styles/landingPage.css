@@ -64,6 +64,7 @@
   font-weight: 600;
   cursor: pointer;
   border: none;
+  text-decoration: none;
 }
 
 .btn-ghost {
