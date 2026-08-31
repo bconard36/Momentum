@@ -1,7 +1,7 @@
-import MockWorkouts from "../mock/mockWorkouts";
+import { mockWorkouts } from "../mock/mockWorkouts";
 
 const WorkoutFormPreview = () => {
-  const sampleWorkout = MockWorkouts[2];
+  const sampleWorkout = mockWorkouts[2];
   const workoutDate = sampleWorkout.date;
 
   return (
