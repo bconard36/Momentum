@@ -31,16 +31,8 @@ const WorkoutFormPreview = () => {
         <p>Fields adapt automatically based on workout type.</p>
       </div>
       <div className="mock-tabs">
-        <div
-          className={`mock-tab ${activeType === "strength" ? "mock-tab-active" : ""}`}
-        >
-          Strength
-        </div>
-        <div
-          className={`mock-tab ${activeType === "duration" ? "mock-tab-active" : ""}`}
-        >
-          Duration
-        </div>
+        <div className="mock-tab mock-tab-active">Strength</div>
+        <div className="mock-tab">Duration</div>
       </div>
 
       <div className="preview-mock-form">
@@ -62,6 +54,12 @@ const WorkoutFormPreview = () => {
             <div className="mock-input">{strengthExercise.weight} lb</div>
           </div>
         </div>
+      </div>
+      <div className="mock-form-buttons">
+        <button className="preview-mock-form-button">
+          Add Another Exercise
+        </button>
+        <button className="preview-mock-form-button">Save Workout</button>
       </div>
     </div>
   );

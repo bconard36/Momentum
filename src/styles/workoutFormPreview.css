@@ -57,3 +57,28 @@
 .preview-mock-form .mock-input {
   border: 0.5px solid var(--border-active-mint);
 }
+
+.mock-form-buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 5px;
+  gap: 10px;
+}
+
+.preview-mock-form-button {
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--primary-text);
+  background: linear-gradient(
+    135deg,
+    var(--accent-mint-light) 0%,
+    var(--accent-mint) 100%
+  );
+  border-color: var(--border-active-mint);
+  user-select: none;
+  cursor: auto;
+}
