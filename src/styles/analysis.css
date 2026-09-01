@@ -1,8 +1,14 @@
 /* Global Analysis Component Style Rules */
-.analysis-container {
+.analysis-header-container {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin: 2.5%;
+}
+
+#analysis-return:hover {
+  color: var(--accent-mint-light);
 }
 
 /* Style Rules for Thirty Day Count Component */
