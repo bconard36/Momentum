@@ -2,7 +2,6 @@ import { Link, useNavigate } from "react-router";
 import { supabase } from "../utils/supabaseClient";
 import { useState } from "react";
 import Header from "./Header";
-import WorkoutStreak from "./WorkoutStreak";
 
 // ============================================================
 // Dashboard.jsx
