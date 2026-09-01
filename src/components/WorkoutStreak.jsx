@@ -1,4 +1,11 @@
+/**
+ * Workout Streak Component
+ * Calculates the current streak of consecutive days with workouts completed
+ * @param {Object<Array>} workouts - saved user workouts
+ * @returns {JSXElement}
+ */
 const WorkoutStreak = ({ workouts }) => {
+  // Store millisecond constant for one day
   const day_milliseconds = 24 * 60 * 60 * 1000;
   // Store workout dates
   const workoutDates = workouts.map((workout) => {
