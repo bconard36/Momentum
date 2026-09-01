@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import Hero from "./Hero";
 import WorkoutLogPreview from "./WorkoutLogPreview";
 import CalculatorPreview from "./CalculatorPreview";
+import WorkoutFormPreview from "./WorkoutFormPreview";
 
 const LandingPage = () => {
   return (
@@ -31,10 +32,10 @@ const LandingPage = () => {
         </div>
         {/* <div className="panel">
           <DashboardPreview />
-        </div>
+        </div> */}
         <div className="panel">
           <WorkoutFormPreview />
-        </div> */}
+        </div>
         <div className="panel panel--wide">
           <CalculatorPreview />
         </div>

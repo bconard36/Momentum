@@ -10,6 +10,7 @@ import "./styles/success.css";
 import "./styles/notFound.css";
 import "./styles/landingPage.css";
 import "./styles/hero.css";
+import "./styles/workoutFormPreview.css";
 import App from "./App.jsx";
 
 createRoot(document.getElementById("root")).render(
