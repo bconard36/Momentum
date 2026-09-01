@@ -1,6 +1,11 @@
 import { mockWorkouts } from "../mock/mockWorkouts";
 
-const WorkoutFormPreview = () => {
+/**
+ * Maps through hard coded mock workout data to display a mock workout log
+ * @returns {JSXElement} - workout log preview for landing page
+ */
+
+const WorkoutLogPreview = () => {
   const sampleWorkout = mockWorkouts[2];
 
   const formatDate = (dateStr) => {
@@ -49,4 +54,4 @@ const WorkoutFormPreview = () => {
   );
 };
 
-export default WorkoutFormPreview;
+export default WorkoutLogPreview;

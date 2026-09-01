@@ -1,5 +1,7 @@
-// src/mock/mockWorkouts.js
-
+/**
+ * Mock workouts object containing mock workout data
+ * Used for Landing Page components
+ */
 export const mockWorkouts = [
   {
     date: "2026-08-24",

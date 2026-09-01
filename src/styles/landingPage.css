@@ -166,7 +166,6 @@
   overflow: hidden;
 }
 
-/* subtle glow accent in the corner — small flair, doesn't compete with content */
 .preview-calculator::before {
   content: "";
   position: absolute;
@@ -250,8 +249,6 @@
   color: var(--text-primary);
 }
 
-/* reuses your existing .btn / .btn--primary classes,
-   this just scopes a slightly smaller variant for inside preview panels */
 .preview-calculator .btn-primary {
   display: inline-block;
   width: 100%;
