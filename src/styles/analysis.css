@@ -1,0 +1,7 @@
+/* Style Rules for Thirty Day Count Component */
+.analysis-monthly-total-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Noto Sans", sans-serif;
+}

@@ -27,8 +27,11 @@ const ThirtyDayCount = ({ workouts }) => {
   });
 
   return (
-    <div className="workout-streak-header">
-      30 day total: {thirtyDayTotal.length}
+    <div className="analysis-monthly-total-container">
+      <div className="workout-streak-header">
+        <p className="analysis-header">Total Workouts in the last 30 days:</p>
+        <span className="thirty-day-total">{thirtyDayTotal.length}</span>
+      </div>
     </div>
   );
 };

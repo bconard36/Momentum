@@ -11,6 +11,7 @@ import "./styles/notFound.css";
 import "./styles/landingPage.css";
 import "./styles/hero.css";
 import "./styles/workoutFormPreview.css";
+import "./styles/analysis.css";
 import App from "./App.jsx";
 
 createRoot(document.getElementById("root")).render(
