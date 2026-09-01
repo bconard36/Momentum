@@ -21,17 +21,10 @@ import { useAuthUser } from "./hooks/useAuthUser";
  * @returns {JSX.Element} Loading state, dashboard redirect, or sign-in component
  */
 function HomeRedirect() {
-  const [loading, setLoading] = useState(true);
-  const [authenticated, setAuthenticated] = useState(false);
+  const user = useAuthUser();
 
-  useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      setAuthenticated(!!user);
-      setLoading(false);
-    });
-  }, []);
-
-  if (loading) {
+  // undefined = still checking, matches hook's internal state
+  if (user === undefined) {
     return (
       <div className="loading-message-container">
         <div className="loading-message">Loading...</div>
@@ -39,7 +32,7 @@ function HomeRedirect() {
     );
   }
 
-  if (authenticated) {
+  if (user) {
     return <Navigate to="/dashboard" replace />;
   }
 
