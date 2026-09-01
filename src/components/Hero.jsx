@@ -12,7 +12,7 @@ const Hero = () => {
         Log your workouts. Watch your progress build.
       </h1>
       <p className="hero-subtext">
-        One place to track every set, session, and stat — so momentum keeps
+        One place to track every set, session, and stat — so Momentum keeps
         moving forward.
       </p>
     </section>
