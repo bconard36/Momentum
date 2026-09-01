@@ -116,6 +116,13 @@ const Dashboard = () => {
             <span className="nav-card-label">Workout History</span>
             <button className="secondary-button">View Workout Log</button>
           </Link>
+
+          <Link to="/analysis" className="nav-card">
+            <span className="nav-card-label">Workout Analysis</span>
+            <span className="nav-card-description">
+              Review metrics and stats of your past workouts
+            </span>
+          </Link>
         </nav>
       </div>
     </>

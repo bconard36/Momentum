@@ -18,8 +18,11 @@ const ThirtyDayCount = ({ workouts }) => {
   // Count the total number of workouts within the last 30 days
   const thirtyDayTotal = workouts.filter((workout) => {
     const [year, month, day] = workout.date.split("-");
+    // Build a date object directly from time zone components from workout object
+    // Mixing new Date(string) and new Date(year, month, day) leads to 2 different time zone behaviors.
     const workoutDate = new Date(Number(year), Number(month) - 1, Number(day));
 
+    // Ensure inclusive bounds so a workout logged today and one logged exactly 30 days ago will appear
     return workoutDate >= pastDate && workoutDate <= today;
   });
 

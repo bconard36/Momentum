@@ -4,6 +4,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Dashboard from "./components/Dashboard";
 import Calculator from "./components/CalorieTrack/components/CalculatorForm";
 import WorkoutForm from "./components/WorkoutForm";
+import Analytics from "./components/Analytics";
 import NotFound from "./components/NotFound";
 import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
@@ -147,6 +148,14 @@ function App() {
                   isLoading={isLoadingWorkouts}
                   workoutError={workoutError}
                 />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/analysis"
+            element={
+              <ProtectedRoute>
+                <Analytics workouts={savedWorkouts} />
               </ProtectedRoute>
             }
           />
