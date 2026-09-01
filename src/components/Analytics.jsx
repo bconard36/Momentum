@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import ThirtyDayCount from "./ThirtyDayCount";
+import WorkoutStreak from "./WorkoutStreak";
 const Analytics = ({ workouts }) => {
   return (
     <>
@@ -13,6 +14,7 @@ const Analytics = ({ workouts }) => {
         <p>Take a look under the hood of your workouts</p>
       </div>
       <ThirtyDayCount workouts={workouts} />
+      <WorkoutStreak workouts={workouts} />
     </>
   );
 };
