@@ -279,9 +279,9 @@ const WorkoutForm = ({ fetchWorkoutLog }) => {
                   onClick={() =>
                     append({
                       name: "",
-                      sets: 0,
-                      reps: 0,
-                      weight: 0,
+                      sets: undefined,
+                      reps: undefined,
+                      weight: undefined,
                       type: "",
                       duration_minutes: 0,
                       duration_seconds: 0,
