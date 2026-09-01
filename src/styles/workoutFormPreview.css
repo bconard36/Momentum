@@ -17,7 +17,7 @@
   user-select: none;
 }
 
-.mock-tab--active {
+.mock-tab-active {
   color: var(--primary-text);
   background: linear-gradient(
     135deg,

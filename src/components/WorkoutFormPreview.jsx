@@ -32,12 +32,12 @@ const WorkoutFormPreview = () => {
       </div>
       <div className="mock-tabs">
         <div
-          className={`mock-tab ${activeType === "strength" ? "mock-tab--active" : ""}`}
+          className={`mock-tab ${activeType === "strength" ? "mock-tab-active" : ""}`}
         >
           Strength
         </div>
         <div
-          className={`mock-tab ${activeType === "duration" ? "mock-tab--active" : ""}`}
+          className={`mock-tab ${activeType === "duration" ? "mock-tab-active" : ""}`}
         >
           Duration
         </div>
