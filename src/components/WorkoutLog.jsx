@@ -7,7 +7,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import EditWorkout from "./EditWorkout";
-import WorkoutStreak from "./WorkoutStreak";
+import ThirtyDayCount from "./ThirtyDayCount";
 
 /**
  * Renders a modal displaying all saved workouts, with sorting, filtering and deletion support.
@@ -321,7 +321,7 @@ const WorkoutLog = ({
                   Workout Log
                 </h1>
               </header>
-              <WorkoutStreak workouts={savedWorkouts} />
+              <ThirtyDayCount workouts={savedWorkouts} />
               <div className="log-panel">
                 <div
                   className="workout-panel"
