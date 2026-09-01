@@ -1,3 +1,10 @@
+/* Global Analysis Component Style Rules */
+.analysis-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* Style Rules for Thirty Day Count Component */
 .thirty-day-total {
   display: flex;
