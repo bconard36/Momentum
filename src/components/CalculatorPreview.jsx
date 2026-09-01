@@ -3,9 +3,10 @@ import { Link } from "react-router";
 const CalculatorPreview = () => {
   return (
     <div className="preview preview-calculator">
-      <h3>Know your numbers</h3>
-      <p>BMI, BMR, and TDEE — calculated in seconds.</p>
-
+      <div className="preview-calculator-header">
+        <h3>Know your numbers</h3>
+        <p>BMI, BMR, and TDEE — calculated in seconds.</p>
+      </div>
       <div className="preview-mock-calculator">
         <div className="mock-field">
           <label>Height (inches)</label>
