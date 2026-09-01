@@ -205,7 +205,7 @@ describe("WorkoutForm", () => {
   });
 
   // Test 5 - Client-side validation should block submission before Supabase is contacted
-  it("shows an error when workout form has empty inputs", async () => {
+  it("shows an error when workout form has empty required inputs", async () => {
     const user = userEvent.setup();
     renderWorkoutForm();
 
@@ -229,13 +229,13 @@ describe("WorkoutForm", () => {
     // findBy waits for the error to appear
     expect(mockRpc).not.toHaveBeenCalled();
     expect(
-      await screen.findByText(/weight cannot be negative./i),
+      await screen.findByText(/Weight cannot be negative./i),
     ).toBeInTheDocument();
     expect(
-      await screen.findByText(/set count cannot exceed 100./i),
+      await screen.findByText(/Set count cannot exceed 100./i),
     ).toBeInTheDocument();
     expect(
-      await screen.findByText(/rep count is required./i),
+      await screen.findByText(/Rep count is required./i),
     ).toBeInTheDocument();
   });
 
@@ -361,8 +361,8 @@ describe("WorkoutForm", () => {
     ).toBeInTheDocument();
   });
 
-  // Test 8 - form submission OK with blank/empty input for duration_seconds
-  it("calls supabase.rpc() with an empty input for Duration (seconds)", async () => {
+  // Test 8 - shows success message after saving a workout with empty duration seconds inputs
+  it("shows success message with empty duration_seconds input", async () => {
     const user = userEvent.setup();
     renderWorkoutForm();
 
@@ -376,10 +376,10 @@ describe("WorkoutForm", () => {
     // Metric fields do not render until type has been selected
     await user.click(screen.getByRole("radio", { name: /Duration/i }));
 
-    // Capture exercise metric fields with a blank input for seconds
+    // Capture incomplete/invalid metric fields
     await user.type(screen.getByLabelText(/exercise name/i), "Outdoor run");
     await user.type(screen.getByLabelText(/Duration \(minutes\)/i), "30");
-    await user.type(screen.getByLabelText(/Duration \(seconds\)/i), "");
+    await user.type(screen.getByLabelText(/Duration \(seconds\)/i), "''");
 
     // Mock the save workout
     await user.click(screen.getByRole("button", { name: /Save Workout/i }));
@@ -407,7 +407,7 @@ describe("WorkoutForm", () => {
           sets: undefined,
           reps: undefined,
           duration_minutes: 30,
-          duration_seconds: null,
+          duration_seconds: 0,
         },
       ],
     };
