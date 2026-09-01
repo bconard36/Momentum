@@ -49,3 +49,11 @@
   text-transform: capitalize;
   margin-bottom: 5px;
 }
+
+.preview-mock-form label {
+  color: var(--text-primary);
+}
+
+.preview-mock-form .mock-input {
+  border: 0.5px solid var(--border-active-mint);
+}
