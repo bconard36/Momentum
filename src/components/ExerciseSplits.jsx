@@ -1,3 +1,9 @@
+/**
+ * Renders the exercise splits for the user based on their saved workouts
+ * Calculates total workout count, and exercise type splits (strength vs duration)
+ * @param {Object<Array>} workouts - saved user workouts
+ * @returns
+ */
 const ExerciseSplits = ({ workouts }) => {
   /**
    * Loops through workouts and then exercises to extract exercise data
@@ -15,8 +21,10 @@ const ExerciseSplits = ({ workouts }) => {
     return exercisesList;
   };
 
+  // Store exercise list for calculations
   const exerciseList = exercises(workouts);
 
+  // Filter out strength and duration exercises into their own arrays
   const strengthCount = exerciseList.filter(
     (exercise) => exercise.type === "strength",
   ).length;
