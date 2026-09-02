@@ -54,12 +54,11 @@ const AnalyticsPreview = () => {
    * Logic borrowed from WorkoutStreak component, modified to use mock data
    * Today initialized as the first workout date in the mockWorkouts array to ensure a streak is present for testing purposes
    */
-  const day_milliseconds = 24 * 60 * 60 * 1000;
-  const workoutDates = mockWorkouts.map((workout) => workout.date);
+  const day_milliseconds = 24 * 60 * 60 * 1000; // One day in milliseconds
+  // Extract dates and normalize to ignore time boundaries
+  const normalizedDates = mockWorkouts.map((workout) => {
+    const [year, month, day] = workout.date.split("-");
 
-  // Normalize to ignore time boundaries
-  const normalizedDates = workoutDates.map((date) => {
-    const [year, month, day] = date.split("-");
     return new Date(Number(year), Number(month) - 1, Number(day)).setHours(
       0,
       0,
@@ -68,22 +67,14 @@ const AnalyticsPreview = () => {
     );
   });
 
-  const uniqueDates = [...new Set(normalizedDates)]; // Remove duplicates
-  uniqueDates.sort((a, b) => b - a);
-
-  const today = uniqueDates[0]; // Use the most recent workout date as today
-  const yesterday = today - day_milliseconds;
-
+  // Remove duplicates and sort dates in desc order
+  const uniqueDates = [...new Set(normalizedDates)].sort((a, b) => b - a);
   let currentStreak = 0;
-  let expectedDate = today;
-
-  currentStreak = uniqueDates[0] === today ? 1 : 0;
-  expectedDate =
-    uniqueDates[0] === today ? yesterday : today - day_milliseconds;
+  let expectedDate = uniqueDates[0];
 
   // Loop through the rest of the dates to find consecutive days
-  for (let i = 1; i < uniqueDates.length; i++) {
-    if (uniqueDates[i] === expectedDate) {
+  for (const date of uniqueDates) {
+    if (date === expectedDate) {
       currentStreak++;
       expectedDate -= day_milliseconds;
     } else {
