@@ -20,6 +20,8 @@
   --accent-mint: #10b981;
   --accent-mint-light: #34d399;
   --accent-teal: #2dd4c8;
+  --accent-indigo: #6a7fdb;
+  --accent-indigo-light: #8b9cf0;
   --border: rgba(255, 255, 255, 0.08);
   --border-active: rgba(59, 130, 246, 0.4);
   --border-active-mint: rgba(16, 185, 129, 0.4);
@@ -168,10 +170,10 @@ a {
 }
 
 .nav-card-history {
-  --nav-card-accent: var(--accent-mint);
+  --nav-card-accent: var(--accent-indigo);
 }
 .nav-card-history .nav-card-label {
-  color: var(--accent-mint-light);
+  color: var(--accent-indigo-light);
 }
 
 .nav-card-analysis {
