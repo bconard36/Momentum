@@ -43,7 +43,14 @@ const WorkoutStreak = ({ workouts }) => {
     currentStreak = 1;
     expectedDate = yesterday - day_milliseconds;
   } else {
-    return <p>No workouts logged for the past two days.</p>;
+    return (
+      <div className="empty-streak-container">
+        <p>No workouts logged for the past two days.</p>
+        <div className="streak-workout-link-container">
+          <Link to="/workouts">Log Workout Now</Link>
+        </div>
+      </div>
+    );
   }
 
   // Loop through the rest of the dates to find consecutive days

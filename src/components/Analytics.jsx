@@ -12,7 +12,6 @@ const Analytics = ({ workouts }) => {
       </div>
       <div className="analytics-header-container">
         <h1>Performance Analysis</h1>
-        <p>Take a look under the hood of your workouts</p>
       </div>
       <div className="analytics-grid">
         <ThirtyDayCount workouts={workouts} />

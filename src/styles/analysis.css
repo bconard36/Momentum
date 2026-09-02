@@ -78,7 +78,7 @@
 .analysis-header {
   font-size: 0.8rem;
   font-weight: 600;
-  color: var(--text-secondary);
+  color: var(--text-primary);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   margin-bottom: 0.5rem;
@@ -106,6 +106,30 @@
   line-height: 1;
 }
 
+.empty-streak-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.streak-workout-link-container {
+  width: fit-content;
+  height: auto;
+  padding: 5px;
+  border-radius: 999px;
+  background-color: var(--accent-teal);
+}
+
+.streak-workout-link-container a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 3px;
+}
+
 /* Style Rules for Exercise Split Component */
 .exercise-split-content {
   display: flex;
@@ -121,7 +145,7 @@
   align-items: center;
   font-weight: 600;
   font-size: 0.85rem;
-  color: var(--text-secondary);
+  color: var(--text-primary);
   margin: 0;
 }
 
