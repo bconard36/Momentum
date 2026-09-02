@@ -1,3 +1,5 @@
+import { Link } from "react-router";
+
 /**
  * Thirty Day Total Component
  * Written to start the analysis logic - not married to a separate component for this
@@ -31,6 +33,9 @@ const ThirtyDayCount = ({ workouts }) => {
       <div className="thirty-day-total">
         <p className="analysis-header">Total Workouts in the last 30 days:</p>
         <span>{thirtyDayTotal.length}</span>
+        <Link to="/logs" className="analysis-route">
+          View Workout Logs
+        </Link>
       </div>
     </div>
   );

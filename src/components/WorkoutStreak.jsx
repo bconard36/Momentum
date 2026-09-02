@@ -1,3 +1,5 @@
+import { Link } from "react-router";
+
 /**
  * Workout Streak Component
  * Calculates the current streak of consecutive days with workouts completed
@@ -58,6 +60,13 @@ const WorkoutStreak = ({ workouts }) => {
       <div className="workout-streak-header">
         <p className="analysis-header">Current Workout Streak:</p>
         <span>{currentStreak}</span>
+        <Link to="/workouts" className="analysis-route">
+          {currentStreak >= 1 ? (
+            <p>Keep the streak alive!</p>
+          ) : (
+            <p>No active streak found. Start one today!</p>
+          )}
+        </Link>
       </div>
     </div>
   );

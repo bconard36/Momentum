@@ -321,7 +321,9 @@ const WorkoutLog = ({
                   Workout Log
                 </h1>
               </header>
-              <ThirtyDayCount workouts={savedWorkouts} />
+              <Link to="/analytics" className="analysis-link">
+                <p>View Performance Analysis</p>
+              </Link>
               <div className="log-panel">
                 <div
                   className="workout-panel"
