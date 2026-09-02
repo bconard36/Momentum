@@ -231,7 +231,9 @@ const WorkoutForm = ({ fetchWorkoutLog }) => {
 
         <div className="workout-log-button-container">
           <Link to="/logs">
-            <button className="secondary-button">View Workout Log</button>
+            <button className="secondary-button" id="form-log-link">
+              View Workout Log
+            </button>
           </Link>
         </div>
 

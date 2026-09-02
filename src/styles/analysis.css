@@ -148,6 +148,7 @@
   justify-content: center;
   margin-bottom: 0.5rem;
   background: var(--bg-surface);
+  border: 1px solid var(--accent-teal);
   width: fit-content;
   padding: 0.5rem;
   border-radius: 999px;

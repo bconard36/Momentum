@@ -47,6 +47,13 @@ in base.css's :root — load base.css first.
   font-size: 14px;
 }
 
+#form-log-link:hover,
+#form-log-link:focus-visible {
+  border-color: var(--accent-indigo);
+  transform: translateY(-2px);
+  text-shadow: 0 4px 12px rgba(96, 165, 250, 0.25);
+}
+
 #workout-return:hover,
 #workout-return:focus-visible {
   color: var(--accent-mint-light);
