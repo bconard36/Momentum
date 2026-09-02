@@ -1,4 +1,4 @@
-const WorkoutSplits = ({ workouts }) => {
+const ExerciseSplits = ({ workouts }) => {
   /**
    * Loops through workouts and then exercises to extract exercise data
    * @param {Object<Array>} workouts - mock workout data
@@ -51,4 +51,4 @@ const WorkoutSplits = ({ workouts }) => {
   );
 };
 
-export default WorkoutSplits;
+export default ExerciseSplits;
