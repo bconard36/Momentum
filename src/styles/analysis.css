@@ -1,9 +1,58 @@
 /* Global Analysis Component Style Rules */
+.analytics-header-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  padding-top: 2.5%;
+  text-wrap: balance;
+  text-align: center;
+}
+.analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin: 2.5%;
+}
+
+@media (max-width: 768px) {
+  .analytics-header-container {
+    margin-top: 4rem;
+  }
+
+  .analytics-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .analysis-container {
   border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 2.5%;
-  margin: 3%;
+  border-radius: 14px;
+  padding: 1.75rem 1.25rem;
+  margin: 0; /* grid gap now handles spacing instead */
+  background: var(--bg-surface);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.analysis-container:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+/* Thin accent bar along the top of each card */
+.analysis-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--accent-mint);
 }
 
 .analysis-header-container {
@@ -14,40 +63,74 @@
   margin: 2.5%;
 }
 
-.workout-streak-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin: 2.5%;
+.analysis-header {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.5rem;
 }
 
 #analysis-return:hover {
   color: var(--accent-mint-light);
 }
 
-/* Style Rules for Thirty Day Count Component */
-.thirty-day-total {
+/* Style Rules for Thirty Day Count + Streak (single big-number cards) */
+.thirty-day-total,
+.workout-streak-header {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-family: "Noto Sans", sans-serif;
+}
+
+.thirty-day-total span,
+.workout-streak-header span {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1;
 }
 
 /* Style Rules for Exercise Split Component */
 .exercise-split-content {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  gap: 0.6rem;
   font-family: "Noto Sans", sans-serif;
+  width: 100%;
 }
 
 .exercise-split-content p {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin: 0;
 }
 
 .exercise-metric {
-  font-weight: 300;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  text-align: center;
+}
+
+.exercise-metric.count {
+  color: var(--text-primary);
+}
+
+.exercise-metric.strength {
+  color: var(--accent-mint);
+  background: rgba(94, 203, 216, 0.12);
+}
+
+.exercise-metric.duration {
+  color: var(--accent-blue);
+  background: rgba(94, 203, 216, 0.12);
 }

@@ -10,13 +10,15 @@ const Analytics = ({ workouts }) => {
           Return to Dashboard
         </Link>
       </div>
-      <div className="analysis-header-container">
+      <div className="analytics-header-container">
         <h1>Performance Analysis</h1>
         <p>Take a look under the hood of your workouts</p>
       </div>
-      <ThirtyDayCount workouts={workouts} />
-      <WorkoutStreak workouts={workouts} />
-      <ExerciseSplits workouts={workouts} />
+      <div className="analytics-grid">
+        <ThirtyDayCount workouts={workouts} />
+        <WorkoutStreak workouts={workouts} />
+        <ExerciseSplits workouts={workouts} />
+      </div>
     </>
   );
 };
