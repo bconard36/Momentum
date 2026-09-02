@@ -39,14 +39,25 @@ const ExerciseSplits = ({ workouts }) => {
   }
 
   return (
-    <div>
-      <p>Total Exercises: {exerciseList.length}</p>
-      <p>
-        Strength Exercises: {strengthCount} ({strengthPercentage}%)
-      </p>
-      <p>
-        Duration Exercises: {durationCount} ({durationPercentage}%)
-      </p>
+    <div className="analysis-container">
+      <div className="exercise-split-content">
+        <p>
+          Total Exercises:{" "}
+          <span className="exercise-metric count">{exerciseList.length}</span>
+        </p>
+        <p>
+          Strength Exercises:{" "}
+          <span className="exercise-metric strength">
+            {strengthCount} ({strengthPercentage}%)
+          </span>
+        </p>
+        <p>
+          Duration Exercises:{" "}
+          <span className="exercise-metric duration">
+            {durationCount} ({durationPercentage}%)
+          </span>
+        </p>
+      </div>
     </div>
   );
 };

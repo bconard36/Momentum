@@ -34,3 +34,20 @@
   justify-content: center;
   font-family: "Noto Sans", sans-serif;
 }
+
+/* Style Rules for Exercise Split Component */
+.exercise-split-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: "Noto Sans", sans-serif;
+}
+
+.exercise-split-content p {
+  font-weight: 600;
+}
+
+.exercise-metric {
+  font-weight: 300;
+}
