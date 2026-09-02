@@ -3,6 +3,7 @@ import Hero from "./Hero";
 import WorkoutLogPreview from "./WorkoutLogPreview";
 import CalculatorPreview from "./CalculatorPreview";
 import WorkoutFormPreview from "./WorkoutFormPreview";
+import AnalyticsPreview from "./AnalyticsPreview";
 
 const LandingPage = () => {
   return (
@@ -36,8 +37,11 @@ const LandingPage = () => {
         <div className="panel">
           <WorkoutFormPreview />
         </div>
-        <div className="panel panel--wide">
+        <div className="panel">
           <CalculatorPreview />
+        </div>
+        <div className="panel panel-wide">
+          <AnalyticsPreview />
         </div>
       </section>
     </div>
