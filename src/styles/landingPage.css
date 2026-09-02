@@ -246,11 +246,13 @@
   align-items: center;
 }
 
-.preview-calculator h3 {
+.preview-calculator h3,
+.preview-analytics h3 {
   color: var(--text-primary);
   font-size: 1.15rem;
   font-weight: 700;
   margin-bottom: 0.35rem;
+  text-transform: capitalize;
 }
 
 .preview-calculator p {
@@ -263,6 +265,29 @@
   border-radius: 12px;
   padding: 1.25rem;
   margin-bottom: 1.25rem;
+}
+
+.preview-analytics {
+  background: var(--bg-surface);
+  border-radius: 16px;
+  padding: 1.75rem;
+  border: 1px solid var(--accent-teal);
+  position: relative;
+  overflow: hidden;
+}
+
+.preview-analytics-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 1%;
+  font-family: "Noto sans", sans-serif;
+}
+
+.landing .analysis-container:hover {
+  transform: translateY(0);
+  box-shadow: none;
 }
 
 .mock-field {

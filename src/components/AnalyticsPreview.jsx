@@ -84,42 +84,47 @@ const AnalyticsPreview = () => {
 
   return (
     <>
-      <div className="analytics-header-container">
-        <h1>Analytics for Your Workouts</h1>
-        <p>
-          30 Day Overview, Exercise Type Splits, and Workout Streak Tracking
-        </p>
-      </div>
-      <div className="analysis-container">
-        <div className="thirty-day-total">
-          <p className="analysis-header">Total Workouts in the last 30 days:</p>
-          <span>{thirtyDayWorkouts.length}</span>
+      <div className="preview preview-analytics">
+        <div className="preview-analytics-header">
+          <h3>Analytics for Your Workouts</h3>
+          <p>
+            30 Day Overview, Exercise Type Splits, and Workout Streak Tracking
+          </p>
         </div>
-      </div>
-      <div className="analysis-container">
-        <div className="workout-streak-header">
-          <p className="analysis-header">Current Workout Streak:</p>
-          <span>{currentStreak}</span>
+
+        <div className="analysis-container">
+          <div className="thirty-day-total">
+            <p className="analysis-header">
+              Total Workouts in the last 30 days:
+            </p>
+            <span>{thirtyDayWorkouts.length}</span>
+          </div>
         </div>
-      </div>
-      <div className="analysis-container">
-        <div className="exercise-split-content">
-          <p>
-            Total Exercises:{" "}
-            <span className="exercise-metric count">{exercises.length}</span>
-          </p>
-          <p>
-            Strength Exercises:{" "}
-            <span className="exercise-metric strength">
-              {strengthExercises.length} ({strengthPercentage}%)
-            </span>
-          </p>
-          <p>
-            Duration Exercises:{" "}
-            <span className="exercise-metric duration">
-              {durationExercise.length} ({durationPercentage}%)
-            </span>
-          </p>
+        <div className="analysis-container">
+          <div className="workout-streak-header">
+            <p className="analysis-header">Current Workout Streak:</p>
+            <span>{currentStreak}</span>
+          </div>
+        </div>
+        <div className="analysis-container">
+          <div className="exercise-split-content">
+            <p>
+              Total Exercises:{" "}
+              <span className="exercise-metric count">{exercises.length}</span>
+            </p>
+            <p>
+              Strength Exercises:{" "}
+              <span className="exercise-metric strength">
+                {strengthExercises.length} ({strengthPercentage}%)
+              </span>
+            </p>
+            <p>
+              Duration Exercises:{" "}
+              <span className="exercise-metric duration">
+                {durationExercise.length} ({durationPercentage}%)
+              </span>
+            </p>
+          </div>
         </div>
       </div>
     </>
