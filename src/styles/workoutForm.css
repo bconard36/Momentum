@@ -49,7 +49,7 @@ in base.css's :root — load base.css first.
 
 #workout-return:hover,
 #workout-return:focus-visible {
-  color: var(--accent-mint-light);
+  color: var(--accent-teal);
   transform: translateY(-2px);
   text-shadow: 0 4px 12px rgba(96, 165, 250, 0.25);
 }

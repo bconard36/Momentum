@@ -19,6 +19,7 @@
   --accent-blue-light: #60a5fa;
   --accent-mint: #10b981;
   --accent-mint-light: #34d399;
+  --accent-teal: #2dd4c8;
   --border: rgba(255, 255, 255, 0.08);
   --border-active: rgba(59, 130, 246, 0.4);
   --border-active-mint: rgba(16, 185, 129, 0.4);
@@ -77,12 +78,7 @@ a {
 }
 
 .dashboard-header {
-  text-align: center;
-  margin-bottom: 40px;
-}
-
-.dashboard-header {
-  font-family: "Noto sans", sans-serif;
+  font-family: "Noto Sans", sans-serif;
   font-size: clamp(2rem, 4vw, 2.75rem);
   font-weight: 700;
   letter-spacing: -0.02em;
@@ -113,7 +109,21 @@ a {
   border: 1px solid var(--border);
   text-decoration: none;
   color: var(--text-primary);
-  transition: all 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--nav-card-accent, var(--border));
 }
 
 .nav-card:hover {
@@ -127,22 +137,10 @@ a {
   outline-offset: 2px;
 }
 
-.nav-card:nth-child(1):hover {
-  border-color: var(--border-active-mint);
-}
-
 .nav-card-label {
   font-family: "Noto Sans", sans-serif;
   font-size: 1.2rem;
   font-weight: 700;
-}
-
-.nav-card:nth-child(1) .nav-card-label {
-  color: var(--accent-mint-light);
-}
-
-.nav-card:nth-child(2) .nav-card-label {
-  color: var(--accent-blue-light);
 }
 
 .nav-card-description {
@@ -151,30 +149,44 @@ a {
   line-height: 1.6;
 }
 
+/* Explicit per-tile accent colors, replacing fragile nth-child selectors */
+.nav-card-workouts {
+  --nav-card-accent: var(--accent-mint);
+}
+.nav-card-workouts .nav-card-label {
+  color: var(--accent-mint-light);
+}
+.nav-card-workouts:hover {
+  border-color: var(--border-active-mint);
+}
+
+.nav-card-calculator {
+  --nav-card-accent: var(--accent-blue);
+}
+.nav-card-calculator .nav-card-label {
+  color: var(--accent-blue-light);
+}
+
+.nav-card-history {
+  --nav-card-accent: var(--accent-mint);
+}
+.nav-card-history .nav-card-label {
+  color: var(--accent-mint-light);
+}
+
+.nav-card-analysis {
+  --nav-card-accent: var(--accent-teal);
+}
+.nav-card-analysis .nav-card-label {
+  color: var(--accent-teal);
+}
+
 .dashboard-header-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: 1.5rem;
-}
-
-.dashboard-log {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 10px;
-  width: min(100%, 360px);
-  margin: 0 auto;
-  grid-column: 1 / -1;
-}
-
-.dashboard-log > span {
-  color: var(--accent-mint);
-  padding-bottom: 10px;
 }
 
 /* Shared "back" link — used by the Calculator tool (as .return-link)

@@ -98,26 +98,28 @@ const Dashboard = () => {
         <Header />
 
         <nav className="dashboard-nav" aria-label="Main sections">
-          <Link to="/workouts" className="nav-card">
+          <Link to="/workouts" className="nav-card nav-card-workouts">
             <span className="nav-card-label">Workouts</span>
             <span className="nav-card-description">
               Log today's session and review past workouts.
             </span>
           </Link>
 
-          <Link to="/calculator" className="nav-card">
+          <Link to="/calculator" className="nav-card nav-card-calculator">
             <span className="nav-card-label">Fitness Calculator</span>
             <span className="nav-card-description">
               Check your BMI, BMR, and daily calorie targets.
             </span>
           </Link>
 
-          <Link to="/logs" className="nav-card dashboard-log">
+          <Link to="/logs" className="nav-card nav-card-history">
             <span className="nav-card-label">Workout History</span>
-            <button className="secondary-button">View Workout Log</button>
+            <span className="nav-card-description">
+              Review your past workout logs and progress.
+            </span>
           </Link>
 
-          <Link to="/analysis" className="nav-card">
+          <Link to="/analysis" className="nav-card nav-card-analysis">
             <span className="nav-card-label">Workout Analysis</span>
             <span className="nav-card-description">
               Review metrics and stats of your past workouts

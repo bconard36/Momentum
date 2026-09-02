@@ -311,7 +311,7 @@ const WorkoutLog = ({
                 <Link
                   to="/dashboard"
                   className="return-link"
-                  id="workout-return"
+                  id="workout-log-return"
                 >
                   Return to Dashboard
                 </Link>

@@ -52,7 +52,7 @@
   left: 0;
   right: 0;
   height: 3px;
-  background: var(--accent-mint);
+  background: var(--accent-teal);
 }
 
 .analysis-header-container {
@@ -73,7 +73,7 @@
 }
 
 #analysis-return:hover {
-  color: var(--accent-mint-light);
+  color: var(--accent-teal);
 }
 
 /* Style Rules for Thirty Day Count + Streak (single big-number cards) */
@@ -126,7 +126,7 @@
 }
 
 .exercise-metric.strength {
-  color: var(--accent-mint);
+  color: var(--accent-teal);
   background: rgba(94, 203, 216, 0.12);
 }
 
@@ -137,7 +137,7 @@
 
 .analysis-route {
   font-size: 0.75rem;
-  color: var(--accent-mint);
+  color: var(--accent-teal);
   text-decoration: none;
   margin-top: 0.5rem;
 }
