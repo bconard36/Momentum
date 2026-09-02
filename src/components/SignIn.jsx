@@ -78,7 +78,7 @@ const SignIn = () => {
           {/* Render the sign in form when no login errors detected */}
           {!errors.root?.message && (
             <>
-              <h1 className="dashboard-title" id="form-title">
+              <h1 className="sign-in-title" id="form-title">
                 Momentum
               </h1>
               <div className="sign-in-form-group">

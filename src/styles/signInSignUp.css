@@ -26,6 +26,16 @@
   box-sizing: border-box;
 }
 
+.sign-in-title {
+  font-family: "Racing Sans One", sans-serif;
+  font-size: 3rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  text-shadow: 0 2px 18px rgba(96, 165, 250, 0.14);
+  margin-bottom: 25px;
+}
+
 .return-link#sign-in-home-return {
   cursor: pointer;
 }
@@ -33,6 +43,15 @@
 .return-link#sign-in-home-return:hover {
   color: var(--accent-mint);
   transform: translateY(-3px);
+}
+
+#form-title {
+  font-weight: 500;
+  letter-spacing: 0.125rem;
+  margin-bottom: 30px;
+  position: relative;
+  animation-name: titleAnimation;
+  animation-duration: 2s;
 }
 
 @media (min-width: 768px) {
@@ -50,15 +69,6 @@
     left: 0px;
     top: 0px;
   }
-}
-
-#form-title {
-  font-weight: 500;
-  letter-spacing: 0.125rem;
-  margin-bottom: 30px;
-  position: relative;
-  animation-name: titleAnimation;
-  animation-duration: 2s;
 }
 
 #create-account-header {
