@@ -47,7 +47,7 @@ const WorkoutStreak = ({ workouts }) => {
       <div className="empty-streak-container">
         <p>No workouts logged for the past two days.</p>
         <div className="streak-workout-link-container">
-          <Link to="/workouts">Log Workout Now</Link>
+          <Link to="/workouts">Start a Streak</Link>
         </div>
       </div>
     );

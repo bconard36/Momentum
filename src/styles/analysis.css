@@ -130,6 +130,10 @@
   padding: 3px;
 }
 
+.streak-workout-link-container:hover {
+  transform: translateY(-1.5px);
+}
+
 /* Style Rules for Exercise Split Component */
 .exercise-split-content {
   display: flex;
