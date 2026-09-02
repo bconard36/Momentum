@@ -141,3 +141,16 @@
   text-decoration: none;
   margin-top: 0.5rem;
 }
+
+#analysis-log-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+  background: var(--bg-surface);
+  width: fit-content;
+  padding: 0.5rem;
+  border-radius: 999px;
+  margin: 0 auto;
+  color: var(--text-primary);
+}

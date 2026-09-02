@@ -307,21 +307,25 @@ const WorkoutLog = ({
           )}
           {!deleteConfirm && (
             <>
+              <div className="return-container">
+                <Link
+                  to="/dashboard"
+                  className="return-link"
+                  id="workout-return"
+                >
+                  Return to Dashboard
+                </Link>
+              </div>
               <header className="workout-header">
-                <div className="return-container">
-                  <Link
-                    to="/dashboard"
-                    className="return-link"
-                    id="workout-return"
-                  >
-                    Return to Dashboard
-                  </Link>
-                </div>
                 <h1 className="workout-title" id="workout-log-title">
                   Workout Log
                 </h1>
               </header>
-              <Link to="/analytics" className="analysis-link">
+              <Link
+                to="/analysis"
+                className="analysis-route"
+                id="analysis-log-link"
+              >
                 <p>View Performance Analysis</p>
               </Link>
               <div className="log-panel">
