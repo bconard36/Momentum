@@ -449,6 +449,10 @@ const WorkoutLog = ({
                               <>
                                 <p>Exercise: {exercise.name}</p>
                                 <p>Type: {exercise.type}</p>
+                                <p>
+                                  {exercise.sets} sets &times; {exercise.reps}{" "}
+                                  reps{" "}
+                                </p>
                                 {exercise.weight === 0 && (
                                   <p>
                                     Weight: {exercise.weight}{" "}
@@ -461,9 +465,6 @@ const WorkoutLog = ({
                                     <span>lbs</span>{" "}
                                   </p>
                                 )}
-
-                                <p>Sets: {exercise.sets}</p>
-                                <p>Reps: {exercise.reps}</p>
                               </>
                             )}
                             {exercise.type === "duration" && (
