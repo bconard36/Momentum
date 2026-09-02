@@ -1,8 +1,14 @@
 import { mockWorkouts } from "../mock/mockWorkouts";
-
+/**
+ * Displays a summary of workout analytics based on mock workout data.
+ * Calculates a total number of workouts in the last 30 days, a current workout streak, and exercise type splits
+ * @returns {JSXElement}
+ *
+ */
 const AnalyticsPreview = () => {
   /**
    * Thirty Day Count Logic for Analytics Preview Component
+   * Logic borrowed from ThirtyDayCount component, modified to use mock data
    */
   const exercises = mockWorkouts.flatMap((workout) => workout.exercises);
 
@@ -16,14 +22,14 @@ const AnalyticsPreview = () => {
 
   const thirtyDayWorkouts = mockWorkouts.filter((workout) => {
     const [year, month, day] = workout.date.split("-");
-    // Build a date object directly from time zone components from workout object
-    // Mixing new Date(string) and new Date(year, month, day) leads to 2 different time zone behaviors.
     const workoutDate = new Date(Number(year), Number(month) - 1, Number(day));
 
-    // Ensure inclusive bounds so a workout logged today and one logged exactly 30 days ago will appear
     return workoutDate >= pastDate && workoutDate <= endDate;
   });
 
+  /**
+   * Logic for exercise type splits
+   */
   const strengthExercises = exercises.filter(
     (exercise) => exercise.type === "strength",
   );
@@ -31,6 +37,9 @@ const AnalyticsPreview = () => {
     (exercise) => exercise.type === "duration",
   );
 
+  /**
+   * Calculations for exercise type split percentages
+   */
   const strengthPercentage =
     strengthExercises.length === 0
       ? 0
@@ -42,6 +51,8 @@ const AnalyticsPreview = () => {
 
   /**
    * Streak Calculation Logic for Analytics Preview Component
+   * Logic borrowed from WorkoutStreak component, modified to use mock data
+   * Today initialized as the first workout date in the mockWorkouts array to ensure a streak is present for testing purposes
    */
   const day_milliseconds = 24 * 60 * 60 * 1000;
   const workoutDates = mockWorkouts.map((workout) => workout.date);
@@ -57,12 +68,11 @@ const AnalyticsPreview = () => {
     );
   });
 
-  // Sort dates in desc order (most recent first)
   const uniqueDates = [...new Set(normalizedDates)]; // Remove duplicates
   uniqueDates.sort((a, b) => b - a);
 
   const today = uniqueDates[0]; // Use the most recent workout date as today
-  const yesterday = today - day_milliseconds; // 1 day in milliseconds
+  const yesterday = today - day_milliseconds;
 
   let currentStreak = 0;
   let expectedDate = today;
@@ -75,9 +85,9 @@ const AnalyticsPreview = () => {
   for (let i = 1; i < uniqueDates.length; i++) {
     if (uniqueDates[i] === expectedDate) {
       currentStreak++;
-      expectedDate -= day_milliseconds; // Move to the previous day
+      expectedDate -= day_milliseconds;
     } else {
-      break; // Gap in streak found, loop ends
+      break;
     }
   }
 
