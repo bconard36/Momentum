@@ -4,6 +4,41 @@
  */
 export const mockWorkouts = [
   {
+    date: "2026-08-31",
+    exercises: [
+      {
+        name: "Cycling",
+        type: "duration",
+        duration_minutes: 35,
+        duration_seconds: 0,
+      },
+    ],
+  },
+  {
+    date: "2026-08-30",
+    exercises: [
+      { name: "Back Squat", type: "strength", sets: 3, reps: 10, weight: 210 },
+      {
+        name: "Trail Running",
+        type: "duration",
+        duration_minutes: 45,
+        duration_seconds: 22,
+      },
+    ],
+  },
+  {
+    date: "2026-08-29",
+    exercises: [
+      { name: "Deadlift", type: "strength", sets: 3, reps: 5, weight: 285 },
+      {
+        name: "Rowing Machine",
+        type: "duration",
+        duration_minutes: 15,
+        duration_seconds: 30,
+      },
+    ],
+  },
+  {
     date: "2026-08-24",
     exercises: [
       { name: "Back Squat", type: "strength", sets: 3, reps: 10, weight: 210 },
