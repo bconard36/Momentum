@@ -344,6 +344,22 @@ const WorkoutForm = ({ fetchWorkoutLog }) => {
                         <div className="radio-group">
                           <label
                             className="radio-option"
+                            htmlFor={`exercise-type-strength-${index}`}
+                          >
+                            <input
+                              id={`exercise-type-strength-${index}`}
+                              type="radio"
+                              value="Strength"
+                              {...register(`exercises.${index}.type`, {
+                                required: "Workout type is required.",
+                              })}
+                            />
+                            <div className="radio-text">
+                              <span>Strength</span>
+                            </div>
+                          </label>
+                          <label
+                            className="radio-option"
                             htmlFor={`exercise-type-duration-${index}`}
                           >
                             <input
@@ -356,26 +372,6 @@ const WorkoutForm = ({ fetchWorkoutLog }) => {
                             />
                             <div className="radio-text">
                               <span>Duration</span>
-                              <br />
-                              <span>(Time-based exerices)</span>
-                            </div>
-                          </label>
-                          <label
-                            className="radio-option"
-                            htmlFor={`exercise-type-strength-${index}`}
-                          >
-                            <input
-                              id={`exercise-type-strength-${index}`}
-                              type="radio"
-                              value="Strength"
-                              {...register(`exercises.${index}.type`, {
-                                required: "Workout type is required.",
-                              })}
-                            />
-                            <div className="radio-text">
-                              <span>Repetition</span>
-                              <br />
-                              <span>(Rep-based exercises)</span>
                             </div>
                           </label>
                         </div>
@@ -399,6 +395,7 @@ const WorkoutForm = ({ fetchWorkoutLog }) => {
                             <input
                               id={`exercise-name-${index}`}
                               type="text"
+                              className="exercise-name-input"
                               {...register(`exercises.${index}.name`, {
                                 required: "Exercise name is required",
                                 minLength: {
@@ -523,94 +520,96 @@ const WorkoutForm = ({ fetchWorkoutLog }) => {
                               })}
                             />
                           </div>
-                          <div className="field-group number-field-group">
-                            <label
-                              className="field-label"
-                              htmlFor={`exercise-weight-${index}`}
-                            >
-                              Weight (lbs)
-                            </label>
-                            {errors.exercises?.[index]?.weight && (
-                              <span className="error-message">
-                                {errors.exercises[index].weight.message}
-                              </span>
-                            )}
-                            <input
-                              id={`exercise-weight-${index}`}
-                              type="number"
-                              {...register(`exercises.${index}.weight`, {
-                                valueAsNumber: true,
-                                required: "Weight is required.",
-                                min: {
-                                  value: 0,
-                                  message: "Weight cannot be negative.",
-                                },
-                                max: {
-                                  value: 3000,
-                                  message: "Weight cannot exceed 3000.",
-                                },
-                              })}
-                            />
-                          </div>
-                          <div className="field-group number-field-group">
-                            <label
-                              className="field-label"
-                              htmlFor={`exercise-sets-${index}`}
-                            >
-                              Sets
-                            </label>
-                            {errors.exercises?.[index]?.sets && (
-                              <span className="error-message">
-                                {errors.exercises[index].sets.message}
-                              </span>
-                            )}
-                            <input
-                              id={`exercise-sets-${index}`}
-                              type="number"
-                              {...register(`exercises.${index}.sets`, {
-                                valueAsNumber: true,
-                                required: "Set count is required.",
-                                min: {
-                                  value: 1,
-                                  message:
-                                    "There must be at least 1 (one) set.",
-                                },
-                                max: {
-                                  value: 100,
-                                  message: "Set count cannot exceed 100.",
-                                },
-                              })}
-                            />
-                          </div>
-                          <div className="field-group number-field-group orphan-group">
-                            <label
-                              className="field-label"
-                              htmlFor={`exercise-reps-${index}`}
-                            >
-                              Reps
-                            </label>
-                            {errors.exercises?.[index]?.reps && (
-                              <span className="error-message">
-                                {errors.exercises[index].reps.message}
-                              </span>
-                            )}
-                            <input
-                              id={`exercise-reps-${index}`}
-                              type="number"
-                              {...register(`exercises.${index}.reps`, {
-                                valueAsNumber: true,
-                                required: "Rep count is required.",
-                                min: {
-                                  value: 1,
-                                  message:
-                                    "There must be at least 1 (one) rep.",
-                                },
-                                max: {
-                                  value: 1000,
-                                  message: "Rep count cannot exceed 1000.",
-                                },
-                              })}
-                            />
+                          <div className="strength-input-container">
+                            <div className="field-group number-field-group">
+                              <label
+                                className="field-label"
+                                htmlFor={`exercise-sets-${index}`}
+                              >
+                                Sets
+                              </label>
+                              {errors.exercises?.[index]?.sets && (
+                                <span className="error-message">
+                                  {errors.exercises[index].sets.message}
+                                </span>
+                              )}
+                              <input
+                                id={`exercise-sets-${index}`}
+                                type="number"
+                                {...register(`exercises.${index}.sets`, {
+                                  valueAsNumber: true,
+                                  required: "Set count is required.",
+                                  min: {
+                                    value: 1,
+                                    message:
+                                      "There must be at least 1 (one) set.",
+                                  },
+                                  max: {
+                                    value: 100,
+                                    message: "Set count cannot exceed 100.",
+                                  },
+                                })}
+                              />
+                            </div>
+                            <div className="field-group number-field-group">
+                              <label
+                                className="field-label"
+                                htmlFor={`exercise-reps-${index}`}
+                              >
+                                Reps
+                              </label>
+                              {errors.exercises?.[index]?.reps && (
+                                <span className="error-message">
+                                  {errors.exercises[index].reps.message}
+                                </span>
+                              )}
+                              <input
+                                id={`exercise-reps-${index}`}
+                                type="number"
+                                {...register(`exercises.${index}.reps`, {
+                                  valueAsNumber: true,
+                                  required: "Rep count is required.",
+                                  min: {
+                                    value: 1,
+                                    message:
+                                      "There must be at least 1 (one) rep.",
+                                  },
+                                  max: {
+                                    value: 1000,
+                                    message: "Rep count cannot exceed 1000.",
+                                  },
+                                })}
+                              />
+                            </div>
+                            <div className="field-group number-field-group orphan-group">
+                              <label
+                                className="field-label"
+                                htmlFor={`exercise-weight-${index}`}
+                              >
+                                Weight (lbs)
+                              </label>
+                              {errors.exercises?.[index]?.weight && (
+                                <span className="error-message">
+                                  {errors.exercises[index].weight.message}
+                                </span>
+                              )}
+                              <input
+                                id={`exercise-weight-${index}`}
+                                type="number"
+                                {...register(`exercises.${index}.weight`, {
+                                  valueAsNumber: true,
+                                  required: "Weight is required.",
+                                  min: {
+                                    value: 0,
+                                    message: "Weight cannot be negative.",
+                                  },
+                                  max: {
+                                    value: 3000,
+                                    message: "Weight cannot exceed 3000.",
+                                  },
+                                })}
+                              />
+                            </div>
                           </div>
                         </>
                       )}

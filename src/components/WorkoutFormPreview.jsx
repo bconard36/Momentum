@@ -38,7 +38,9 @@ const WorkoutFormPreview = () => {
       <div className="preview-mock-form">
         <div className="mock-field">
           <label>Exercise Name</label>
-          <div className="mock-input">{strengthExercise.name}</div>
+          <div className="mock-input" id="preview-exercise-input">
+            {strengthExercise.name}
+          </div>
         </div>
         <div className="mock-field-row">
           <div className="mock-field">
