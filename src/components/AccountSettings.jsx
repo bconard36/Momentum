@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router";
+import { supabase } from "../utils/supabaseClient";
 
 // Account Settings
 // Two buttons/areas - update password and update email
@@ -11,7 +12,8 @@ import { Link } from "react-router";
 // Redirect after
 // Do I need a form here?
 
-const AccountSettings = () => {
+const AccountSettings = ({ user }) => {
+  const originalEmail = user.email;
   const {
     register,
     handleSubmit,
@@ -39,18 +41,33 @@ const AccountSettings = () => {
 
   const onSubmit = async (data) => {
     try {
+      // const passwordReset = data.password_reset
       const emailReset = data.email_reset;
-      const passwordReset = data.password_reset;
-      if (resetAll) {
-        console.log(
-          `Account Settings Form Data: Email - ${emailReset}; Password: ${passwordReset}`,
-        );
-      } else if (resetPassword) {
-        console.log(
-          `Reset Password Data: Password: ${passwordReset}; Confirm Password: ${data.confirm_password_reset}`,
-        );
-      } else if (resetEmail) {
-        console.log(`Email update: ${emailReset}`);
+
+      if (resetEmail) {
+        const { data: newEmail, error: emailResetError } =
+          await supabase.auth.updateUser({
+            email: emailReset,
+          });
+
+        if (emailResetError) {
+          // Insert graceful error pop up here
+          console.log("Error resetting email: ", emailResetError);
+        } else if (emailReset === originalEmail) {
+          console.log("Invalid Email");
+          reset();
+        } else {
+          reset();
+          console.log(`Success! Email Address Updated`);
+        }
+        // } else if (resetPassword) {
+        //   console.log(
+        //     `Reset Password Data: Password: ${passwordReset}; Confirm Password: ${data.confirm_password_reset}`,
+        //   );
+        // } else if (resetAll) {
+        //   console.log(
+        //     `Account Settings Form Data: Email - ${emailReset}; Password: ${passwordReset}`,
+        //   );
       }
     } catch (error) {
       console.error("Error: ", error);
