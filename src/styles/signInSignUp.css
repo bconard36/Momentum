@@ -1,206 +1,218 @@
 /* Style Rules for Sign In Component */
 .sign-in-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100dvh;
-    padding: 20px;
-    position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100dvh;
+  padding: 20px;
+  position: relative;
 }
 
 .sign-in-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(180deg, rgb(from var(--accent-blue) r g b / 40%), var(--bg-surface));
-    padding: 40px 30px;
-    border-radius: 20px;
-    width: 100%;
-    max-width: 400px;
-    box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    180deg,
+    rgb(from var(--accent-blue) r g b / 40%),
+    var(--bg-surface)
+  );
+  padding: 40px 30px;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 400px;
+  box-sizing: border-box;
 }
 
 @media (min-width: 768px) {
-    .sign-in-form {
-        padding: 50px;
-    }
+  .sign-in-form {
+    padding: 50px;
+  }
 }
 
 @keyframes titleAnimation {
-    0% { left: 0px; top: -40px;}
-    100% { left: 0px; top: 0px; }
+  0% {
+    left: 0px;
+    top: -40px;
+  }
+  100% {
+    left: 0px;
+    top: 0px;
+  }
 }
 
 #form-title {
-    font-weight: 500;
-    letter-spacing: 0.125rem;
-    margin-bottom: 30px;
-    position: relative;
-    animation-name: titleAnimation;
-    animation-duration: 2s;
+  font-weight: 500;
+  letter-spacing: 0.125rem;
+  margin-bottom: 30px;
+  position: relative;
+  animation-name: titleAnimation;
+  animation-duration: 2s;
 }
 
 #create-account-header {
-    padding-top: 20px;
+  padding-top: 20px;
 }
 
-.sign-in-form-group, .sign-up-form-group {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    position: relative;
-    width: 100%;
-    max-width: 300px;
+.sign-in-form-group,
+.sign-up-form-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+  max-width: 300px;
 }
 
 .sign-in-form-group input,
 .sign-up-form-group input {
-    width: 100%;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    padding: 8px;
-    font-family: "Inter", sans-serif;
-    box-sizing: border-box;
-    outline: none;
-    transition: color 0.2s ease;
-    font-size: 16px;
+  width: 100%;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  padding: 8px;
+  font-family: "Inter", sans-serif;
+  box-sizing: border-box;
+  outline: none;
+  transition: color 0.2s ease;
+  font-size: 16px;
 }
 
 .sign-in-form-group input:focus,
 .sign-up-form-group input:focus {
-    outline: none;
-    box-shadow: none;
-    width: 100%;
+  outline: none;
+  box-shadow: none;
+  width: 100%;
 }
 
 .sign-up-form-group input[type="password"] {
-    padding-right: 45px;
+  padding-right: 45px;
 }
 
 .password-toggle {
-    position: absolute;
-    right: 10px;
-    bottom: 25px;
-    width: 24px;
-    height: 24px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--text-primary);
-    transition: color 0.2s ease;
-    pointer-events: auto;
+  position: absolute;
+  right: 10px;
+  bottom: 25px;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+  transition: color 0.2s ease;
+  pointer-events: auto;
 }
 
 .password-toggle:nth-child(1) {
-    color: var(--text-primary);
+  color: var(--text-primary);
 }
 
 .password-toggle:hover {
-    color: var(--accent-mint-light);
+  color: var(--accent-mint-light);
 }
 
 .sign-up-action {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-top: 30px;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+  width: 100%;
 }
 
 @media (max-width: 767px) {
-    .sign-up-action {
-        margin-top: 20px;
-    }
+  .sign-up-action {
+    margin-top: 20px;
+  }
 }
 
 .no-account {
-    padding-bottom: 10px;
+  padding-bottom: 10px;
 }
 
 .error-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 40px;
-    margin-top: 5px;
-    width: 100%;
-    max-width: 400px;
-    box-sizing: border-box;
-    padding: 0 30px 30px 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  margin-top: 5px;
+  width: 100%;
+  max-width: 400px;
+  box-sizing: border-box;
+  padding: 0 30px 30px 30px;
 }
 
 .login-error-overlay {
-    position: relative;
-    inset: 0;
-    z-index: 1000;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    backdrop-filter: blur(8px);
-    width: 300px;
-    height: 100px;
-    border-radius: var(--radius);
-    padding: 8px;
+  position: relative;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(8px);
+  width: 300px;
+  height: 100px;
+  border-radius: var(--radius);
+  padding: 8px;
 }
 
 #sign-in-error-message {
-    margin: 10px auto;
-    color: var(--text-primary);
-    font-size: 1rem;
+  margin: 10px auto;
+  color: var(--text-primary);
+  font-size: 1rem;
 }
 
 .login-error-overlay button {
-    margin: 10px auto;
+  margin: 10px auto;
 }
 
 /* Style Rules for Sign Up Component */
 
 .create-account-form {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  position: relative;
 }
 
-#sign-up-title, #sign-up-subtitle {
-    text-align: center;
-    margin-bottom: 15px;
+#sign-up-title,
+#sign-up-subtitle {
+  text-align: center;
+  margin-bottom: 15px;
 }
 
 #sign-up-title {
-    padding-top: 60px;
+  padding-top: 60px;
 }
 
 .sign-up-form-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-top: 10px;
 }
 
 #clear-button {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 #sign-in-return:hover,
 #sign-in-return:focus-visible {
-    color: var(--accent-mint-light);
-    transform: translateY(-2px);
-    text-shadow: 0 4px 12px rgba(96, 165, 250, 0.25);
+  color: var(--accent-mint-light);
+  transform: translateY(-2px);
+  text-shadow: 0 4px 12px rgba(96, 165, 250, 0.25);
 }
 
 #create-success-overlay {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }

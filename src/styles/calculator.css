@@ -14,7 +14,10 @@
   font-weight: 600;
   color: var(--text-secondary);
   text-decoration: none;
-  transition: transform 0.2s ease, color 0.2s ease, text-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease,
+    text-shadow 0.2s ease;
 }
 
 #calculator-return:hover,
@@ -96,7 +99,8 @@
   margin: 0 auto;
 }
 
-.metrics, .activity {
+.metrics,
+.activity {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -113,7 +117,7 @@
   font-size: 1rem;
   transition: var(--border-color) 0.2s ease;
   margin-top: 8px;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .calculator-tool input {
@@ -148,7 +152,7 @@
   color: var(--text-secondary);
   display: block;
   margin-top: 20px;
-  font-family: 'Noto Sans', sans-serif;
+  font-family: "Noto Sans", sans-serif;
 }
 
 .calculator-tool .inputs-section,
@@ -235,16 +239,20 @@
   width: min(100%, 560px);
   padding: 28px;
   border-radius: 20px;
-  background: linear-gradient(135deg, rgba(26, 29, 39, 0.97), rgba(34, 38, 58, 0.97));
+  background: linear-gradient(
+    135deg,
+    rgba(26, 29, 39, 0.97),
+    rgba(34, 38, 58, 0.97)
+  );
   border: 1px solid var(--border);
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.32);
   color: var(--text-primary);
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .calculator-tool .modal-title {
   margin-bottom: 0.55rem;
-  font-family: 'Noto Sans', sans-serif;
+  font-family: "Noto Sans", sans-serif;
   font-size: 1.35rem;
   font-weight: 700;
   color: var(--text-primary);
@@ -259,7 +267,12 @@
 .calculator-tool .modal-divider {
   height: 1px;
   margin: 1.05rem 0 1.2rem;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.18), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.18),
+    transparent
+  );
 }
 
 .calculator-tool .modal-actions {

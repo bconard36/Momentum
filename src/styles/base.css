@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap");
 
 /* ============================================================
    base.css
@@ -9,15 +9,15 @@
    ============================================================ */
 
 :root {
-  --bg-primary: #0F1117;
-  --bg-secondary: #1A1D27;
-  --bg-surface: #22263A;
-  --text-primary: #F0F2F5;
-  --text-secondary: #9CA3AF;
-  --accent-blue: #3B82F6;
-  --accent-blue-light: #60A5FA;
-  --accent-mint: #10B981;
-  --accent-mint-light: #34D399;
+  --bg-primary: #0f1117;
+  --bg-secondary: #1a1d27;
+  --bg-surface: #22263a;
+  --text-primary: #f0f2f5;
+  --text-secondary: #9ca3af;
+  --accent-blue: #3b82f6;
+  --accent-blue-light: #60a5fa;
+  --accent-mint: #10b981;
+  --accent-mint-light: #34d399;
   --border: rgba(255, 255, 255, 0.08);
   --border-active: rgba(59, 130, 246, 0.4);
   --border-active-mint: rgba(16, 185, 129, 0.4);
@@ -25,31 +25,38 @@
   --radius-sm: 8px;
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-
-html, body, #root {
+html,
+body,
+#root {
   background: linear-gradient(135deg, var(--bg-primary), var(--bg-secondary));
   color: var(--text-primary);
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 16px;
   line-height: 1.6;
   min-height: 100%;
   overflow-x: hidden;
 }
 
-h1, h2, h3, h4 {
-  font-family: 'Noto Sans', sans-serif;
+h1,
+h2,
+h3,
+h4 {
+  font-family: "Noto Sans", sans-serif;
   font-weight: 600;
   line-height: 1.2;
 }
 
-button, a {
-  font-family: 'Inter', sans-serif;
+button,
+a {
+  font-family: "Inter", sans-serif;
   cursor: pointer;
 }
 
@@ -81,7 +88,6 @@ button, a {
   text-shadow: 0 2px 18px rgba(96, 165, 250, 0.14);
   margin-bottom: 25px;
 }
-
 
 .dashboard-nav {
   display: grid;
@@ -124,7 +130,7 @@ button, a {
 }
 
 .nav-card-label {
-  font-family: 'Noto Sans', sans-serif;
+  font-family: "Noto Sans", sans-serif;
   font-size: 1.2rem;
   font-weight: 700;
 }
@@ -185,7 +191,10 @@ button, a {
   font-weight: 600;
   color: var(--text-secondary);
   text-decoration: none;
-  transition: transform 0.2s ease, color 0.2s ease, text-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease,
+    text-shadow 0.2s ease;
 }
 
 /* Style Rules for User Icon / Menu */
@@ -210,6 +219,11 @@ button, a {
   border-radius: var(--radius);
 }
 
+.user-menu a {
+  text-decoration: none;
+  color: var(--text-primary);
+}
+
 .user-menu-item {
   list-style-type: none;
   cursor: pointer;
@@ -217,7 +231,7 @@ button, a {
 
 .user-menu-item:hover,
 .user-menu-item:focus-visible {
-    color: var(--accent-mint-light);
-    transform: translateY(-2px);
-    text-shadow: 0 4px 12px rgba(96, 165, 250, 0.25);
+  color: var(--accent-mint-light);
+  transform: translateY(-2px);
+  text-shadow: 0 4px 12px rgba(96, 165, 250, 0.25);
 }

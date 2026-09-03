@@ -1,100 +1,104 @@
 .edit-modal-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 1000;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
-    padding: 24px;
-    overflow: hidden;
-    background: rgba(4, 8, 16, 0.72);
-    backdrop-filter: blur(8px);
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 24px;
+  overflow: hidden;
+  background: rgba(4, 8, 16, 0.72);
+  backdrop-filter: blur(8px);
 }
 
 .edit-modal-overlay .edit-workout-form {
-    box-sizing: border-box;
-    width: min(100%, 720px);
-    max-width: none;
-    max-height: calc(100vh - 96px);
-    margin: 0;
-    overflow-y: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    padding: 32px;
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    background: linear-gradient(135deg, rgba(26, 29, 39, 0.98), rgba(34, 38, 58, 0.97));
-    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.32);
+  box-sizing: border-box;
+  width: min(100%, 720px);
+  max-width: none;
+  max-height: calc(100vh - 96px);
+  margin: 0;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 32px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: linear-gradient(
+    135deg,
+    rgba(26, 29, 39, 0.98),
+    rgba(34, 38, 58, 0.97)
+  );
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.32);
 }
 
 .edit-modal-overlay .edit-workout-form::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 .edit-modal-overlay .return-container {
-    flex: 0 0 auto;
+  flex: 0 0 auto;
 }
 
 .edit-return-link {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .edit-return-link:hover,
 .edit-return-link:focus-visible {
-    color: var(--accent-mint-light);
-    transform: translateY(-2px);
-    text-shadow: 0 4px 12px rgba(96, 165, 250, 0.25);
+  color: var(--accent-mint-light);
+  transform: translateY(-2px);
+  text-shadow: 0 4px 12px rgba(96, 165, 250, 0.25);
 }
 
 .edit-workout-button-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin: 16px 0 0 0;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 16px 0 0 0;
+  gap: 10px;
 }
 
 #back-to-edit-button:hover,
 #back-to-edit-button:focus-visible {
-    border-color: var(--accent-blue-light);
+  border-color: var(--accent-blue-light);
 }
 
 #edit-workout-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 10px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px auto;
 }
 
 #edit-workout-button:hover,
 #edit-workout-button:focus-visible {
-    border-color: var(--accent-blue-light);
-    transform: translateY(-2px);
-    text-shadow: 0 4px 12px rgba(96, 165, 250, 0.25);
+  border-color: var(--accent-blue-light);
+  transform: translateY(-2px);
+  text-shadow: 0 4px 12px rgba(96, 165, 250, 0.25);
 }
 
 .edit-modal-overlay select {
-    max-width: 50%;
+  max-width: 50%;
 }
 
 @media (min-width: 601px) {
-    .edit-modal-overlay .edit-workout-form input {
-        margin-right: auto;
-        margin-left: auto;
-    }
+  .edit-modal-overlay .edit-workout-form input {
+    margin-right: auto;
+    margin-left: auto;
+  }
 }
 
 @media (max-width: 600px) {
-    .edit-modal-overlay {
-        padding: 16px;
-    }
+  .edit-modal-overlay {
+    padding: 16px;
+  }
 
-    .edit-modal-overlay .edit-workout-form {
-        width: 100%;
-        max-height: calc(100vh - 72px);
-        padding: 24px 18px;
-    }
+  .edit-modal-overlay .edit-workout-form {
+    width: 100%;
+    max-height: calc(100vh - 72px);
+    padding: 24px 18px;
+  }
 }
