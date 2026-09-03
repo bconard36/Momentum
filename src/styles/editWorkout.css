@@ -84,6 +84,21 @@
   max-width: 50%;
 }
 
+.edit-modal-overlay .edit-workout-form input {
+  padding: 8px;
+}
+
+.edit-workout-form .field-card label {
+  text-align: center;
+}
+
+.edit-workout-form .edit-exercise-name-input,
+.edit-workout-form .edit-exercise-type-input {
+  width: 75%;
+  max-width: 360px;
+  margin: 0 auto;
+}
+
 @media (min-width: 601px) {
   .edit-modal-overlay .edit-workout-form input {
     margin-right: auto;
