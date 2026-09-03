@@ -1,0 +1,210 @@
+/* Global Analysis Component Style Rules */
+.analytics-header-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  padding-top: 2.5%;
+  text-wrap: balance;
+  text-align: center;
+}
+
+.analytics-preview-header-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  padding: 2.5%;
+  text-wrap: balance;
+  text-align: center;
+}
+
+.analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin: 2.5%;
+}
+
+@media (max-width: 768px) {
+  .analytics-header-container {
+    margin-top: 4rem;
+  }
+
+  .analytics-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.analysis-container {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.75rem 1.25rem;
+  margin: 0; /* grid gap now handles spacing instead */
+  background: var(--bg-surface);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.analysis-container:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+/* Thin accent bar along the top of each card */
+.analysis-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--accent-teal);
+}
+
+.analysis-header-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 2.5%;
+}
+
+.analysis-header {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.5rem;
+}
+
+#analysis-return:hover {
+  color: var(--accent-teal);
+}
+
+/* Style Rules for Thirty Day Count + Streak (single big-number cards) */
+.thirty-day-total,
+.workout-streak-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: "Noto Sans", sans-serif;
+}
+
+.thirty-day-total span,
+.workout-streak-header span {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.empty-streak-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.streak-workout-link-container {
+  width: fit-content;
+  height: auto;
+  padding: 5px;
+  border-radius: 999px;
+  background-color: var(--accent-teal);
+}
+
+.streak-workout-link-container a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 3px;
+}
+
+.streak-workout-link-container:hover {
+  transform: translateY(-1.5px);
+}
+
+/* Style Rules for Exercise Split Component */
+.exercise-split-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  font-family: "Noto Sans", sans-serif;
+  width: 100%;
+}
+
+.exercise-split-content p {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.exercise-metric {
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  text-align: center;
+}
+
+.exercise-metric.count {
+  color: var(--text-primary);
+}
+
+.exercise-metric.strength {
+  color: var(--accent-teal);
+  background: rgba(94, 203, 216, 0.12);
+}
+
+.exercise-metric.duration {
+  color: var(--accent-blue);
+  background: rgba(94, 203, 216, 0.12);
+}
+
+.analysis-route {
+  font-size: 0.75rem;
+  color: var(--accent-teal);
+  text-decoration: none;
+  margin-top: 0.5rem;
+  position: absolute;
+  top: 1.25%;
+  right: 3%;
+}
+
+#analysis-log-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--accent-teal);
+  width: fit-content;
+  padding: 0.5rem;
+  border-radius: 999px;
+  margin: 0 auto;
+  color: var(--text-primary);
+}
+
+@media (max-width: 320px) {
+  .return-container,
+  #workout-log-title,
+  .analysis-route {
+    display: block;
+    align-items: center;
+    justify-content: center;
+  }
+}
