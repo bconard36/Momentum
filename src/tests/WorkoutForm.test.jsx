@@ -136,7 +136,7 @@ describe("WorkoutForm", () => {
       screen.getByRole("radio", { name: /Duration/i }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("radio", { name: /Repetition/i }),
+      screen.getByRole("radio", { name: /Strength/i }),
     ).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: /Add Another Exercise/i }),
@@ -176,8 +176,8 @@ describe("WorkoutForm", () => {
     ).toBeInTheDocument();
   });
 
-  // Test 4 - Renders complete repetition type-based workouts form with all necessary fields
-  it("renders complete repetition type-based workout form with necessary fields", async () => {
+  // Test 4 - Renders complete strength type-based workouts form with all necessary fields
+  it("renders complete strength type-based workout form with necessary fields", async () => {
     const user = userEvent.setup();
     renderWorkoutForm();
 
@@ -187,7 +187,7 @@ describe("WorkoutForm", () => {
     );
 
     // Metric fields do not render until type has been selected
-    await user.click(screen.getByRole("radio", { name: /Repetition/i }));
+    await user.click(screen.getByRole("radio", { name: /strength/i }));
 
     expect(screen.getByLabelText(/Exercise Name/i)).toBeInTheDocument();
     expect(screen.getByText(/Weight \(lbs\)/i)).toBeInTheDocument();
@@ -215,7 +215,7 @@ describe("WorkoutForm", () => {
     );
 
     // Metric fields do not render until type has been selected
-    await user.click(screen.getByRole("radio", { name: /Repetition/i }));
+    await user.click(screen.getByRole("radio", { name: /strength/i }));
 
     // Capture incomplete/invalid metric fields
     await user.type(screen.getByLabelText(/exercise name/i), "Bench Press");
