@@ -1,5 +1,10 @@
 import { mockWorkouts } from "../mock/mockWorkouts";
-
+/**
+ * Workout Form Preview Component
+ * Rendered on the landing page along with other preview components
+ * Mock workout data imported and used for mock form rendering
+ * @returns {JSXElement} - workout form preview for the landing page
+ */
 const WorkoutFormPreview = () => {
   // Mapping through workout data returns an array of arrays
   // An array of workouts with nested exercise arrays within each
@@ -22,7 +27,6 @@ const WorkoutFormPreview = () => {
   };
 
   const strengthExercise = findExerciseByType(mockWorkouts, "strength");
-  const activeType = "strength"; // Static type for visual-only preview
 
   return (
     <div className="preview preview-workout-form">

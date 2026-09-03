@@ -1,11 +1,10 @@
 import { Link } from "react-router";
-
 /**
  * Thirty Day Total Component
  * Written to start the analysis logic - not married to a separate component for this
  * Calculates the current thirty day running count of total workouts completed
  * @param {Object<Array>} workouts - saved user workouts
- * @returns
+ * @returns {JSXElement} - thirty day count display with link to workout log
  */
 const ThirtyDayCount = ({ workouts }) => {
   // Get today's date in the user's local timezone with the time removed

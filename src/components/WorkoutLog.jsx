@@ -7,7 +7,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import EditWorkout from "./EditWorkout";
-import ThirtyDayCount from "./ThirtyDayCount";
 
 /**
  * Renders a modal displaying all saved workouts, with sorting, filtering and deletion support.

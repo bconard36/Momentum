@@ -1,3 +1,7 @@
+/**
+ * Landing Page Hero Component
+ * @returns {JSXElement} - hero section for the landing page
+ */
 const Hero = () => {
   return (
     <section className="hero">

@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../utils/supabaseClient";
-
+/**
+ * Dynamic Header Component
+ * User's first name is fetched from the database using the autheticated user_id
+ * @returns {JSXElement} - dynamic header for the dashboard
+ */
 const Header = () => {
   const [firstName, setFirstName] = useState("");
   const [loading, setLoading] = useState(true);

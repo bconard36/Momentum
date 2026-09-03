@@ -1,5 +1,4 @@
 import { mockWorkouts } from "../mock/mockWorkouts";
-
 /**
  * Maps through hard coded mock workout data to display a mock workout log
  * @returns {JSXElement} - workout log preview for landing page

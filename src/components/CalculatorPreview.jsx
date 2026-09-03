@@ -1,5 +1,10 @@
 import { Link } from "react-router";
-
+/**
+ * Calculator Preview Component
+ * Renders mock data and displays accurate calculations for the landing page
+ * Allows for users to access via Link - no authentication required
+ * @returns {JSXElement}
+ */
 const CalculatorPreview = () => {
   return (
     <div className="preview preview-calculator">

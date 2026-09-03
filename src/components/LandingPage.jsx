@@ -4,7 +4,11 @@ import WorkoutLogPreview from "./WorkoutLogPreview";
 import CalculatorPreview from "./CalculatorPreview";
 import WorkoutFormPreview from "./WorkoutFormPreview";
 import AnalyticsPreview from "./AnalyticsPreview";
-
+/**
+ * Landing Page component
+ * Renders preview/mock components to highlight features of the application.
+ * @returns {JSXElement} - a central landing page for unauthenticated users to see application features
+ */
 const LandingPage = () => {
   return (
     <div className="landing">
