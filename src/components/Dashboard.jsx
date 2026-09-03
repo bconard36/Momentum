@@ -122,13 +122,6 @@ const Dashboard = ({ user }) => {
               Review your past workout logs and progress.
             </span>
           </Link>
-
-          <Link to="/analysis" className="nav-card nav-card-analysis">
-            <span className="nav-card-label">Workout Analysis</span>
-            <span className="nav-card-description">
-              Review metrics and stats of your past workouts
-            </span>
-          </Link>
         </nav>
       </div>
     </>

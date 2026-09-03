@@ -2,10 +2,8 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router";
 import { useState, useEffect } from "react";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Dashboard from "./components/Dashboard";
-import AccountSettings from "./components/AccountSettings";
 import Calculator from "./components/CalorieTrack/components/CalculatorForm";
 import WorkoutForm from "./components/WorkoutForm";
-import Analytics from "./components/analytics/Analytics";
 import NotFound from "./components/NotFound";
 import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
@@ -131,14 +129,6 @@ function App() {
             }
           />
           <Route
-            path="/preferences"
-            element={
-              <ProtectedRoute>
-                <AccountSettings user={user} />
-              </ProtectedRoute>
-            }
-          />
-          <Route
             path="/workouts"
             element={
               <ProtectedRoute>
@@ -157,14 +147,6 @@ function App() {
                   isLoading={isLoadingWorkouts}
                   workoutError={workoutError}
                 />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/analysis"
-            element={
-              <ProtectedRoute>
-                <Analytics workouts={savedWorkouts} />
               </ProtectedRoute>
             }
           />
