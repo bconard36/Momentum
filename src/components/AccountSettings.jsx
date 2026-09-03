@@ -13,7 +13,6 @@ import { supabase } from "../utils/supabaseClient";
 // Do I need a form here?
 
 const AccountSettings = ({ user }) => {
-  const originalEmail = user.email;
   const {
     register,
     handleSubmit,
@@ -28,6 +27,8 @@ const AccountSettings = ({ user }) => {
     },
   });
 
+  const originalEmail = user?.email;
+
   // Password visibility state management
   const [showOriginalPassword, setShowOriginalPassword] = useState(false);
   const [showPasswordReset, setShowPasswordReset] = useState(false);
@@ -38,6 +39,14 @@ const AccountSettings = ({ user }) => {
   const [resetEmail, setResetEmail] = useState(false);
   const [resetPassword, setResetPassword] = useState(false);
   const [resetAll, setResetAll] = useState(false);
+
+  if (!user) {
+    return (
+      <div className="loading-message-container">
+        <div className="loading-message">Loading...</div>
+      </div>
+    );
+  }
 
   const onSubmit = async (data) => {
     try {
