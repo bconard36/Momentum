@@ -1,0 +1,16 @@
+.account-settings-header-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.5%;
+  padding: 1%;
+}
+
+.form-to-render-container {
+  display: flex;
+  flex: auto;
+  flex-direction: row;
+  gap: 2%;
+  justify-content: center;
+  align-items: center;
+}
