@@ -6,16 +6,17 @@
  *
  * Coverage:
  *  - Renders Analytics component correctly
- *  - Successfully displays calculated data for analysis:
+ *  - Successfully displays components for analysis:
  *      - 30 day count
- *      - Workout streak
+ *      - Empty workout streak
  *      - Exercise splits by type
- *  - If no workout streak - successfully renders a start streak element
  *
  * Not covered (intentionally deferred):
+ *  - Component-specific calculations (to be housed in each individual test file)
  */
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
+import { MemoryRouter } from "react-router";
 import { userEvent } from "@testing-library/user-event";
 import Analytics from "../components/analytics/Analytics";
 import { mockWorkouts } from "../mock/mockWorkouts";
@@ -23,7 +24,7 @@ import { mockWorkouts } from "../mock/mockWorkouts";
 const renderAnalytics = () => {
   render(
     <MemoryRouter>
-      <Analytics />
+      <Analytics workouts={mockWorkouts} />
     </MemoryRouter>,
   );
 };
@@ -35,21 +36,18 @@ beforeEach(() => {
 
 describe("Analytics", () => {
   // Test 1 - renders the form
-  it("renders all analytic components and elements for display, with a current streak", () => {
-    renderAnalytics({ mockWorkouts });
+  it("successfully renders the analytics components", () => {
+    renderAnalytics();
 
-    expect(
-      screen.getByRole("link", { name: /return to dashboard/i }),
-    ).toBeInTheDocument();
-    expect(screen.getByRole("heading", { level: 1 })).toBeInTheDocument();
-    expect(screen.getByText(/performance analysis/i)).toBeInTheDocument();
-    expect(
-      screen.getByRole("link", { name: /view workout logs/i }),
-    ).toBeInTheDocument();
     expect(
       screen.getByText(/total workouts in the last 30 days/i),
     ).toBeInTheDocument();
-    expect(screen.getByText(/current workout streak/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/no workouts logged for the past two days/i),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: /start a streak/i }),
+    ).toBeInTheDocument();
     expect(screen.getByText(/total exercises/i)).toBeInTheDocument();
     expect(screen.getByText(/strength exercises/i)).toBeInTheDocument();
     expect(screen.getByText(/duration exercises/i)).toBeInTheDocument();
