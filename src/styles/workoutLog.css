@@ -6,6 +6,13 @@ load base.css first.
 */
 
 /* Style rules for Workout Log */
+#workout-log-return:hover,
+#workout-log--return:focus-visible {
+  color: var(--accent-indigo);
+  transform: translateY(-2px);
+  text-shadow: 0 4px 12px rgba(96, 165, 250, 0.25);
+}
+
 .date-header {
   font-style: italic;
   text-align: left;
@@ -158,7 +165,7 @@ input[type="checkbox"] {
 
 .sort-icon:hover,
 .filter-icon:hover {
-  color: var(--accent-mint-light);
+  color: var(--accent-indigo);
   transform: translateY(-1px);
 }
 
@@ -220,7 +227,7 @@ body.workout-log-page::-webkit-scrollbar {
 
 .empty-return:hover,
 .empty-return:focus-visible {
-  color: var(--accent-mint-light);
+  color: var(--accent-teal);
 }
 
 .log-fetch-error-container {

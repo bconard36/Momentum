@@ -10,6 +10,8 @@ import SignUp from "./components/SignUp";
 import { supabase } from "./utils/supabaseClient";
 import WorkoutLog from "./components/WorkoutLog";
 import Analytics from "./components/analytics/Analytics";
+import LandingPage from "./components/landingPage/LandingPage";
+import { useAuthUser } from "./hooks/useAuthUser";
 
 /**
  * Home Route Component
@@ -20,17 +22,10 @@ import Analytics from "./components/analytics/Analytics";
  * @returns {JSX.Element} Loading state, dashboard redirect, or sign-in component
  */
 function HomeRedirect() {
-  const [loading, setLoading] = useState(true);
-  const [authenticated, setAuthenticated] = useState(false);
+  const user = useAuthUser();
 
-  useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      setAuthenticated(!!user);
-      setLoading(false);
-    });
-  }, []);
-
-  if (loading) {
+  // undefined = still checking, matches hook's internal state
+  if (user === undefined) {
     return (
       <div className="loading-message-container">
         <div className="loading-message">Loading...</div>
@@ -38,7 +33,7 @@ function HomeRedirect() {
     );
   }
 
-  if (authenticated) {
+  if (user) {
     return <Navigate to="/dashboard" replace />;
   }
 
@@ -81,10 +76,15 @@ function App() {
     }
   };
 
-  // Fetch the workout log with useEffect()
+  // Verify the authenticated user and listed for auth state changes
+  // Fetch the workout log once a user is authenticated
+  const user = useAuthUser();
+
   useEffect(() => {
-    fetchWorkoutLog();
-  }, []);
+    if (user) {
+      fetchWorkoutLog();
+    }
+  }, [user]);
 
   /**
    * Deletes a specified workout from the workout log
@@ -118,13 +118,14 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<HomeRedirect />} />
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/sign-in" element={<HomeRedirect />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route
             path="/dashboard"
             element={
               <ProtectedRoute>
-                <Dashboard />
+                <Dashboard user={user} />
               </ProtectedRoute>
             }
           />

@@ -17,7 +17,7 @@ import Header from "./Header";
    
  * @returns {JSX.Element} - Dashboard component
  */
-const Dashboard = () => {
+const Dashboard = ({ user }) => {
   // Initialize navigation hook
   const logOutNav = useNavigate();
 

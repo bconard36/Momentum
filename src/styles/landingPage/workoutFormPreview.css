@@ -1,0 +1,103 @@
+/* Style Rules for the Workout Form Preview Component on the Landing Page */
+
+.mock-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+  justify-content: center;
+}
+
+.mock-tab {
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  user-select: none;
+}
+
+.mock-tab-active {
+  color: var(--primary-text);
+  background: linear-gradient(
+    135deg,
+    var(--accent-mint-light) 0%,
+    var(--accent-mint) 100%
+  );
+  border-color: var(--border-active);
+}
+
+.mock-field-row {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 40%;
+  margin: 0 auto;
+  gap: 0.75rem;
+}
+
+.mock-field-row .mock-field {
+  flex: 1;
+}
+
+.preview-workout-form-header {
+  font-family: "Noto sans", sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.preview-workout-form-header h3 {
+  text-transform: capitalize;
+  margin-bottom: 5px;
+}
+
+.preview-mock-form label {
+  color: var(--text-primary);
+  text-align: center;
+}
+
+.preview-mock-form .mock-input {
+  border: 0.5px solid var(--border-active-mint);
+  background: #fff;
+  color: #000;
+  text-align: center;
+}
+
+#preview-exercise-input {
+  width: 65%;
+  margin: 0 auto;
+}
+
+.mock-form-buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 5px;
+  gap: 10px;
+}
+
+.preview-mock-form-button {
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--primary-text);
+  background: linear-gradient(
+    135deg,
+    var(--accent-mint-light) 0%,
+    var(--accent-mint) 100%
+  );
+  border-color: var(--border-active-mint);
+  user-select: none;
+  cursor: auto;
+}
+
+.preview-mock-form-button:first-of-type {
+  background: var(--bg-surface);
+  border-color: var(--border);
+}

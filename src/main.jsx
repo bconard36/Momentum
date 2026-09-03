@@ -9,6 +9,10 @@ import "./styles/workoutLog.css";
 import "./styles/success.css";
 import "./styles/notFound.css";
 import "./styles/analytics.css";
+import "./styles/landingPage/landingPage.css";
+import "./styles/landingPage/hero.css";
+import "./styles/landingPage/workoutFormPreview.css";
+import "./styles/landingPage/landingFooter.css";
 import App from "./App.jsx";
 
 createRoot(document.getElementById("root")).render(

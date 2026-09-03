@@ -1,0 +1,118 @@
+/* Style Rules for the Footer on the Landing Page */
+.landing-footer {
+  margin-top: 3rem;
+  border-top: 1px solid var(--border);
+}
+
+.footer-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 3rem 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.footer-cta::before {
+  content: "";
+  position: absolute;
+  bottom: -80px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;
+  height: 200px;
+  background: radial-gradient(
+    circle,
+    var(--accent-teal, #2dd4c8) 0%,
+    transparent 70%
+  );
+  opacity: 0.12;
+  pointer-events: none;
+}
+
+.footer-cta h2 {
+  font-family: "Noto Sans", sans-serif;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  text-transform: capitalize;
+  text-wrap: balance;
+}
+
+.footer-cta p {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  max-width: 500px;
+  text-wrap: balance;
+}
+
+.footer-cta-button {
+  display: inline-block;
+  padding: 0.75rem 2rem;
+  border-radius: 999px;
+  font-weight: 700;
+  text-decoration: none;
+  color: #ffffff;
+  background: linear-gradient(
+    135deg,
+    var(--accent-mint) 0%,
+    var(--accent-teal) 100%
+  );
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.footer-cta-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(45, 212, 138, 0.3);
+}
+
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  border-top: 1px solid var(--border);
+}
+
+.footer-logo {
+  font-family: "Racing Sans One", sans-serif;
+  font-size: 1.1rem;
+  color: var(--text-primary);
+}
+
+.footer-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.footer-links a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.15s ease;
+}
+
+.footer-links a:hover {
+  color: var(--accent-mint-light);
+}
+
+.footer-copyright {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+}
+
+@media (max-width: 560px) {
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+  }
+}

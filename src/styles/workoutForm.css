@@ -12,23 +12,30 @@ in base.css's :root — load base.css first.
   min-height: 100dvh;
   padding: 60px 20px 80px;
   background:
-    radial-gradient(circle at top left, rgba(59, 130, 246, 0.14), transparent 10%),
+    radial-gradient(
+      circle at top left,
+      rgba(59, 130, 246, 0.14),
+      transparent 10%
+    ),
     linear-gradient(135deg, var(--bg-primary), var(--bg-secondary));
 }
-
 
 .workout-shell {
   max-width: 820px;
   margin: 0 auto;
   padding: 32px;
   border-radius: 24px;
-  background: linear-gradient(135deg, rgba(26, 29, 39, 0.98), rgba(34, 38, 58, 0.97));
+  background: linear-gradient(
+    135deg,
+    rgba(26, 29, 39, 0.98),
+    rgba(34, 38, 58, 0.97)
+  );
   border: 1px solid var(--border);
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
 }
 
 .workout-header {
-  margin-bottom: 24px;
+  margin-bottom: 1.5%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -38,6 +45,13 @@ in base.css's :root — load base.css first.
 
 #workout-form-cta {
   font-size: 14px;
+}
+
+#form-log-link:hover,
+#form-log-link:focus-visible {
+  border-color: var(--accent-indigo);
+  transform: translateY(-2px);
+  text-shadow: 0 4px 12px rgba(96, 165, 250, 0.25);
 }
 
 #workout-return:hover,
@@ -53,7 +67,6 @@ in base.css's :root — load base.css first.
   letter-spacing: -0.02em;
   color: var(--text-primary);
   text-shadow: 0 2px 18px rgba(96, 165, 250, 0.14);
-  padding-top: 30px;
 }
 
 .workout-subtitle {
@@ -77,7 +90,6 @@ in base.css's :root — load base.css first.
   margin: 0 auto;
   padding-bottom: 10px;
 }
-
 
 .workout-form {
   display: flex;
@@ -105,7 +117,7 @@ in base.css's :root — load base.css first.
 }
 
 .workout-form input {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   width: 100%;
   max-width: 450px;
   border-radius: 8px;
@@ -113,7 +125,7 @@ in base.css's :root — load base.css first.
 }
 
 .workout-form select {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   width: 100%;
   margin: 0 auto;
   border-radius: 8px;
@@ -121,11 +133,11 @@ in base.css's :root — load base.css first.
 }
 
 .workout-button-container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    margin: 16px 0 0 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin: 16px 0 0 0;
 }
 
 .empty-state {
@@ -151,8 +163,8 @@ in base.css's :root — load base.css first.
 .field-card {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 20px;
+  gap: 8px;
+  padding: 10px;
   border-radius: var(--radius);
   border: 1px solid var(--border);
   background: rgba(255, 255, 255, 0.03);
@@ -161,7 +173,7 @@ in base.css's :root — load base.css first.
 .field-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
+  gap: 8px;
 }
 
 .field-group {
@@ -171,7 +183,8 @@ in base.css's :root — load base.css first.
   justify-content: space-around;
 }
 
-.number-field-group input, .orphan-group input {
+.number-field-group input,
+.orphan-group input {
   padding: 10px;
   width: 100px;
 }
@@ -183,43 +196,64 @@ in base.css's :root — load base.css first.
 
 .radio-group {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
   gap: 10px;
   align-items: center;
 }
 
 .radio-option {
-  display: inline-flex;
+  display: flex;
+  justify-content: center;
   align-items: center;
   gap: 0.6rem;
   padding: 0.85rem 1rem;
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: 999px;
   background: rgba(255, 255, 255, 0.03);
   color: var(--text-primary);
   font-size: 0.95rem;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  font-weight: 500;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+  cursor: pointer;
 }
 
 .radio-option input {
-  width: 1rem;
-  height: 1rem;
-  accent-color: var(--accent-mint);
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  display: flex;
+  flex-direction: row;
 }
 
-.radio-option:hover,
-.radio-option:focus-within {
-  border-color: var(--accent-mint);
-  transform: translateY(-1px);
+.radio-option:has(input:checked) {
+  background: var(--accent-mint);
+}
+
+.radio-option:has(input:focus-visible) {
+  outline: 2px solid var(--accent-mint-light);
+  outline-offset: 2px;
 }
 
 .radio-option span {
   font-size: 0.95rem;
-  color: var(--text-secondary);
+  color: var(--text-primary);
 }
 
 .full-width {
   grid-column: 1 / -1;
+}
+
+.full-width input {
+  padding: 10px;
+  max-width: 50%;
 }
 
 .field-label {
@@ -235,6 +269,10 @@ in base.css's :root — load base.css first.
   justify-content: center;
   align-items: center;
   gap: 12px;
+}
+
+.form-actions button {
+  border-radius: 999px;
 }
 
 .footer-actions {
@@ -257,7 +295,11 @@ in base.css's :root — load base.css first.
 }
 
 .primary-button {
-  background: linear-gradient(135deg, var(--accent-mint), var(--accent-mint-light));
+  background: linear-gradient(
+    135deg,
+    var(--accent-mint),
+    var(--accent-mint-light)
+  );
   color: #fff;
 }
 
@@ -297,7 +339,7 @@ in base.css's :root — load base.css first.
   -ms-overflow-style: none;
   width: 100%;
   height: 100%;
-  margin: 15px auto 15px ;
+  margin: 15px auto 15px;
   max-width: 800px;
   max-height: 805px;
   top: 3.5%;
@@ -314,11 +356,15 @@ in base.css's :root — load base.css first.
   max-height: min(80vh, 720px);
   padding: 15px;
   border-radius: 20px;
-  background: linear-gradient(135deg, rgba(26, 29, 39, 0.97), rgba(34, 38, 58, 0.97));
+  background: linear-gradient(
+    135deg,
+    rgba(26, 29, 39, 0.97),
+    rgba(34, 38, 58, 0.97)
+  );
   border: 1px solid var(--border);
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.32);
   color: var(--text-primary);
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   overflow-y: auto;
 }
 
@@ -337,13 +383,13 @@ in base.css's :root — load base.css first.
   }
 
   .radio-group {
-    flex-direction: column;
-    align-items: stretch;
+    flex-direction: row;
+    align-items: center;
   }
 
   .radio-option {
-    width: 100%;
-    justify-content: flex-start;
+    width: auto;
+    justify-content: center;
   }
 }
 
@@ -369,18 +415,21 @@ in base.css's :root — load base.css first.
     justify-content: flex-start;
   }
 
-  .orphan-group {
+  .strength-input-container {
     display: flex;
     align-items: center;
     justify-content: center;
     grid-column: 1 / -1;
     width: 100%;
+    gap: 2%;
   }
 
   .orphan-group input {
-    width: 100px;
     padding: 10px;
-    display: block;
     margin: 0 auto;
+  }
+
+  .full-width input {
+    max-width: 50%;
   }
 }

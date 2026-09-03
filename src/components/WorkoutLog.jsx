@@ -306,16 +306,16 @@ const WorkoutLog = ({
           )}
           {!deleteConfirm && (
             <>
+              <div className="return-container">
+                <Link
+                  to="/dashboard"
+                  className="return-link"
+                  id="workout-log-return"
+                >
+                  Return to Dashboard
+                </Link>
+              </div>
               <header className="workout-header">
-                <div className="return-container">
-                  <Link
-                    to="/dashboard"
-                    className="return-link"
-                    id="workout-return"
-                  >
-                    Return to Dashboard
-                  </Link>
-                </div>
                 <h1 className="workout-title" id="workout-log-title">
                   Workout Log
                 </h1>
@@ -446,8 +446,14 @@ const WorkoutLog = ({
                           <div key={index} className="exercise-item">
                             {exercise.type === "strength" && (
                               <>
-                                <p>Exercise: {exercise.name}</p>
+                                <p>
+                                  <strong>Exercise: {exercise.name}</strong>
+                                </p>
                                 <p>Type: {exercise.type}</p>
+                                <p>
+                                  {exercise.sets} sets &times; {exercise.reps}{" "}
+                                  reps{" "}
+                                </p>
                                 {exercise.weight === 0 && (
                                   <p>
                                     Weight: {exercise.weight}{" "}
@@ -460,9 +466,6 @@ const WorkoutLog = ({
                                     <span>lbs</span>{" "}
                                   </p>
                                 )}
-
-                                <p>Sets: {exercise.sets}</p>
-                                <p>Reps: {exercise.reps}</p>
                               </>
                             )}
                             {exercise.type === "duration" && (
