@@ -1,4 +1,4 @@
-import { mockWorkouts } from "../mock/mockWorkouts";
+import { mockWorkouts } from "../../mock/mockWorkouts";
 /**
  * Workout Form Preview Component
  * Rendered on the landing page along with other preview components

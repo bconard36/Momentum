@@ -1,4 +1,4 @@
-import { mockWorkouts } from "../mock/mockWorkouts";
+import { mockWorkouts } from "../../mock/mockWorkouts";
 /**
  * Displays a summary of workout analytics based on mock workout data.
  * Calculates a total number of workouts in the last 30 days, a current workout streak, and exercise type splits
