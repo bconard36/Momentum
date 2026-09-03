@@ -320,13 +320,6 @@ const WorkoutLog = ({
                   Workout Log
                 </h1>
               </header>
-              <Link
-                to="/analysis"
-                className="analysis-route"
-                id="analysis-log-link"
-              >
-                <p>View Performance Analysis</p>
-              </Link>
               <div className="log-panel">
                 <div
                   className="workout-panel"
