@@ -8,6 +8,7 @@ import "./styles/workoutForm.css";
 import "./styles/workoutLog.css";
 import "./styles/success.css";
 import "./styles/notFound.css";
+import "./styles/accountSettings.css";
 import "./styles/landingPage/landingPage.css";
 import "./styles/landingPage/hero.css";
 import "./styles/landingPage/workoutFormPreview.css";
