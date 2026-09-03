@@ -37,13 +37,16 @@
   font-weight: 700;
   color: var(--text-primary);
   margin-bottom: 0.5rem;
+  text-transform: capitalize;
+  text-wrap: balance;
 }
 
 .footer-cta p {
   color: var(--text-secondary);
   font-size: 1rem;
   margin-bottom: 1.5rem;
-  max-width: 420px;
+  max-width: 500px;
+  text-wrap: balance;
 }
 
 .footer-cta-button {

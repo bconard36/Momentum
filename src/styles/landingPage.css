@@ -168,6 +168,7 @@
   font-size: 1.15rem;
   font-weight: 700;
   text-align: center;
+  text-transform: capitalize;
 }
 
 .preview-mock-form {
