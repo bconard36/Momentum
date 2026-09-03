@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router";
 import { useState, useEffect } from "react";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Dashboard from "./components/Dashboard";
+import AccountSettings from "./components/AccountSettings";
 import Calculator from "./components/CalorieTrack/components/CalculatorForm";
 import WorkoutForm from "./components/WorkoutForm";
 import Analytics from "./components/analytics/Analytics";
@@ -125,7 +126,15 @@ function App() {
             path="/dashboard"
             element={
               <ProtectedRoute>
-                <Dashboard />
+                <Dashboard user={user} />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/preferences"
+            element={
+              <ProtectedRoute>
+                <AccountSettings user={user} />
               </ProtectedRoute>
             }
           />

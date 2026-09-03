@@ -235,6 +235,11 @@ a {
   border-radius: var(--radius);
 }
 
+.user-menu a {
+  text-decoration: none;
+  color: var(--text-primary);
+}
+
 .user-menu-item {
   list-style-type: none;
   cursor: pointer;

@@ -17,7 +17,7 @@ import Header from "./Header";
    
  * @returns {JSX.Element} - Dashboard component
  */
-const Dashboard = () => {
+const Dashboard = ({ user }) => {
   // Initialize navigation hook
   const logOutNav = useNavigate();
 
@@ -87,6 +87,15 @@ const Dashboard = () => {
           >
             <nav className="user-menu">
               <ul>
+                <Link to="/preferences">
+                  <li
+                    className="user-menu-item"
+                    onClick={() => console.log(user)}
+                  >
+                    Preferences
+                  </li>
+                </Link>
+                <br />
                 <li className="user-menu-item" onClick={signOut}>
                   Sign Out
                 </li>
