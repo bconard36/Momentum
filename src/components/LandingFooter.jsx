@@ -13,10 +13,6 @@ const Footer = () => {
 
       <div className="footer-bottom">
         <span className="footer-logo">Momentum</span>
-        <nav className="footer-links">
-          <Link to="/sign-in">Sign In</Link>
-          <Link to="/calculator">Calculator</Link>
-        </nav>
         <span className="footer-copyright">
           &copy; {new Date().getFullYear()} Momentum. All rights reserved.
         </span>

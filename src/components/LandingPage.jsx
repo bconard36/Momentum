@@ -4,6 +4,7 @@ import WorkoutLogPreview from "./WorkoutLogPreview";
 import CalculatorPreview from "./CalculatorPreview";
 import WorkoutFormPreview from "./WorkoutFormPreview";
 import AnalyticsPreview from "./AnalyticsPreview";
+import LandingFooter from "./LandingFooter";
 /**
  * Landing Page component
  * Renders preview/mock components to highlight features of the application.
@@ -48,6 +49,8 @@ const LandingPage = () => {
           <AnalyticsPreview />
         </div>
       </section>
+
+      <LandingFooter />
     </div>
   );
 };
