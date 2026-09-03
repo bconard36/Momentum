@@ -4,7 +4,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Dashboard from "./components/Dashboard";
 import Calculator from "./components/CalorieTrack/components/CalculatorForm";
 import WorkoutForm from "./components/WorkoutForm";
-import Analytics from "./components/Analytics";
+import Analytics from "./components/analytics/Analytics";
 import NotFound from "./components/NotFound";
 import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
