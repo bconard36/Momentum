@@ -17,6 +17,36 @@ load base.css first.
   padding-top: 50px;
 }
 
+@media (max-width: 335px) {
+  .workout-log-page .return-container {
+    position: static;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1rem auto 0;
+  }
+
+  .workout-log-page #workout-log-title {
+    padding-top: 1rem;
+  }
+
+  #analysis-log-link {
+    position: relative;
+    left: 0.5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .workout-log-page #analysis-log-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0.75rem auto;
+    justify-content: center;
+  }
+}
+
 .exercise-list {
   display: flex;
   flex-direction: column;
@@ -96,7 +126,11 @@ load base.css first.
   border: 1px solid var(--border);
   min-width: 180px;
   max-width: min(90vw, 240px);
-  background: linear-gradient(135deg, rgba(26, 29, 39, 0.97), rgba(34, 38, 58, 0.97));
+  background: linear-gradient(
+    135deg,
+    rgba(26, 29, 39, 0.97),
+    rgba(34, 38, 58, 0.97)
+  );
   border-radius: 12px;
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.24);
 }
@@ -117,11 +151,12 @@ input[type="checkbox"] {
   padding: 10px;
 }
 
-.sort-icon, .filter-icon {
+.sort-icon,
+.filter-icon {
   cursor: pointer;
 }
 
-.sort-icon:hover, 
+.sort-icon:hover,
 .filter-icon:hover {
   color: var(--accent-mint-light);
   transform: translateY(-1px);
@@ -138,7 +173,7 @@ input[type="checkbox"] {
 /* Style rules for Delete Confirmation Window */
 .delete-overlay {
   display: flex;
-  align-items: center; 
+  align-items: center;
   justify-content: center;
   flex-direction: column;
   width: min(100%, 300px);
@@ -158,7 +193,7 @@ input[type="checkbox"] {
   margin-top: 5px;
   margin-bottom: 10px;
   padding-bottom: 10px;
-  color: #C85A53;
+  color: #c85a53;
 }
 
 html.workout-log-page,
