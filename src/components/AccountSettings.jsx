@@ -54,7 +54,10 @@ const AccountSettings = () => {
         <h1>User Account Settings</h1>
       </div>
       <div className="account-settings-form-container">
-        <form className="account-settings-form">
+        <form
+          className="account-settings-form"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <div className="account-settings-form-group">
             <label htmlFor="email-reset">New Email Address</label>
             {errors.email_reset && (
@@ -63,7 +66,7 @@ const AccountSettings = () => {
               </span>
             )}
             <input
-              type="text"
+              type="email"
               name="email_reset"
               id="email_reset"
               {...register("email_reset", {
@@ -204,6 +207,20 @@ const AccountSettings = () => {
                 strokeLinejoin="round"
               />
             </svg>
+          </div>
+          <div className="account-settings-form-actions">
+            <button
+              type="submit"
+              className="primary-button account-settings-submit"
+            >
+              Submit Changes
+            </button>
+            <button
+              type="reset"
+              className="secondary-button account-settings-reset"
+            >
+              Cancel
+            </button>
           </div>
         </form>
       </div>
