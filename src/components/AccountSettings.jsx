@@ -50,10 +50,17 @@ const AccountSettings = ({ user }) => {
 
   const onSubmit = async (data) => {
     try {
-      // const passwordReset = data.password_reset
       const emailReset = data.email_reset;
+      const originalPassword = data.password_original;
+      const passwordReset = data.password_reset;
+      const confirmPasswordReset = data.confirm_password_reset;
 
       if (resetEmail) {
+        if (emailReset === originalEmail) {
+          console.log("Invalid Email");
+          reset();
+          return;
+        }
         const { data: newEmail, error: emailResetError } =
           await supabase.auth.updateUser({
             email: emailReset,
@@ -62,14 +69,12 @@ const AccountSettings = ({ user }) => {
         if (emailResetError) {
           // Insert graceful error pop up here
           console.log("Error resetting email: ", emailResetError);
-        } else if (emailReset === originalEmail) {
-          console.log("Invalid Email");
-          reset();
         } else {
           reset();
           console.log(`Success! Email Address Updated`);
         }
         // } else if (resetPassword) {
+        //    const { data: newPassword}
         //   console.log(
         //     `Reset Password Data: Password: ${passwordReset}; Confirm Password: ${data.confirm_password_reset}`,
         //   );
