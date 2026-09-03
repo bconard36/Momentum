@@ -10,7 +10,7 @@ import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
 import { supabase } from "./utils/supabaseClient";
 import WorkoutLog from "./components/WorkoutLog";
-import LandingPage from "./components/LandingPage";
+import LandingPage from "./components/landingPage/LandingPage";
 import { useAuthUser } from "./hooks/useAuthUser";
 
 /**
