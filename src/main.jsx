@@ -8,6 +8,7 @@ import "./styles/workoutForm.css";
 import "./styles/workoutLog.css";
 import "./styles/success.css";
 import "./styles/notFound.css";
+import "./styles/accountSettings.css";
 import App from "./App.jsx";
 
 createRoot(document.getElementById("root")).render(
