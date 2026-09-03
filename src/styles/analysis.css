@@ -180,6 +180,9 @@
   color: var(--accent-teal);
   text-decoration: none;
   margin-top: 0.5rem;
+  position: absolute;
+  top: 1.25%;
+  right: 3%;
 }
 
 #analysis-log-link {
@@ -194,4 +197,14 @@
   border-radius: 999px;
   margin: 0 auto;
   color: var(--text-primary);
+}
+
+@media (max-width: 320px) {
+  .return-container,
+  #workout-log-title,
+  .analysis-route {
+    display: block;
+    align-items: center;
+    justify-content: center;
+  }
 }

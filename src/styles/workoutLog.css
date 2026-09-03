@@ -24,6 +24,36 @@ load base.css first.
   padding-top: 50px;
 }
 
+@media (max-width: 335px) {
+  .workout-log-page .return-container {
+    position: static;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1rem auto 0;
+  }
+
+  .workout-log-page #workout-log-title {
+    padding-top: 1rem;
+  }
+
+  #analysis-log-link {
+    position: relative;
+    left: 0.5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .workout-log-page #analysis-log-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0.75rem auto;
+    justify-content: center;
+  }
+}
+
 .exercise-list {
   display: flex;
   flex-direction: column;
