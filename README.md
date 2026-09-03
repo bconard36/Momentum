@@ -11,7 +11,7 @@ Supabase Auth manages authentication while a PostgreSQL function & trigger autom
 user profile in the application's `public.users` table.
 
 A public landing page introduces the application to unauthenticated visitors, previewing the workout form,
-workout log, and fitness calculator with sample data before requiring an account.
+workout log, workout analytics, and fitness calculator with sample data before requiring an account.
 
 Originally developed as the successor to [Calorie Track](https://github.com/bconard36/CalorieTrack), Momentum
 expands beyond fitness calculation into workout management while laying the foundation for a full-stack
@@ -31,7 +31,7 @@ fitness platform.
 
 The application currently supports:
 
-- A public landing page previewing core features (workout form, workout log, calculator) with sample data for unauthenticated visitors
+- A public landing page previewing core features (workout form, workout log, workout analytics, calculator) with sample data for unauthenticated visitors
 - User account creation through Supabase Auth
 - User sign-in and sign-out
 - Automatic creation of a corresponding profile in the Supabase `public.users` table
@@ -44,7 +44,10 @@ The application currently supports:
 - Editing existing workouts, including adding, updating, and removing exercises
 - Deleting workouts
 - Viewing, sorting, and filtering workout history
-- Basic workout analytics: a rolling 30 day workout count and current workout streak, calculated client-side from workout history
+- Basic workout analytics, calculated client-side from workout history:
+  - Rolling 30 day workout count
+  - Current workout streak
+  - Exercise type splits
 - User-facing error messaging for failed workout operations
 - Unit test coverage for:
   - Creating an account (SignUp)
@@ -69,9 +72,11 @@ Supabase handles the following responsibilities:
       - refactored from the original [Calorie Track](https://github.com/bconard36/CalorieTrack),
         migrated into Momentum and rebuilt using `react-hook-form` for form state management and validation.
     - Analytics.jsx
+    - AnalyticsPreview.jsx
     - CalculatorPreview.jsx
     - Dashboard.jsx
     - EditWorkout.jsx
+    - ExerciseSplits.jsx
     - Header.jsx
     - Hero.jsx
     - LandingPage.jsx
@@ -138,7 +143,7 @@ Supabase handles the following responsibilities:
 ## Public Landing Page
 
 - Marketing-facing home page for unauthenticaed visitors, replacing a bare sign-in form
-- Preview sections for the workout form, workout log, and fitness calculator populated from static mock data rather than real user data
+- Preview sections for the workout form, workout log, workout analytics and fitness calculator populated from static mock data rather than real user data
 - Interactive, fully functional calculator preview, since the calculator itself requires no authentication
 - Consistent "mock UI" visual pattern across preview sections, distinct from the real, interactive versions of the feature
 
@@ -164,8 +169,9 @@ Supabase handles the following responsibilities:
 
 - Rolling 30-day workout count, calculated from the authenticated user's full workout history
 - Current workout streak calculated by walking backward from today through consecutive logged days
-- Both calculations are pure, derived values computed from already-fetched workout data (no separate
-  network requests or stored counters), so results are always correct relative to the underlying workout log
+  - Both calculations are pure, derived values computed from already-fetched workout data (no separate  
+    network requests or stored counters), so results are always correct relative to the underlying workout log
+- Strength vs. duration exercise breakdown, with total counts and percentages for each type
 
 ## Authentication
 
@@ -296,10 +302,8 @@ Current coverage includes sign up, sign in, save workout, edit workout, and dele
 
 As Momentum continues to evolve, planned improvements include:
 
-- Additional analytics: average exercises per strength workout, and further progress-tracking metrics
-- Extracting workout-fetching, deletion, and related state out of App.jsx into a dedicated useWorkoutLog hook, so the root component is only responsible for routing
-  Refactoring the workout form for improved accessibility and a smoother editing experience
 - Expanded user profile functionality
+- Extracting workout-fetching, deletion, and related state out of App.jsx into a dedicated useWorkoutLog hook, so the root component is only responsible for routing
 - Further application state management improvements
 
 # Production Build
