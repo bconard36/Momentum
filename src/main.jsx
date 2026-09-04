@@ -11,6 +11,7 @@ import "./styles/notFound.css";
 import "./styles/landingPage/landingPage.css";
 import "./styles/landingPage/hero.css";
 import "./styles/landingPage/workoutFormPreview.css";
+import "./styles/analytics.css";
 import "./styles/landingPage/landingFooter.css";
 import App from "./App.jsx";
 
