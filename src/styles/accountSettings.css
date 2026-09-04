@@ -136,3 +136,51 @@
     margin-top: 8%;
   }
 }
+
+/* Style Rules for Success / Error Messages */
+.reset-overlay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.reset-message-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  text-transform: balance;
+  color: var(--text-primary);
+  font-family: "Noto sans", sans-serif;
+}
+
+.reset-error-message {
+  color: #c85a53;
+  margin-bottom: 2%;
+}
+
+.email-error-button {
+  font-weight: 300;
+  margin-top: 2%;
+}
+
+.email-error-button:hover {
+  border-color: var(--border-active);
+}
+
+.reset-success-message {
+  font-size: 1.1rem;
+  margin-bottom: 2%;
+}
+
+.reset-success-note {
+  font-size: 0.9rem;
+  margin-bottom: 2%;
+}
+
+.email-success-link {
+  color: var(--text-primary);
+  margin-top: 3%;
+}

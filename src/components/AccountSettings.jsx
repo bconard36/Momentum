@@ -26,7 +26,7 @@ const AccountSettings = ({ user }) => {
     },
   });
 
-  const originalEmail = user?.email;
+  let userEmail = user?.email;
 
   // Password visibility state management
   const [showOriginalPassword, setShowOriginalPassword] = useState(false);
@@ -40,6 +40,7 @@ const AccountSettings = ({ user }) => {
   const [resetAll, setResetAll] = useState(false);
 
   // Reset Form Error/Success State Management
+  const [emailReset, setEmailReset] = useState("");
   const [emailResetSuccess, setEmailResetSuccess] = useState(false);
   const [passwordResetSuccess, setPasswordResetSuccess] = useState(false);
   const [emailError, setEmailError] = useState(false);
@@ -68,7 +69,7 @@ const AccountSettings = ({ user }) => {
       const confirmNewPassword = data.confirm_password_reset;
 
       if (resetEmail) {
-        if (emailReset === originalEmail) {
+        if (emailReset === userEmail) {
           // TODO - Error handling here
           setEmailError(true);
           reset();
@@ -85,13 +86,15 @@ const AccountSettings = ({ user }) => {
           console.log("Error resetting email: ", emailResetError.message);
         } else {
           // TODO - success render here
+          userEmail = emailReset; // Reset user email to email mismatch after verification
           setEmailError(false);
           setEmailResetSuccess(true);
+          setEmailReset(emailReset);
           reset();
         }
       } else if (resetPassword) {
         const { error: reAuthError } = await supabase.auth.signInWithPassword({
-          email: originalEmail,
+          email: userEmail,
           password: oldPassword,
         });
         // TODO - Error and Success handling here
@@ -138,7 +141,7 @@ const AccountSettings = ({ user }) => {
         // Reverify old password
         const { error: emailPassError } =
           await supabase.auth.signInWithPassword({
-            email: originalEmail,
+            email: userEmail,
             password: oldPassword,
           });
         // Handle credential errors
@@ -241,44 +244,68 @@ const AccountSettings = ({ user }) => {
           onSubmit={handleSubmit(onSubmit)}
         >
           {emailError && (
-            <div className="reset-error-overlay">
-              <div className="reset-error-container">
+            <div className="reset-overlay">
+              <div className="reset-message-container">
                 <span className="reset-error-message">
                   Error updating email address.
                 </span>
                 <button
                   type="button"
-                  className="secondary-button"
+                  className="secondary-button email-error-button"
                   onClick={() => {
                     reset();
                     setEmailError(false);
                     setResetEmail(true);
                   }}
                 >
-                  Please try again.
+                  Please try again
                 </button>
               </div>
             </div>
           )}
-
-          {resetEmail && !resetPassword && !resetAll && !emailError && (
-            <div className="account-settings-form-group">
-              <label htmlFor="email-reset">New Email Address</label>
-              {errors.email_reset && (
-                <span className="error-message">
-                  {errors.email_reset.message}
+          {emailResetSuccess && (
+            <div className="reset-overlay">
+              <div className="reset-message-container">
+                <span className="reset-success-message">
+                  Success! Email address updated.
                 </span>
-              )}
-              <input
-                type="email"
-                name="email_reset"
-                id="email_reset"
-                {...register("email_reset", {
-                  required: "New email address is required.",
-                })}
-              />
+                <span className="reset-success-note">
+                  A confirmation email has been sent to {emailReset}.
+                </span>
+                <Link to="/dashboard" className="email-success-link">
+                  <button
+                    type="button"
+                    className="primary-button email-reset-success-button"
+                  >
+                    Return to Dashboard
+                  </button>
+                </Link>
+              </div>
             </div>
           )}
+
+          {resetEmail &&
+            !resetPassword &&
+            !resetAll &&
+            !emailError &&
+            !emailResetSuccess && (
+              <div className="account-settings-form-group">
+                <label htmlFor="email-reset">New Email Address</label>
+                {errors.email_reset && (
+                  <span className="error-message">
+                    {errors.email_reset.message}
+                  </span>
+                )}
+                <input
+                  type="email"
+                  name="email_reset"
+                  id="email_reset"
+                  {...register("email_reset", {
+                    required: "New email address is required.",
+                  })}
+                />
+              </div>
+            )}
           {resetPassword && !resetEmail && !resetAll && (
             <>
               <div className="account-settings-form-group">
@@ -575,7 +602,7 @@ const AccountSettings = ({ user }) => {
               </div>
             </>
           )}
-          {!emailError && !passwordError && (
+          {!emailError || !passwordError || (
             <div className="account-settings-form-actions">
               <button
                 type="submit"
