@@ -121,7 +121,10 @@ const SignIn = () => {
               </p>
               <button
                 className="primary-button"
-                onClick={() => clearErrors("root")}
+                onClick={() => {
+                  clearErrors("root");
+                  reset();
+                }}
               >
                 Try Again
               </button>
