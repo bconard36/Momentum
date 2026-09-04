@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { supabase } from "../utils/supabaseClient";
 
 // Account Settings
@@ -12,6 +12,8 @@ import { supabase } from "../utils/supabaseClient";
 // Redirect after
 
 const AccountSettings = ({ user }) => {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -26,6 +28,7 @@ const AccountSettings = ({ user }) => {
     },
   });
 
+  // Capture authenticated user email data
   let userEmail = user?.email;
 
   // Password visibility state management
@@ -35,24 +38,21 @@ const AccountSettings = ({ user }) => {
     useState(false);
 
   // Reset Form State Management
-  const [resetEmail, setResetEmail] = useState(false);
-  const [resetPassword, setResetPassword] = useState(false);
-  const [resetAll, setResetAll] = useState(false);
+  const [activeForm, setActiveForm] = useState(null); // null | 'email' | 'password' | 'all'
 
   // Reset Form Error/Success State Management
-  const [emailReset, setEmailReset] = useState("");
-  const [emailResetSuccess, setEmailResetSuccess] = useState(false);
-  const [passwordResetSuccess, setPasswordResetSuccess] = useState(false);
-  const [emailError, setEmailError] = useState(false);
-  const [passwordError, setPasswordError] = useState(false);
+  const [formError, setFormError] = useState(null); // { form: 'email', message: '...' }
+  const [formSuccess, setFormSuccess] = useState(null); // pending for button renering. desctructured for success { form: 'email', message: '...' }
+  const [newEmail, setNewEmail] = useState(""); // State of updated email address to display in success window
 
-  if (!user) {
+  if (!user && !formSuccess) {
     return (
       <div className="loading-message-container">
         <div className="loading-message">Loading...</div>
       </div>
     );
   }
+
   /**
    * Handles submission for email and password updates
    * Conditionally handles email, password, and email and password updates.
@@ -68,10 +68,13 @@ const AccountSettings = ({ user }) => {
       const newPassword = data.password_reset;
       const confirmNewPassword = data.confirm_password_reset;
 
-      if (resetEmail) {
+      if (activeForm === "email") {
         if (emailReset === userEmail) {
           // TODO - Error handling here
-          setEmailError(true);
+          setFormError({
+            form: "email",
+            message: "New email must be different from your current email.",
+          });
           reset();
           return;
         }
@@ -82,32 +85,43 @@ const AccountSettings = ({ user }) => {
 
         if (emailResetError) {
           // TODO - Insert graceful error pop up here
-          setEmailError(true);
+          setFormError({
+            form: "email",
+            message: "Error updating email address.",
+          });
           console.log("Error resetting email: ", emailResetError.message);
         } else {
           // TODO - success render here
-          userEmail = emailReset; // Reset user email to email mismatch after verification
-          setEmailError(false);
-          setEmailResetSuccess(true);
-          setEmailReset(emailReset);
+          setFormError(null);
+          setFormSuccess({
+            form: "email",
+            message: "Success! Your email has been updated.",
+          });
+          setNewEmail(emailReset);
           reset();
         }
-      } else if (resetPassword) {
+      } else if (activeForm === "password") {
         const { error: reAuthError } = await supabase.auth.signInWithPassword({
           email: userEmail,
           password: oldPassword,
         });
         // TODO - Error and Success handling here
         if (reAuthError) {
-          console.log(`Invalid credentials. Please try again.`);
-          reset();
-          return;
+          setFormError({
+            form: "password",
+            message: "Invalid credentials.",
+          });
         } else if (newPassword === oldPassword) {
-          console.log(
-            "New password must be different from your current password.",
-          );
+          setFormError({
+            form: "password",
+            message:
+              "New password must be different from your current password.",
+          });
         } else if (newPassword !== confirmNewPassword) {
-          console.log("Passwords do not match");
+          setFormError({
+            form: "password",
+            message: "Passwords do not match.",
+          });
         } else {
           const { data: newPass, error: newPassError } =
             await supabase.auth.updateUser({
@@ -115,14 +129,25 @@ const AccountSettings = ({ user }) => {
             });
 
           if (newPassError) {
-            console.log(`Error updating password: ${newPassError.message}`);
+            setFormError({
+              form: "password",
+              message: "Error updating password.",
+            });
           } else {
-            console.log(`Password updated!`);
+            setFormError(null);
+            setFormSuccess({
+              form: "password",
+              message: "Success! Your password has been updated!",
+            });
             reset();
+            await supabase.auth.signOut();
+            setTimeout(() => {
+              navigate("/", { replace: true });
+            }, 2000);
             return;
           }
         }
-      } else if (resetAll) {
+      } else if (activeForm === "email_password") {
         // Check client side first
         // Return on all errors throughout this block
         if (newPassword !== confirmNewPassword) {
@@ -146,6 +171,10 @@ const AccountSettings = ({ user }) => {
           });
         // Handle credential errors
         if (emailPassError) {
+          setFormError({
+            form: "email_password",
+            message: "Invalid Credentials.",
+          });
           console.log(`Invalid Credentials: ${emailPassError.message}`);
           reset();
           return;
@@ -157,6 +186,10 @@ const AccountSettings = ({ user }) => {
             });
           // Handle success/errors
           if (passwordUpdateError) {
+            setFormError({
+              form: "email_password",
+              message: "Error updating password.",
+            });
             // Set passwordUpdateError(true) state here
             console.log(
               `Error updating password: ${passwordUpdateError.message}`,
@@ -172,13 +205,26 @@ const AccountSettings = ({ user }) => {
                 email: emailReset,
               });
             if (emailUpdateError) {
+              setFormError({
+                form: "email_password",
+                message:
+                  "Password updated, but email was not. Please try updating your email again.",
+              });
               console.log(`Error updating email: ${emailUpdateError}`);
               // Set emailUpdateError(true) state here
               reset();
               return;
             } else {
-              console.log(`Success! Email Updated!`);
-              reset();
+              setNewEmail(emailReset);
+              setFormSuccess({
+                form: "email_password",
+                message: `Success! Email and password have been updated! Be sure to watch out for a confirmation email at ${userEmail}`,
+              });
+              // await supabase.auth.signOut();
+              // setTimeout(() => {
+              //   navigate("/sign-in", { replace: true });
+              // }, 2000);
+              // reset();
             }
           }
         }
@@ -204,9 +250,9 @@ const AccountSettings = ({ user }) => {
           type="button"
           className="secondary-button"
           onClick={() => {
-            setResetEmail(true);
-            setResetPassword(false);
-            setResetAll(false);
+            setActiveForm("email");
+            setFormError(null);
+            setFormSuccess("pending");
             reset();
           }}
         >
@@ -216,9 +262,9 @@ const AccountSettings = ({ user }) => {
           type="button"
           className="secondary-button"
           onClick={() => {
-            setResetPassword(true);
-            setResetEmail(false);
-            setResetAll(false);
+            setActiveForm("password");
+            setFormError(null);
+            setFormSuccess("pending");
             reset();
           }}
         >
@@ -228,9 +274,9 @@ const AccountSettings = ({ user }) => {
           type="button"
           className="secondary-button"
           onClick={() => {
-            setResetAll(true);
-            setResetEmail(false);
-            setResetPassword(false);
+            setActiveForm("email_password");
+            setFormError(null);
+            setFormSuccess("pending");
             reset();
           }}
         >
@@ -243,39 +289,29 @@ const AccountSettings = ({ user }) => {
           className="account-settings-form"
           onSubmit={handleSubmit(onSubmit)}
         >
-          {emailError && (
+          {formError?.form === activeForm && (
             <div className="reset-overlay">
               <div className="reset-message-container">
                 <span className="reset-error-message">
-                  Error updating email address.
+                  {formError?.message}
                 </span>
-                <button
-                  type="button"
-                  className="secondary-button email-error-button"
-                  onClick={() => {
-                    reset();
-                    setEmailError(false);
-                    setResetEmail(true);
-                  }}
-                >
-                  Please try again
-                </button>
+                <span>Please try again</span>
               </div>
             </div>
           )}
-          {emailResetSuccess && (
+          {formSuccess?.form === activeForm && activeForm === "email" && (
             <div className="reset-overlay">
               <div className="reset-message-container">
                 <span className="reset-success-message">
-                  Success! Email address updated.
+                  Success! Your email has been updated.
                 </span>
                 <span className="reset-success-note">
-                  A confirmation email has been sent to {emailReset}.
+                  A confirmation email has been sent to {newEmail}.
                 </span>
-                <Link to="/dashboard" className="email-success-link">
+                <Link to="/dashboard" className="password-success-link">
                   <button
                     type="button"
-                    className="primary-button email-reset-success-button"
+                    className="primary-button password-reset-success-button"
                   >
                     Return to Dashboard
                   </button>
@@ -283,341 +319,352 @@ const AccountSettings = ({ user }) => {
               </div>
             </div>
           )}
-
-          {resetEmail &&
-            !resetPassword &&
-            !resetAll &&
-            !emailError &&
-            !emailResetSuccess && (
-              <div className="account-settings-form-group">
-                <label htmlFor="email-reset">New Email Address</label>
-                {errors.email_reset && (
-                  <span className="error-message">
-                    {errors.email_reset.message}
-                  </span>
-                )}
-                <input
-                  type="email"
-                  name="email_reset"
-                  id="email_reset"
-                  {...register("email_reset", {
-                    required: "New email address is required.",
-                  })}
-                />
+          {formSuccess?.form === activeForm && activeForm === "password" && (
+            <div className="reset-overlay">
+              <div className="reset-message-container">
+                <span className="reset-success-message">
+                  Success! Password Updated.
+                </span>
+                <span className="reset-success-note">
+                  Redirecting to sign in ...
+                </span>
               </div>
-            )}
-          {resetPassword && !resetEmail && !resetAll && (
-            <>
-              <div className="account-settings-form-group">
-                <label htmlFor="password_original">Confirm Old Password</label>
-                {errors.password_original && (
-                  <span className="error-message">
-                    {errors.password_original.message}
-                  </span>
-                )}
-                <input
-                  type={showOriginalPassword ? "text" : "password"}
-                  name="password_original"
-                  id="password_original"
-                  {...register("password_original", {
-                    required: "Original password is required.",
-                  })}
-                />
-                <svg
-                  width="50px"
-                  height="50px"
-                  viewBox="-0.5 0 25 25"
-                  style={{
-                    fill: "currentColor",
-                  }}
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="original-password-toggle"
-                  onClick={() => setShowOriginalPassword(!showOriginalPassword)}
-                >
-                  <path
-                    d="M20.595 11.38C15.855 6.60001 8.145 6.60001 3.405 11.38L2.645 12.14C2.445 12.34 2.445 12.66 2.645 12.86L3.405 13.62C8.145 
-                                18.4 15.855 18.4 20.595 13.62L21.355 12.86C21.555 12.66 21.555 12.34 21.355 12.14L20.595 11.38Z"
-                    stroke="#FFF"
-                    strokeMiterlimit="10"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M12.0049 15.06C13.4188 15.06 14.5649 13.9139 14.5649 12.5C14.5649 11.0862 13.4188 9.94 12.0049 9.94C10.5911 9.94 9.44495 11.0862 
-                                9.44495 12.5C9.44495 13.9139 10.5911 15.06 12.0049 15.06Z"
-                    stroke="#000"
-                    strokeMiterlimit="10"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </div>
-              <div className="account-settings-form-group">
-                <label htmlFor="password_reset">New Password</label>
-                {errors.password_reset && (
-                  <span className="error-message">
-                    {errors.password_reset.message}
-                  </span>
-                )}
-                <input
-                  type={showPasswordReset ? "text" : "password"}
-                  name="password_reset"
-                  id="password_reset"
-                  {...register("password_reset", {
-                    required: "New password is required.",
-                  })}
-                />
-                <svg
-                  width="50px"
-                  height="50px"
-                  viewBox="-0.5 0 25 25"
-                  style={{
-                    fill: "currentColor",
-                  }}
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="password-reset-toggle"
-                  onClick={() => setShowPasswordReset(!showPasswordReset)}
-                >
-                  <path
-                    d="M20.595 11.38C15.855 6.60001 8.145 6.60001 3.405 11.38L2.645 12.14C2.445 12.34 2.445 12.66 2.645 12.86L3.405 13.62C8.145 
-                                18.4 15.855 18.4 20.595 13.62L21.355 12.86C21.555 12.66 21.555 12.34 21.355 12.14L20.595 11.38Z"
-                    stroke="#FFF"
-                    strokeMiterlimit="10"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M12.0049 15.06C13.4188 15.06 14.5649 13.9139 14.5649 12.5C14.5649 11.0862 13.4188 9.94 12.0049 9.94C10.5911 9.94 9.44495 11.0862 
-                                9.44495 12.5C9.44495 13.9139 10.5911 15.06 12.0049 15.06Z"
-                    stroke="#000"
-                    strokeMiterlimit="10"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </div>
-              <div className="account-settings-form-group">
-                <label htmlFor="confirm_password_reset">
-                  Confirm New Password
-                </label>
-                {errors.confirm_password_reset && (
-                  <span className="error-message">
-                    {errors.confirm_password_reset.message}
-                  </span>
-                )}
-                <input
-                  type={showConfirmPasswordReset ? "text" : "password"}
-                  name="confirm_password_reset"
-                  id="confirm_password_reset"
-                  {...register("confirm_password_reset", {
-                    required: "Please confirm your new password.",
-                  })}
-                />
-                <svg
-                  width="50px"
-                  height="50px"
-                  viewBox="-0.5 0 25 25"
-                  style={{
-                    fill: "currentColor",
-                  }}
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="confirm-password-reset-toggle"
-                  onClick={() =>
-                    setShowConfirmPasswordReset(!showConfirmPasswordReset)
-                  }
-                >
-                  <path
-                    d="M20.595 11.38C15.855 6.60001 8.145 6.60001 3.405 11.38L2.645 12.14C2.445 12.34 2.445 12.66 2.645 12.86L3.405 13.62C8.145 
-                                18.4 15.855 18.4 20.595 13.62L21.355 12.86C21.555 12.66 21.555 12.34 21.355 12.14L20.595 11.38Z"
-                    stroke="#FFF"
-                    strokeMiterlimit="10"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M12.0049 15.06C13.4188 15.06 14.5649 13.9139 14.5649 12.5C14.5649 11.0862 13.4188 9.94 12.0049 9.94C10.5911 9.94 9.44495 11.0862 
-                                9.44495 12.5C9.44495 13.9139 10.5911 15.06 12.0049 15.06Z"
-                    stroke="#000"
-                    strokeMiterlimit="10"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </div>
-            </>
-          )}
-          {resetAll && !resetEmail && !resetPassword && (
-            <>
-              <div className="account-settings-form-group">
-                <label htmlFor="email-reset">New Email Address</label>
-                {errors.email_reset && (
-                  <span className="error-message">
-                    {errors.email_reset.message}
-                  </span>
-                )}
-                <input
-                  type="email"
-                  name="email_reset"
-                  id="email_reset"
-                  {...register("email_reset", {
-                    required: "New email address is required.",
-                  })}
-                />
-              </div>
-              <div className="account-settings-form-group">
-                <label htmlFor="password_original">Confirm Old Password</label>
-                {errors.password_original && (
-                  <span className="error-message">
-                    {errors.password_original.message}
-                  </span>
-                )}
-                <input
-                  type={showOriginalPassword ? "text" : "password"}
-                  name="password_original"
-                  id="password_original"
-                  {...register("password_original", {
-                    required: "Original password is required.",
-                  })}
-                />
-                <svg
-                  width="50px"
-                  height="50px"
-                  viewBox="-0.5 0 25 25"
-                  style={{
-                    fill: "currentColor",
-                  }}
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="original-password-toggle"
-                  onClick={() => setShowOriginalPassword(!showOriginalPassword)}
-                >
-                  <path
-                    d="M20.595 11.38C15.855 6.60001 8.145 6.60001 3.405 11.38L2.645 12.14C2.445 12.34 2.445 12.66 2.645 12.86L3.405 13.62C8.145 
-                                18.4 15.855 18.4 20.595 13.62L21.355 12.86C21.555 12.66 21.555 12.34 21.355 12.14L20.595 11.38Z"
-                    stroke="#FFF"
-                    strokeMiterlimit="10"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M12.0049 15.06C13.4188 15.06 14.5649 13.9139 14.5649 12.5C14.5649 11.0862 13.4188 9.94 12.0049 9.94C10.5911 9.94 9.44495 11.0862 
-                                9.44495 12.5C9.44495 13.9139 10.5911 15.06 12.0049 15.06Z"
-                    stroke="#000"
-                    strokeMiterlimit="10"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </div>
-              <div className="account-settings-form-group">
-                <label htmlFor="password_reset">New Password</label>
-                {errors.password_reset && (
-                  <span className="error-message">
-                    {errors.password_reset.message}
-                  </span>
-                )}
-                <input
-                  type={showPasswordReset ? "text" : "password"}
-                  name="password_reset"
-                  id="password_reset"
-                  {...register("password_reset", {
-                    required: "New password is required.",
-                  })}
-                />
-                <svg
-                  width="50px"
-                  height="50px"
-                  viewBox="-0.5 0 25 25"
-                  style={{
-                    fill: "currentColor",
-                  }}
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="password-reset-toggle"
-                  onClick={() => setShowPasswordReset(!showPasswordReset)}
-                >
-                  <path
-                    d="M20.595 11.38C15.855 6.60001 8.145 6.60001 3.405 11.38L2.645 12.14C2.445 12.34 2.445 12.66 2.645 12.86L3.405 13.62C8.145 
-                                18.4 15.855 18.4 20.595 13.62L21.355 12.86C21.555 12.66 21.555 12.34 21.355 12.14L20.595 11.38Z"
-                    stroke="#FFF"
-                    strokeMiterlimit="10"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M12.0049 15.06C13.4188 15.06 14.5649 13.9139 14.5649 12.5C14.5649 11.0862 13.4188 9.94 12.0049 9.94C10.5911 9.94 9.44495 11.0862 
-                                9.44495 12.5C9.44495 13.9139 10.5911 15.06 12.0049 15.06Z"
-                    stroke="#000"
-                    strokeMiterlimit="10"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </div>
-              <div className="account-settings-form-group">
-                <label htmlFor="confirm_password_reset">
-                  Confirm New Password
-                </label>
-                {errors.confirm_password_reset && (
-                  <span className="error-message">
-                    {errors.confirm_password_reset.message}
-                  </span>
-                )}
-                <input
-                  type={showConfirmPasswordReset ? "text" : "password"}
-                  name="confirm_password_reset"
-                  id="confirm_password_reset"
-                  {...register("confirm_password_reset", {
-                    required: "Please confirm your new password.",
-                  })}
-                />
-                <svg
-                  width="50px"
-                  height="50px"
-                  viewBox="-0.5 0 25 25"
-                  style={{
-                    fill: "currentColor",
-                  }}
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="confirm-password-reset-toggle"
-                  onClick={() =>
-                    setShowConfirmPasswordReset(!showConfirmPasswordReset)
-                  }
-                >
-                  <path
-                    d="M20.595 11.38C15.855 6.60001 8.145 6.60001 3.405 11.38L2.645 12.14C2.445 12.34 2.445 12.66 2.645 12.86L3.405 13.62C8.145 
-                                18.4 15.855 18.4 20.595 13.62L21.355 12.86C21.555 12.66 21.555 12.34 21.355 12.14L20.595 11.38Z"
-                    stroke="#FFF"
-                    strokeMiterlimit="10"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M12.0049 15.06C13.4188 15.06 14.5649 13.9139 14.5649 12.5C14.5649 11.0862 13.4188 9.94 12.0049 9.94C10.5911 9.94 9.44495 11.0862 
-                                9.44495 12.5C9.44495 13.9139 10.5911 15.06 12.0049 15.06Z"
-                    stroke="#000"
-                    strokeMiterlimit="10"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </div>
-            </>
-          )}
-          {!emailError || !passwordError || (
-            <div className="account-settings-form-actions">
-              <button
-                type="submit"
-                className="primary-button account-settings-submit"
-              >
-                Submit Changes
-              </button>
-              <button
-                type="reset"
-                className="secondary-button account-settings-reset"
-              >
-                Cancel
-              </button>
             </div>
           )}
+
+          {activeForm === "email" && formSuccess === "pending" && (
+            <div className="account-settings-form-group">
+              <label htmlFor="email-reset">New Email Address</label>
+              {errors.email_reset && (
+                <span className="error-message">
+                  {errors.email_reset.message}
+                </span>
+              )}
+              <input
+                type="email"
+                name="email_reset"
+                id="email_reset"
+                {...register("email_reset", {
+                  required: "New email address is required.",
+                })}
+              />
+            </div>
+          )}
+          {activeForm === "password" && formSuccess === "pending" && (
+            <>
+              <div className="account-settings-form-group">
+                <label htmlFor="password_original">Confirm Old Password</label>
+                {errors.password_original && (
+                  <span className="error-message">
+                    {errors.password_original.message}
+                  </span>
+                )}
+                <input
+                  type={showOriginalPassword ? "text" : "password"}
+                  name="password_original"
+                  id="password_original"
+                  {...register("password_original", {
+                    required: "Original password is required.",
+                  })}
+                />
+                <svg
+                  width="50px"
+                  height="50px"
+                  viewBox="-0.5 0 25 25"
+                  style={{
+                    fill: "currentColor",
+                  }}
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="original-password-toggle"
+                  onClick={() => setShowOriginalPassword(!showOriginalPassword)}
+                >
+                  <path
+                    d="M20.595 11.38C15.855 6.60001 8.145 6.60001 3.405 11.38L2.645 12.14C2.445 12.34 2.445 12.66 2.645 12.86L3.405 13.62C8.145 
+                                18.4 15.855 18.4 20.595 13.62L21.355 12.86C21.555 12.66 21.555 12.34 21.355 12.14L20.595 11.38Z"
+                    stroke="#FFF"
+                    strokeMiterlimit="10"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M12.0049 15.06C13.4188 15.06 14.5649 13.9139 14.5649 12.5C14.5649 11.0862 13.4188 9.94 12.0049 9.94C10.5911 9.94 9.44495 11.0862 
+                                9.44495 12.5C9.44495 13.9139 10.5911 15.06 12.0049 15.06Z"
+                    stroke="#000"
+                    strokeMiterlimit="10"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </div>
+              <div className="account-settings-form-group">
+                <label htmlFor="password_reset">New Password</label>
+                {errors.password_reset && (
+                  <span className="error-message">
+                    {errors.password_reset.message}
+                  </span>
+                )}
+                <input
+                  type={showPasswordReset ? "text" : "password"}
+                  name="password_reset"
+                  id="password_reset"
+                  {...register("password_reset", {
+                    required: "New password is required.",
+                  })}
+                />
+                <svg
+                  width="50px"
+                  height="50px"
+                  viewBox="-0.5 0 25 25"
+                  style={{
+                    fill: "currentColor",
+                  }}
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="password-reset-toggle"
+                  onClick={() => setShowPasswordReset(!showPasswordReset)}
+                >
+                  <path
+                    d="M20.595 11.38C15.855 6.60001 8.145 6.60001 3.405 11.38L2.645 12.14C2.445 12.34 2.445 12.66 2.645 12.86L3.405 13.62C8.145 
+                                18.4 15.855 18.4 20.595 13.62L21.355 12.86C21.555 12.66 21.555 12.34 21.355 12.14L20.595 11.38Z"
+                    stroke="#FFF"
+                    strokeMiterlimit="10"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M12.0049 15.06C13.4188 15.06 14.5649 13.9139 14.5649 12.5C14.5649 11.0862 13.4188 9.94 12.0049 9.94C10.5911 9.94 9.44495 11.0862 
+                                9.44495 12.5C9.44495 13.9139 10.5911 15.06 12.0049 15.06Z"
+                    stroke="#000"
+                    strokeMiterlimit="10"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </div>
+              <div className="account-settings-form-group">
+                <label htmlFor="confirm_password_reset">
+                  Confirm New Password
+                </label>
+                {errors.confirm_password_reset && (
+                  <span className="error-message">
+                    {errors.confirm_password_reset.message}
+                  </span>
+                )}
+                <input
+                  type={showConfirmPasswordReset ? "text" : "password"}
+                  name="confirm_password_reset"
+                  id="confirm_password_reset"
+                  {...register("confirm_password_reset", {
+                    required: "Please confirm your new password.",
+                  })}
+                />
+                <svg
+                  width="50px"
+                  height="50px"
+                  viewBox="-0.5 0 25 25"
+                  style={{
+                    fill: "currentColor",
+                  }}
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="confirm-password-reset-toggle"
+                  onClick={() =>
+                    setShowConfirmPasswordReset(!showConfirmPasswordReset)
+                  }
+                >
+                  <path
+                    d="M20.595 11.38C15.855 6.60001 8.145 6.60001 3.405 11.38L2.645 12.14C2.445 12.34 2.445 12.66 2.645 12.86L3.405 13.62C8.145 
+                                18.4 15.855 18.4 20.595 13.62L21.355 12.86C21.555 12.66 21.555 12.34 21.355 12.14L20.595 11.38Z"
+                    stroke="#FFF"
+                    strokeMiterlimit="10"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M12.0049 15.06C13.4188 15.06 14.5649 13.9139 14.5649 12.5C14.5649 11.0862 13.4188 9.94 12.0049 9.94C10.5911 9.94 9.44495 11.0862 
+                                9.44495 12.5C9.44495 13.9139 10.5911 15.06 12.0049 15.06Z"
+                    stroke="#000"
+                    strokeMiterlimit="10"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </div>
+            </>
+          )}
+          {activeForm === "email_password" && (
+            <>
+              <div className="account-settings-form-group">
+                <label htmlFor="email-reset">New Email Address</label>
+                {errors.email_reset && (
+                  <span className="error-message">
+                    {errors.email_reset.message}
+                  </span>
+                )}
+                <input
+                  type="email"
+                  name="email_reset"
+                  id="email_reset"
+                  {...register("email_reset", {
+                    required: "New email address is required.",
+                  })}
+                />
+              </div>
+              <div className="account-settings-form-group">
+                <label htmlFor="password_original">Confirm Old Password</label>
+                {errors.password_original && (
+                  <span className="error-message">
+                    {errors.password_original.message}
+                  </span>
+                )}
+                <input
+                  type={showOriginalPassword ? "text" : "password"}
+                  name="password_original"
+                  id="password_original"
+                  {...register("password_original", {
+                    required: "Original password is required.",
+                  })}
+                />
+                <svg
+                  width="50px"
+                  height="50px"
+                  viewBox="-0.5 0 25 25"
+                  style={{
+                    fill: "currentColor",
+                  }}
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="original-password-toggle"
+                  onClick={() => setShowOriginalPassword(!showOriginalPassword)}
+                >
+                  <path
+                    d="M20.595 11.38C15.855 6.60001 8.145 6.60001 3.405 11.38L2.645 12.14C2.445 12.34 2.445 12.66 2.645 12.86L3.405 13.62C8.145 
+                                18.4 15.855 18.4 20.595 13.62L21.355 12.86C21.555 12.66 21.555 12.34 21.355 12.14L20.595 11.38Z"
+                    stroke="#FFF"
+                    strokeMiterlimit="10"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M12.0049 15.06C13.4188 15.06 14.5649 13.9139 14.5649 12.5C14.5649 11.0862 13.4188 9.94 12.0049 9.94C10.5911 9.94 9.44495 11.0862 
+                                9.44495 12.5C9.44495 13.9139 10.5911 15.06 12.0049 15.06Z"
+                    stroke="#000"
+                    strokeMiterlimit="10"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </div>
+              <div className="account-settings-form-group">
+                <label htmlFor="password_reset">New Password</label>
+                {errors.password_reset && (
+                  <span className="error-message">
+                    {errors.password_reset.message}
+                  </span>
+                )}
+                <input
+                  type={showPasswordReset ? "text" : "password"}
+                  name="password_reset"
+                  id="password_reset"
+                  {...register("password_reset", {
+                    required: "New password is required.",
+                  })}
+                />
+                <svg
+                  width="50px"
+                  height="50px"
+                  viewBox="-0.5 0 25 25"
+                  style={{
+                    fill: "currentColor",
+                  }}
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="password-reset-toggle"
+                  onClick={() => setShowPasswordReset(!showPasswordReset)}
+                >
+                  <path
+                    d="M20.595 11.38C15.855 6.60001 8.145 6.60001 3.405 11.38L2.645 12.14C2.445 12.34 2.445 12.66 2.645 12.86L3.405 13.62C8.145 
+                                18.4 15.855 18.4 20.595 13.62L21.355 12.86C21.555 12.66 21.555 12.34 21.355 12.14L20.595 11.38Z"
+                    stroke="#FFF"
+                    strokeMiterlimit="10"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M12.0049 15.06C13.4188 15.06 14.5649 13.9139 14.5649 12.5C14.5649 11.0862 13.4188 9.94 12.0049 9.94C10.5911 9.94 9.44495 11.0862 
+                                9.44495 12.5C9.44495 13.9139 10.5911 15.06 12.0049 15.06Z"
+                    stroke="#000"
+                    strokeMiterlimit="10"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </div>
+              <div className="account-settings-form-group">
+                <label htmlFor="confirm_password_reset">
+                  Confirm New Password
+                </label>
+                {errors.confirm_password_reset && (
+                  <span className="error-message">
+                    {errors.confirm_password_reset.message}
+                  </span>
+                )}
+                <input
+                  type={showConfirmPasswordReset ? "text" : "password"}
+                  name="confirm_password_reset"
+                  id="confirm_password_reset"
+                  {...register("confirm_password_reset", {
+                    required: "Please confirm your new password.",
+                  })}
+                />
+                <svg
+                  width="50px"
+                  height="50px"
+                  viewBox="-0.5 0 25 25"
+                  style={{
+                    fill: "currentColor",
+                  }}
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="confirm-password-reset-toggle"
+                  onClick={() =>
+                    setShowConfirmPasswordReset(!showConfirmPasswordReset)
+                  }
+                >
+                  <path
+                    d="M20.595 11.38C15.855 6.60001 8.145 6.60001 3.405 11.38L2.645 12.14C2.445 12.34 2.445 12.66 2.645 12.86L3.405 13.62C8.145 
+                                18.4 15.855 18.4 20.595 13.62L21.355 12.86C21.555 12.66 21.555 12.34 21.355 12.14L20.595 11.38Z"
+                    stroke="#FFF"
+                    strokeMiterlimit="10"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M12.0049 15.06C13.4188 15.06 14.5649 13.9139 14.5649 12.5C14.5649 11.0862 13.4188 9.94 12.0049 9.94C10.5911 9.94 9.44495 11.0862 
+                                9.44495 12.5C9.44495 13.9139 10.5911 15.06 12.0049 15.06Z"
+                    stroke="#000"
+                    strokeMiterlimit="10"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </div>
+            </>
+          )}
+          {(activeForm === "email" ||
+            activeForm === "password" ||
+            activeForm === "email_password") &&
+            (formSuccess === "pending" || formSuccess === null) && (
+              <div className="account-settings-form-actions">
+                <button
+                  type="submit"
+                  className="primary-button account-settings-submit"
+                >
+                  Submit Changes
+                </button>
+                <button
+                  type="reset"
+                  className="secondary-button account-settings-reset"
+                >
+                  Cancel
+                </button>
+              </div>
+            )}
         </form>
       </div>
     </>
