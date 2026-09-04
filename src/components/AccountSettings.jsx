@@ -10,7 +10,6 @@ import { supabase } from "../utils/supabaseClient";
 // email update, success, fail
 // Supabase needs to be imported
 // Redirect after
-// Do I need a form here?
 
 const AccountSettings = ({ user }) => {
   const {
@@ -51,12 +50,13 @@ const AccountSettings = ({ user }) => {
   const onSubmit = async (data) => {
     try {
       const emailReset = data.email_reset;
-      const originalPassword = data.password_original;
-      const passwordReset = data.password_reset;
-      const confirmPasswordReset = data.confirm_password_reset;
+      const oldPassword = data.password_original;
+      const newPassword = data.password_reset;
+      const confirmNewPassword = data.confirm_password_reset;
 
       if (resetEmail) {
         if (emailReset === originalEmail) {
+          // TODO - Error handling here
           console.log("Invalid Email");
           reset();
           return;
@@ -67,21 +67,43 @@ const AccountSettings = ({ user }) => {
           });
 
         if (emailResetError) {
-          // Insert graceful error pop up here
+          // TODO - Insert graceful error pop up here
           console.log("Error resetting email: ", emailResetError);
         } else {
+          // TODO - success render here
           reset();
           console.log(`Success! Email Address Updated`);
         }
-        // } else if (resetPassword) {
-        //    const { data: newPassword}
-        //   console.log(
-        //     `Reset Password Data: Password: ${passwordReset}; Confirm Password: ${data.confirm_password_reset}`,
-        //   );
-        // } else if (resetAll) {
-        //   console.log(
-        //     `Account Settings Form Data: Email - ${emailReset}; Password: ${passwordReset}`,
-        //   );
+      } else if (resetPassword) {
+        const { error: reAuthError } = await supabase.auth.signInWithPassword({
+          email: originalEmail,
+          password: oldPassword,
+        });
+        // TODO - Error and Success handling here
+        if (reAuthError) {
+          console.log(`Invalid credentials. Please try again.`);
+          reset();
+          return;
+        } else if (newPassword === oldPassword) {
+          console.log(
+            "New password must be different from your current password.",
+          );
+        } else if (newPassword !== confirmNewPassword) {
+          console.log("Passwords do not match");
+        } else {
+          const { data: newPass, error: newPassError } =
+            await supabase.auth.updateUser({
+              password: newPassword,
+            });
+
+          if (newPassError) {
+            console.log(`Error updating password: ${newPassError}`);
+          } else {
+            console.log(`Password updated!`);
+            reset();
+            return;
+          }
+        }
       }
     } catch (error) {
       console.error("Error: ", error);
