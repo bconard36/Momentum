@@ -68,7 +68,7 @@ const AccountSettings = ({ user }) => {
 
         if (emailResetError) {
           // TODO - Insert graceful error pop up here
-          console.log("Error resetting email: ", emailResetError);
+          console.log("Error resetting email: ", emailResetError.message);
         } else {
           // TODO - success render here
           reset();
@@ -97,13 +97,74 @@ const AccountSettings = ({ user }) => {
             });
 
           if (newPassError) {
-            console.log(`Error updating password: ${newPassError}`);
+            console.log(`Error updating password: ${newPassError.message}`);
           } else {
             console.log(`Password updated!`);
             reset();
             return;
           }
         }
+      } else if (resetAll) {
+        // Check client side first
+        // Return on all errors throughout this block
+        if (newPassword !== confirmNewPassword) {
+          console.log("Passwords do not match.");
+          reset();
+          return;
+        }
+
+        if (newPassword === oldPassword) {
+          console.log(
+            "New password must be different from your current password.",
+          );
+          reset();
+          return;
+        }
+        // Reverify old password
+        const { error: emailPassError } =
+          await supabase.auth.signInWithPassword({
+            email: originalEmail,
+            password: oldPassword,
+          });
+        // Handle credential errors
+        if (emailPassError) {
+          console.log(`Invalid Credentials: ${emailPassError.message}`);
+          reset();
+          return;
+        } else {
+          // Attempt to update password
+          const { data: passwordUpdate, error: passwordUpdateError } =
+            await supabase.auth.updateUser({
+              password: newPassword,
+            });
+          // Handle success/errors
+          if (passwordUpdateError) {
+            // Set passwordUpdateError(true) state here
+            console.log(
+              `Error updating password: ${passwordUpdateError.message}`,
+            );
+            reset();
+            return;
+          } else {
+            // TODO - State management for password update success for partial failure/success
+            console.log(`Success! Password Updated`);
+            // Once password updated, update email
+            const { data: emailUpdate, error: emailUpdateError } =
+              await supabase.auth.updateUser({
+                email: emailReset,
+              });
+            if (emailUpdateError) {
+              console.log(`Error updating email: ${emailUpdateError}`);
+              // Set emailUpdateError(true) state here
+              reset();
+              return;
+            } else {
+              console.log(`Success! Email Updated!`);
+              reset();
+            }
+          }
+        }
+        console.log(`Email and password both updated successfully.`);
       }
     } catch (error) {
       console.error("Error: ", error);
