@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 Notes.md
+.env
 
 # Editor directories and files
 .vscode/*
