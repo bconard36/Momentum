@@ -78,7 +78,7 @@ const AccountSettings = ({ user }) => {
           reset();
           return;
         }
-        const { data: newEmail, error: emailResetError } =
+        const { data: emailUpdateResult, error: emailResetError } =
           await supabase.auth.updateUser({
             email: emailReset,
           });
@@ -140,7 +140,7 @@ const AccountSettings = ({ user }) => {
               message: "Success! Your password has been updated!",
             });
             reset();
-            await supabase.auth.signOut();
+            await supabase.auth.signOut({ scope: "global" });
             setTimeout(() => {
               navigate("/", { replace: true });
             }, 2000);
