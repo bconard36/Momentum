@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { mockWorkouts } from "../../mock/mockWorkouts";
 /**
  * Workout Form Preview Component
@@ -6,6 +7,8 @@ import { mockWorkouts } from "../../mock/mockWorkouts";
  * @returns {JSXElement} - workout form preview for the landing page
  */
 const WorkoutFormPreview = () => {
+  const [exerciseType, setExerciseType] = useState("strength");
+
   // Mapping through workout data returns an array of arrays
   // An array of workouts with nested exercise arrays within each
   // Need to return one array of every exercise, regardless of workout
@@ -27,6 +30,7 @@ const WorkoutFormPreview = () => {
   };
 
   const strengthExercise = findExerciseByType(mockWorkouts, "strength");
+  const durationExercise = findExerciseByType(mockWorkouts, "duration");
 
   return (
     <div className="preview preview-workout-form">
@@ -35,32 +39,72 @@ const WorkoutFormPreview = () => {
         <p>Fields adapt automatically based on workout type.</p>
       </div>
       <div className="mock-tabs">
-        <div className="mock-tab mock-tab-active">Strength</div>
-        <div className="mock-tab">Duration</div>
+        <div
+          className={`${exerciseType === "strength" ? `mock-tab mock-tab-active` : `mock-tab`}`}
+          onClick={() => setExerciseType("strength")}
+        >
+          Strength
+        </div>
+        <div
+          className={`${exerciseType === "duration" ? `mock-tab mock-tab-active` : `mock-tab`}`}
+          onClick={() => setExerciseType("duration")}
+        >
+          Duration
+        </div>
       </div>
+      {exerciseType === "strength" && (
+        <>
+          <div className="preview-mock-form">
+            <div className="mock-field">
+              <label>Exercise Name</label>
+              <div className="mock-input" id="preview-exercise-input">
+                {strengthExercise.name}
+              </div>
+            </div>
+            <div className="mock-field-row">
+              <div className="mock-field">
+                <label>Sets</label>
+                <div className="mock-input">{strengthExercise.sets}</div>
+              </div>
+              <div className="mock-field">
+                <label>Reps</label>
+                <div className="mock-input">{strengthExercise.reps}</div>
+              </div>
+              <div className="mock-field">
+                <label>Weight</label>
+                <div className="mock-input">{strengthExercise.weight} lb</div>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+      {exerciseType === "duration" && (
+        <>
+          <div className="preview-mock-form">
+            <div className="mock-field">
+              <label>Exercise Name</label>
+              <div className="mock-input" id="preview-exercise-input">
+                {durationExercise.name}
+              </div>
+            </div>
+            <div className="mock-field-row">
+              <div className="mock-field">
+                <label>Duration (minutes)</label>
+                <div className="mock-input">
+                  {durationExercise.duration_minutes}
+                </div>
+              </div>
+              <div className="mock-field">
+                <label>Duration (seconds)</label>
+                <div className="mock-input">
+                  {durationExercise.duration_seconds}
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
 
-      <div className="preview-mock-form">
-        <div className="mock-field">
-          <label>Exercise Name</label>
-          <div className="mock-input" id="preview-exercise-input">
-            {strengthExercise.name}
-          </div>
-        </div>
-        <div className="mock-field-row">
-          <div className="mock-field">
-            <label>Sets</label>
-            <div className="mock-input">{strengthExercise.sets}</div>
-          </div>
-          <div className="mock-field">
-            <label>Reps</label>
-            <div className="mock-input">{strengthExercise.reps}</div>
-          </div>
-          <div className="mock-field">
-            <label>Weight</label>
-            <div className="mock-input">{strengthExercise.weight} lb</div>
-          </div>
-        </div>
-      </div>
       <div className="mock-form-buttons">
         <button className="preview-mock-form-button">
           Add Another Exercise
