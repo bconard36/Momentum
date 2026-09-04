@@ -73,8 +73,8 @@
 .password-reset-toggle,
 .confirm-password-reset-toggle {
   position: absolute;
-  right: 0.6rem;
-  top: 2.35rem;
+  right: 0.75rem;
+  bottom: 0.65rem;
   width: 20px;
   height: 20px;
   cursor: pointer;

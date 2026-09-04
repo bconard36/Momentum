@@ -39,6 +39,12 @@ const AccountSettings = ({ user }) => {
   const [resetPassword, setResetPassword] = useState(false);
   const [resetAll, setResetAll] = useState(false);
 
+  // Reset Form Error/Success State Management
+  const [emailResetSuccess, setEmailResetSuccess] = useState(false);
+  const [passwordResetSuccess, setPasswordResetSuccess] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+
   if (!user) {
     return (
       <div className="loading-message-container">
@@ -46,7 +52,14 @@ const AccountSettings = ({ user }) => {
       </div>
     );
   }
-
+  /**
+   * Handles submission for email and password updates
+   * Conditionally handles email, password, and email and password updates.
+   * Confirm Password used as extra security measure
+   * Original email captured and used with confirm password to confirm authticated user before making password updates
+   * @param {Object<FormData>} data - user email and/or password update data
+   * @returns void
+   */
   const onSubmit = async (data) => {
     try {
       const emailReset = data.email_reset;
@@ -57,7 +70,7 @@ const AccountSettings = ({ user }) => {
       if (resetEmail) {
         if (emailReset === originalEmail) {
           // TODO - Error handling here
-          console.log("Invalid Email");
+          setEmailError(true);
           reset();
           return;
         }
@@ -68,11 +81,13 @@ const AccountSettings = ({ user }) => {
 
         if (emailResetError) {
           // TODO - Insert graceful error pop up here
+          setEmailError(true);
           console.log("Error resetting email: ", emailResetError.message);
         } else {
           // TODO - success render here
+          setEmailError(false);
+          setEmailResetSuccess(true);
           reset();
-          console.log(`Success! Email Address Updated`);
         }
       } else if (resetPassword) {
         const { error: reAuthError } = await supabase.auth.signInWithPassword({
@@ -225,7 +240,28 @@ const AccountSettings = ({ user }) => {
           className="account-settings-form"
           onSubmit={handleSubmit(onSubmit)}
         >
-          {resetEmail && !resetPassword && !resetAll && (
+          {emailError && (
+            <div className="reset-error-overlay">
+              <div className="reset-error-container">
+                <span className="reset-error-message">
+                  Error updating email address.
+                </span>
+                <button
+                  type="button"
+                  className="secondary-button"
+                  onClick={() => {
+                    reset();
+                    setEmailError(false);
+                    setResetEmail(true);
+                  }}
+                >
+                  Please try again.
+                </button>
+              </div>
+            </div>
+          )}
+
+          {resetEmail && !resetPassword && !resetAll && !emailError && (
             <div className="account-settings-form-group">
               <label htmlFor="email-reset">New Email Address</label>
               {errors.email_reset && (
@@ -539,21 +575,22 @@ const AccountSettings = ({ user }) => {
               </div>
             </>
           )}
-
-          <div className="account-settings-form-actions">
-            <button
-              type="submit"
-              className="primary-button account-settings-submit"
-            >
-              Submit Changes
-            </button>
-            <button
-              type="reset"
-              className="secondary-button account-settings-reset"
-            >
-              Cancel
-            </button>
-          </div>
+          {!emailError && !passwordError && (
+            <div className="account-settings-form-actions">
+              <button
+                type="submit"
+                className="primary-button account-settings-submit"
+              >
+                Submit Changes
+              </button>
+              <button
+                type="reset"
+                className="secondary-button account-settings-reset"
+              >
+                Cancel
+              </button>
+            </div>
+          )}
         </form>
       </div>
     </>
