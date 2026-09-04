@@ -159,14 +159,15 @@
 .reset-error-message {
   color: #c85a53;
   margin-bottom: 2%;
+  text-wrap: balance;
 }
 
-.email-error-button {
+.account-update-button {
   font-weight: 300;
   margin-top: 2%;
 }
 
-.email-error-button:hover {
+.account-update-button:hover {
   border-color: var(--border-active);
 }
 
@@ -180,7 +181,8 @@
   margin-bottom: 2%;
 }
 
-.email-success-link {
+.email-success-link,
+.password-success-link {
   color: var(--text-primary);
   margin-top: 3%;
 }
