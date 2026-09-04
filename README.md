@@ -108,6 +108,7 @@ Supabase handles the following responsibilities:
     - workoutFormPreview.css
     - workoutLog.css
   - tests: parent test folder
+    - Analytics.test.jsx
     - DeleteWorkout.test.jsx
     - EditWorkout.test.jsx
     - setup.js
@@ -142,9 +143,9 @@ Supabase handles the following responsibilities:
 
 ## Public Landing Page
 
-- Marketing-facing home page for unauthenticaed visitors, replacing a bare sign-in form
+- Marketing-facing home page for unauthenticated visitors, replacing a bare sign-in form
 - Preview sections for the workout form, workout log, workout analytics and fitness calculator populated from static mock data rather than real user data
-- Interactive, fully functional calculator preview, since the calculator itself requires no authentication
+- Interactive, fully functional calculator and workout form previews. The calculator tool itself requires no authentication, and the workout form mimics the input fields adapting based on workout type.
 - Consistent "mock UI" visual pattern across preview sections, distinct from the real, interactive versions of the feature
 
 ## Workout Management
