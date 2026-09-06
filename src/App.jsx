@@ -11,6 +11,7 @@ import { supabase } from "./utils/supabaseClient";
 import WorkoutLog from "./components/WorkoutLog";
 import Analytics from "./components/analytics/Analytics";
 import LandingPage from "./components/landingPage/LandingPage";
+import AccountSettings from "./components/AccountSettings";
 import { useAuthUser } from "./hooks/useAuthUser";
 
 /**
@@ -126,6 +127,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Dashboard user={user} />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/preferences"
+            element={
+              <ProtectedRoute>
+                <AccountSettings user={user} />
               </ProtectedRoute>
             }
           />
