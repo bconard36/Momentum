@@ -47,6 +47,11 @@ in base.css's :root — load base.css first.
   font-size: 14px;
 }
 
+#form-log-link {
+  color: var(--text-primary);
+  border-radius: 999px;
+}
+
 #form-log-link:hover,
 #form-log-link:focus-visible {
   border-color: var(--accent-indigo);
