@@ -2,7 +2,7 @@ const EmailInput = ({ register, type, name, id, errors }) => {
   return (
     <>
       <label htmlFor={id}>Email Address</label>
-      {errors.email && (
+      {errors?.email && (
         <span className="error-message">{errors.email.message}</span>
       )}
       <input

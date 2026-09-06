@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link } from "react-router";
 import { supabase } from "../utils/supabaseClient";
 import PasswordInput from "./PasswordInput";
+import EmailInput from "./EmailInput";
 
 /**
  * Sign Up Component
@@ -48,7 +49,7 @@ const SignUp = () => {
   const [createSuccess, setCreateSuccess] = useState(false);
   const [createFail, setCreateFail] = useState(false);
 
-  // Watch password field so confirm-password can validate against its current value
+  // Watch password field so confirm_password can validate against its current value
   const passwordValue = watch("password", "");
 
   /**
@@ -175,21 +176,12 @@ const SignUp = () => {
               />
             </div>
             <div className="sign-up-form-group">
-              <label htmlFor="email">Email</label>
-              {errors.email && (
-                <span className="error-message">{errors.email.message}</span>
-              )}
-              <input
+              <EmailInput
+                register={register}
                 type="email"
                 name="email"
                 id="email"
-                {...register("email", {
-                  required: "Email is required.",
-                  pattern: {
-                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: "Invalid email address",
-                  },
-                })}
+                errors={errors}
               />
             </div>
             <div className="sign-up-form-group">
