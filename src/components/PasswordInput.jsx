@@ -7,6 +7,7 @@ const PasswordInput = ({
   id,
   errors,
   isCurrentPassword,
+  matchValue,
 }) => {
   const [showPassword, setShowPassword] = useState(false);
   const fieldError = errors?.[name];
@@ -14,7 +15,7 @@ const PasswordInput = ({
   const inputLabel =
     label === "password_original"
       ? "Confirm Old Password"
-      : label === "confirm-password" || label === "confirm-password-reset"
+      : label === "confirm_password" || label === "confirm_password_reset"
         ? "Confirm Password"
         : "Enter Password";
 
@@ -32,6 +33,9 @@ const PasswordInput = ({
       value: /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/,
       message: "Password needs an uppercase letter, a number, and a symbol.",
     },
+    ...(matchValue !== undefined && {
+      validate: (value) => value === matchValue || "Passwords do not match.",
+    }),
   };
 
   const currentPasswordRules = {

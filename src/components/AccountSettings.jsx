@@ -20,6 +20,7 @@ const AccountSettings = ({ user }) => {
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -385,7 +386,7 @@ const AccountSettings = ({ user }) => {
                   label="password_original"
                   name="password_original"
                   id="password_original"
-                  errors={errors?.password_original}
+                  errors={errors}
                   isCurrentPassword={true}
                 />
               </div>
@@ -395,7 +396,7 @@ const AccountSettings = ({ user }) => {
                   label="password_reset"
                   name="password_reset"
                   id="password_reset"
-                  errors={errors.password_reset}
+                  errors={errors}
                 />
               </div>
               <div className="account-settings-form-group">
@@ -404,7 +405,8 @@ const AccountSettings = ({ user }) => {
                   label="confirm_password_reset"
                   name="confirm_password_reset"
                   id="confirm_password_reset"
-                  errors={errors.confirm_password_reset}
+                  errors={errors}
+                  matchValue={watch("password_reset")}
                 />
               </div>
             </>
@@ -433,7 +435,7 @@ const AccountSettings = ({ user }) => {
                   label="password_original"
                   name="password_original"
                   id="password_original"
-                  errors={errors?.password_original}
+                  errors={errors}
                   isCurrentPassword={true}
                 />
               </div>
@@ -443,7 +445,7 @@ const AccountSettings = ({ user }) => {
                   label="password_reset"
                   name="password_reset"
                   id="password_reset"
-                  errors={errors.password_reset}
+                  errors={errors}
                 />
               </div>
               <div className="account-settings-form-group">
@@ -452,7 +454,7 @@ const AccountSettings = ({ user }) => {
                   label="confirm_password_reset"
                   name="confirm_password_reset"
                   id="confirm_password_reset"
-                  errors={errors.confirm_password_reset}
+                  errors={errors}
                 />
               </div>
             </>
