@@ -67,6 +67,7 @@
   margin-bottom: 30px;
   position: relative;
   animation-name: titleAnimation;
+  font-family: "Racing Sans One", sans-serif;
   animation-duration: 2s;
 }
 
