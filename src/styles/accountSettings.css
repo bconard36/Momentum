@@ -1,0 +1,213 @@
+.account-settings-header-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  text-wrap: balance;
+  margin-top: 5%;
+  margin-bottom: 1%;
+  padding: 1%;
+}
+
+.form-to-render-container {
+  display: flex;
+  flex: auto;
+  flex-direction: row;
+  gap: 2%;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.account-settings-form-container {
+  display: flex;
+  justify-content: center;
+  padding: 2% 1%;
+}
+
+.account-settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+  max-width: 420px;
+  padding: 2rem;
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.account-settings-form-group {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.account-settings-form-group label {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.account-settings-form-group input {
+  padding: 0.65rem 2.5rem 0.65rem 0.75rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background-color: rgba(0, 0, 0, 0.2);
+  color: inherit;
+  font-size: 0.95rem;
+}
+
+.account-settings-form-group input:focus {
+  outline: none;
+  border-color: #4f9cf9;
+}
+
+.error-message {
+  font-size: 0.8rem;
+  color: #ff6b6b;
+}
+
+/* Password visibility toggle icons */
+.original-password-toggle,
+.password-reset-toggle,
+.confirm-password-reset-toggle {
+  position: absolute;
+  right: 0.75rem;
+  bottom: 0.65rem;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.15s ease;
+}
+
+.original-password-toggle:hover,
+.password-reset-toggle:hover,
+.confirm-password-reset-toggle:hover {
+  opacity: 1;
+}
+
+.account-settings-form-actions {
+  display: flex;
+  flex-direction: row;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+.primary-button {
+  padding: 0.65rem 1.25rem;
+  border-radius: 6px;
+  border: none;
+  background-color: #4f9cf9;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.primary-button:hover {
+  background-color: #3a86e0;
+}
+
+.secondary-button {
+  padding: 0.6rem 1.1rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: transparent;
+  color: inherit;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.secondary-button:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+@media screen and (min-width: 320px) and (max-width: 500px) {
+  .account-settings-header-container {
+    margin-top: 10%;
+  }
+}
+
+@media screen and (min-width: 501px) and (max-width: 768px) {
+  .account-settings-header-container {
+    margin-top: 8%;
+  }
+}
+
+/* Style Rules for Success / Error Messages */
+.reset-overlay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.reset-message-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  text-transform: balance;
+  color: var(--text-primary);
+  font-family: "Noto sans", sans-serif;
+}
+
+.email-password-success-failure {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.reset-error-message {
+  color: #c85a53;
+  margin: 0 auto;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.account-settings-form-group .error-message {
+  text-align: center;
+  text-wrap: pretty;
+}
+
+.account-update-button {
+  font-weight: 300;
+  margin-top: 2%;
+}
+
+.account-update-button:hover {
+  border-color: var(--border-active);
+}
+
+.reset-success-message {
+  font-size: 1.1rem;
+  margin: 0 auto;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.reset-success-note {
+  font-size: 0.9rem;
+  margin-bottom: 2%;
+}
+
+.email-success-link,
+.password-success-link {
+  color: var(--text-primary);
+  margin-top: 3%;
+}
+
+.email-update-pending {
+  background: #f59e0bbf;
+  color: var(--text-primary);
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  text-align: center;
+  text-wrap: pretty;
+}

@@ -52,8 +52,8 @@ describe("SignUp", () => {
 
     expect(screen.getByLabelText(/first name/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/last name/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/^email/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/^password/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/^email address/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/^enter password/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/confirm password/i)).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: /create account/i }),
@@ -67,8 +67,14 @@ describe("SignUp", () => {
 
     await user.type(screen.getByLabelText(/first name/i), "Billy");
     await user.type(screen.getByLabelText(/last name/i), "Conard");
-    await user.type(screen.getByLabelText(/^email/i), "test@example.com");
-    await user.type(screen.getByLabelText(/^password/i), "DoesNotMatch123!!");
+    await user.type(
+      screen.getByLabelText(/^email address/i),
+      "test@example.com",
+    );
+    await user.type(
+      screen.getByLabelText(/^enter password/i),
+      "DoesNotMatch123!!",
+    );
     await user.type(
       screen.getByLabelText(/confirm password/i),
       "NotTheSame1234!!!",
@@ -91,8 +97,14 @@ describe("SignUp", () => {
 
     await user.type(screen.getByLabelText(/first name/i), "Billy");
     await user.type(screen.getByLabelText(/last name/i), "Conard");
-    await user.type(screen.getByLabelText(/^email/i), "billy@example.com");
-    await user.type(screen.getByLabelText(/^password/i), "MatchingPass123!!");
+    await user.type(
+      screen.getByLabelText(/^email address/i),
+      "billy@example.com",
+    );
+    await user.type(
+      screen.getByLabelText(/^enter password/i),
+      "MatchingPass123!!",
+    );
     await user.type(
       screen.getByLabelText(/confirm password/i),
       "MatchingPass123!!",
