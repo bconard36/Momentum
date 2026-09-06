@@ -1,7 +1,8 @@
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate, useLocation } from "react-router";
 import { supabase } from "../utils/supabaseClient";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Header from "./Header";
+import useClickOutside from "../hooks/useClickOutside";
 
 // ============================================================
 // Dashboard.jsx
@@ -23,17 +24,13 @@ const Dashboard = () => {
 
   // Initialize state of user menu
   const [isUserOpen, setIsUserOpen] = useState(false);
+  const location = useLocation();
+  const menuRef = useRef(null);
+  useClickOutside(menuRef, () => setIsUserOpen(false));
 
-  /**
-   * Toggles open/closed state of user menu
-   */
-  const toggleUserMenu = () => {
-    if (isUserOpen) {
-      setIsUserOpen(false);
-    } else {
-      setIsUserOpen(true);
-    }
-  };
+  useEffect(() => {
+    setIsUserOpen(false);
+  }, [location.pathname]);
 
   /**
      * Sign Out Handler 
@@ -64,14 +61,14 @@ const Dashboard = () => {
   return (
     <>
       <div className="dashboard">
-        <div className="user-icon-container">
+        <div className="user-icon-container" ref={menuRef}>
           <svg
             viewBox="0 0 16 16"
             style={{
               fill: "currentColor",
             }}
             xmlns="http://www.w3.org/2000/svg"
-            onClick={() => toggleUserMenu()}
+            onClick={() => setIsUserOpen(!isUserOpen)}
           >
             <path
               d="M8 7C9.65685 7 11 5.65685 11 4C11 2.34315 9.65685 1 8 1C6.34315 1 5 2.34315 
