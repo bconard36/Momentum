@@ -40,11 +40,11 @@ const AccountSettings = ({ user }) => {
     useState(false);
 
   // Reset Form State Management
-  const [activeForm, setActiveForm] = useState(null); // null | 'email' | 'password' | 'all'
+  const [activeForm, setActiveForm] = useState(null); // null | 'email' | 'password' | 'email_password'
 
   // Reset Form Error/Success State Management
   const [formError, setFormError] = useState(null); // { form: 'email', message: '...' }
-  const [formSuccess, setFormSuccess] = useState(null); // pending for button renering. desctructured for success { form: 'email', message: '...' }
+  const [formSuccess, setFormSuccess] = useState(null); // pending for button rendering. desctructured for success { form: 'email', message: '...' }
   const [newEmail, setNewEmail] = useState(""); // State of updated email address to display in success window
 
   if (!user && !formSuccess) {
@@ -151,19 +151,33 @@ const AccountSettings = ({ user }) => {
       } else if (activeForm === "email_password") {
         // Check client side first
         // Return on all errors throughout this block
+        if (emailReset === userEmail) {
+          setFormError({
+            form: "email_password",
+            message: "New email must be different from your current email.",
+          });
+          reset();
+          return;
+        }
+
         if (newPassword !== confirmNewPassword) {
-          console.log("Passwords do not match.");
+          setFormError({
+            form: "email_password",
+            message: "Passwords do not match.",
+          });
           reset();
           return;
         }
 
         if (newPassword === oldPassword) {
-          console.log(
-            "New password must be different from your current password.",
-          );
+          setFormError({
+            form: "email_password",
+            message: "New password must be different from your old password.",
+          });
           reset();
           return;
         }
+
         // Reverify old password
         const { error: emailPassError } =
           await supabase.auth.signInWithPassword({
@@ -174,9 +188,8 @@ const AccountSettings = ({ user }) => {
         if (emailPassError) {
           setFormError({
             form: "email_password",
-            message: "Invalid Credentials.",
+            message: "Invalid Credentials",
           });
-          console.log(`Invalid Credentials: ${emailPassError.message}`);
           reset();
           return;
         } else {
@@ -191,16 +204,10 @@ const AccountSettings = ({ user }) => {
               form: "email_password",
               message: "Error updating password.",
             });
-            // Set passwordUpdateError(true) state here
-            console.log(
-              `Error updating password: ${passwordUpdateError.message}`,
-            );
             reset();
             return;
           } else {
-            // TODO - State management for password update success for partial failure/success
-            console.log(`Success! Password Updated`);
-            // Once password updated, update email
+            // Password updates successfully - now update email
             const { data: emailUpdate, error: emailUpdateError } =
               await supabase.auth.updateUser({
                 email: emailReset,
@@ -209,27 +216,26 @@ const AccountSettings = ({ user }) => {
               setFormError({
                 form: "email_password",
                 message:
-                  "Password updated, but email was not. Please try updating your email again.",
+                  "Error updating email address. Click email reset above to try again.",
               });
-              console.log(`Error updating email: ${emailUpdateError}`);
-              // Set emailUpdateError(true) state here
+              setFormSuccess({
+                form: "email_password",
+                message: "Password updated!",
+              });
               reset();
               return;
             } else {
               setNewEmail(emailReset);
+              setFormError(null);
               setFormSuccess({
                 form: "email_password",
-                message: `Success! Email and password have been updated! Be sure to watch out for a confirmation email at ${userEmail}`,
+                message: `Success! Email and password have been updated! Watch out for a confirmation email at ${emailReset} — your account will keep using your old email until you confirm.`,
               });
-              // await supabase.auth.signOut();
-              // setTimeout(() => {
-              //   navigate("/sign-in", { replace: true });
-              // }, 2000);
-              // reset();
+
+              reset();
             }
           }
         }
-        console.log(`Email and password both updated successfully.`);
       }
     } catch (error) {
       console.error("Error: ", error);
@@ -290,16 +296,18 @@ const AccountSettings = ({ user }) => {
           className="account-settings-form"
           onSubmit={handleSubmit(onSubmit)}
         >
-          {formError?.form === activeForm && (
-            <div className="reset-overlay">
-              <div className="reset-message-container">
-                <span className="reset-error-message">
-                  {formError?.message}
-                </span>
-                <span>Please try again</span>
+          {formError?.form === activeForm &&
+            activeForm !== "email_password" && (
+              <div className="reset-overlay">
+                <div className="reset-message-container">
+                  <span className="reset-error-message">
+                    {formError?.message}
+                  </span>
+                  <span>Please try again</span>
+                </div>
               </div>
-            </div>
-          )}
+            )}
+
           {formSuccess?.form === activeForm && activeForm === "email" && (
             <div className="reset-overlay">
               <div className="reset-message-container">
@@ -330,6 +338,22 @@ const AccountSettings = ({ user }) => {
               </div>
             </div>
           )}
+          {(formSuccess?.form === activeForm ||
+            formError?.form === activeForm) &&
+            activeForm === "email_password" && (
+              <div className="email-password-success-failure">
+                {formError?.message && (
+                  <span className="reset-error-message">
+                    {formError.message}
+                  </span>
+                )}
+                {formSuccess?.message && (
+                  <span className="reset-success-message">
+                    {formSuccess.message}
+                  </span>
+                )}
+              </div>
+            )}
           {emailUpdatePending && (
             <div className="email-update-pending">
               <strong>Change Pending:</strong> Waiting for verification to
@@ -496,7 +520,7 @@ const AccountSettings = ({ user }) => {
               </div>
             </>
           )}
-          {activeForm === "email_password" && (
+          {activeForm === "email_password" && formSuccess === "pending" && (
             <>
               <div className="account-settings-form-group">
                 <label htmlFor="email-reset">New Email Address</label>
