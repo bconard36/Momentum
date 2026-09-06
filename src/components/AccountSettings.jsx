@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router";
 import { supabase } from "../utils/supabaseClient";
 import { useAuthUser } from "../hooks/useAuthUser";
 import PasswordInput from "./PasswordInput";
+import EmailInput from "./EmailInput";
 
 // Account Settings
 // Two buttons/areas - update password and update email
@@ -365,19 +366,12 @@ const AccountSettings = ({ user }) => {
 
           {activeForm === "email" && formSuccess === "pending" && (
             <div className="account-settings-form-group">
-              <label htmlFor="email-reset">New Email Address</label>
-              {errors.email_reset && (
-                <span className="error-message">
-                  {errors.email_reset.message}
-                </span>
-              )}
-              <input
+              <EmailInput
+                register={register}
                 type="email"
                 name="email_reset"
                 id="email_reset"
-                {...register("email_reset", {
-                  required: "New email address is required.",
-                })}
+                errors={errors}
               />
             </div>
           )}
@@ -417,19 +411,12 @@ const AccountSettings = ({ user }) => {
           {activeForm === "email_password" && formSuccess === "pending" && (
             <>
               <div className="account-settings-form-group">
-                <label htmlFor="email-reset">New Email Address</label>
-                {errors.email_reset && (
-                  <span className="reset-error-message">
-                    {errors.email_reset.message}
-                  </span>
-                )}
-                <input
+                <EmailInput
+                  register={register}
                   type="email"
                   name="email_reset"
                   id="email_reset"
-                  {...register("email_reset", {
-                    required: "New email address is required.",
-                  })}
+                  errors={errors}
                 />
               </div>
               <div className="account-settings-form-group">
