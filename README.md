@@ -1,8 +1,9 @@
 # Momentum
+
 **A React Fitness Tracking Application**
 
 Momentum is a React application for logging, managing, and reviewing workouts. Users can dynamically add
-or remove exercises from a workout, validate inputs using React Hook Form, and store workout history in a 
+or remove exercises from a workout, validate inputs using React Hook Form, and store workout history in a
 PostgreSQL database through Supabase.
 
 Momentum includes user authentication through Supabase. Users can create an account, sign in, and sign out.
@@ -11,16 +12,17 @@ user profile in the application's `public.users` table.
 
 Originally developed as the successor to [Calorie Track](https://github.com/bconard36/CalorieTrack), Momentum
 expands beyond fitness calculation into workout management while laying the foundation for a full-stack
-fitness platform. 
+fitness platform.
 
 # Contents
+
 - [Current Status](#current-application-status)
 - [Features](#features)
 - [Backend & Database](#backend--database-development)
 - [What I Learned](#what-i-learned--built-from-scratch)
 - [Future Development](#future-development)
 
-# Current Application Status 
+# Current Application Status
 
 **Live Site**: [Momentum Workout Tracking](https://momentum-workout-tracking.vercel.app/)
 
@@ -39,65 +41,63 @@ The application currently supports:
 - Viewing, sorting, and filtering workout history
 - User-facing error messaging for failed workout operations
 - Unit test coverage for:
-    - Creating an account (SignUp)
-    - Signing in (SignIn)
-    - Saving Workouts (WorkoutLog)
-    - Editing Workouts (EditWorkout)
-    - Deleting Workouts
+  - Creating an account (SignUp)
+  - Signing in (SignIn)
+  - Saving Workouts (WorkoutLog)
+  - Editing Workouts (EditWorkout)
+  - Deleting Workouts
 
-Supabase handles the following responsibilities:
-    - _authentication_
-    - _user profiles_
-    - _workout storage, retrieval, edits, and deletion_
+Supabase handles the following responsibilities: - _authentication_ - _user profiles_ - _workout storage, retrieval, edits, and deletion_
 
 # Folder List
+
 - public
 - src: parent folder for components, stylesheets, and assets
-    - components: parent folder for individual components
-        - CalorieTrack: Fitness calculator component 
-            - refactored from the original [Calorie Track](https://github.com/bconard36/CalorieTrack), 
-            migrated into Momentum and rebuilt using `react-hook-form` for form state management and validation.  
-        - Dashboard.jsx
-        - EditWorkout.jsx
-        - Header.jsx
-        - NotFound.jsx
-        - ProtectedRoute.jsx
-        - SignIn.jsx
-        - SignUp.jsx
-        - WorkoutForm.jsx
-        - WorkoutLog.jsx
-    - styles: houses all style sheets 
-        - base.css
-        - calculator.css
-        - editWorkout.css
-        - notFound.css
-        - signInSignUp.css
-        - success.css
-        - workoutForm.css
-        - workoutLog.css
-    - tests: parent test folder 
-        - DeleteWorkout.test.jsx
-        - EditWorkout.test.jsx
-        - setup.js
-        - SignUp.test.jsx
-        - SignIn.test.jsx
-        - WorkoutForm.test.jsx
-    - utils: parent folder for utility functions
-        - supabaseClient.js
-    - App.jsx
-    - main.jsx
-- supabase: parent folder for all DB logic 
-    - functions: parent folder for all SQL/PGSQL functions 
-        - delete_workout.sql
-        - edit_workout.sql
-        - get_user_workouts.sql
-        - save_workout.sql
-        - user_insert_function.sql
-    - permissions: parent folder for all grants and policies
-        - grants.sql
-        - permissions.sql
-    - triggers: parent folder for all DB triggers 
-        - user_insert_trigger.sql
+  - components: parent folder for individual components
+    - CalorieTrack: Fitness calculator component
+      - refactored from the original [Calorie Track](https://github.com/bconard36/CalorieTrack),
+        migrated into Momentum and rebuilt using `react-hook-form` for form state management and validation.
+    - Dashboard.jsx
+    - EditWorkout.jsx
+    - Header.jsx
+    - NotFound.jsx
+    - ProtectedRoute.jsx
+    - SignIn.jsx
+    - SignUp.jsx
+    - WorkoutForm.jsx
+    - WorkoutLog.jsx
+  - styles: houses all style sheets
+    - base.css
+    - calculator.css
+    - editWorkout.css
+    - notFound.css
+    - signInSignUp.css
+    - success.css
+    - workoutForm.css
+    - workoutLog.css
+  - tests: parent test folder
+    - DeleteWorkout.test.jsx
+    - EditWorkout.test.jsx
+    - setup.js
+    - SignUp.test.jsx
+    - SignIn.test.jsx
+    - WorkoutForm.test.jsx
+  - utils: parent folder for utility functions
+    - supabaseClient.js
+  - App.jsx
+  - main.jsx
+- supabase: parent folder for all DB logic
+  - functions: parent folder for all SQL/PGSQL functions
+    - delete_workout.sql
+    - edit_workout.sql
+    - get_user_workouts.sql
+    - save_workout.sql
+    - user_insert_function.sql
+  - permissions: parent folder for all grants and policies
+    - grants.sql
+    - permissions.sql
+  - triggers: parent folder for all DB triggers
+    - user_insert_trigger.sql
 - .gitignore
 - eslint.config.js
 - index.html
@@ -108,7 +108,8 @@ Supabase handles the following responsibilities:
 
 # Features
 
-## Workout Management 
+## Workout Management
+
 - Dynamic workout creation with React Hook Form
 - Add, edit and remove exercises using `useFieldArray`
 - Conditional workout form inputs based on workout type using `watch`
@@ -125,7 +126,8 @@ Supabase handles the following responsibilities:
 - Graceful empty-state messaging
 - User-facing error messages rendered from state, rather than errors surfacing only in the console
 
-## Authentication 
+## Authentication
+
 - User account creation through Supabase Auth
 - Email and password authentication
 - User sign-in and sign-out
@@ -134,9 +136,10 @@ Supabase handles the following responsibilities:
 - Shared UUID between the Supabase Auth user and application profile
 - Foreign key relationship between the Auth user and application profile
 - A dynamic dashboard header that displays the authenticated user's first name, queried from `public.users`
-using their verified user ID
+  using their verified user ID
 
 ## Backend & Database Development
+
 Momentum uses **PostgreSQL through Supabase** for persistent application data.
 
 The database separates workout data into related tables:
@@ -147,6 +150,7 @@ The database separates workout data into related tables:
 - **Workout Exercises** — Joins workouts and exercises while storing workout-specific metrics such as sets, reps, weight, and duration.
 
 ## Exercise Resolution
+
 When a workout is submitted or edited, Momentum normalizes each exercise name and type before checking the `exercises` table for an existing match.
 
 If a matching exercise exists, its existing `exercise_id` is reused. If no match is found, a new UUID is generated for the exercise.
@@ -156,16 +160,18 @@ Exercise matching uses both the normalized exercise name and exercise type so th
 This resolution logic runs both when a new workout is first created and when a user adds a new exercise to an existing workout during editing, ensuring exercises stay deduplicated regardless of when they're introduced.
 
 ## Workout Data Preparation & Insertion
+
 Before database insertion, the submitted workout is separated into records for the related tables:
 
 - A workout record containing the workout ID, authenticated user ID, and date.
 - Workout-exercise records containing the shared workout ID, exercise ID, and exercise-specific metrics.
 - New exercise records when a submitted exercise does not already exist in the database.
-    - `Promise.all()` is used when resolving exercises asynchronously so that the resulting arrays contain the resolved exercise data rather than unresolved Promise objects.
+  - `Promise.all()` is used when resolving exercises asynchronously so that the resulting arrays contain the resolved exercise data rather than unresolved Promise objects.
 
 A custom PGSQL function then handles the inserts of all records into their respective tables.
 
 ## Workout Editing
+
 Editing a workout is handled through a dedicated PostgreSQL function (`edit_workout`) that reconciles the submitted form data against the current database state in a single transaction.
 
 The function evaluates each exercise in the submitted workout against four possible cases:
@@ -178,9 +184,11 @@ The function evaluates each exercise in the submitted workout against four possi
 The function begins with an ownership guard clause, confirming the workout belongs to the authenticated user before any changes are made, and raises an exception otherwise.
 
 ## Workout Deletion
+
 Deleting a workout is handled through a dedicated PostgreSQL function (`delete_workout`) that verifies the workout belongs to the authenticated user before removing it. Deleting a workout cascades to remove its associated workout-exercise links, while the underlying exercise definitions (shared, reusable data) remain untouched.
 
 ## Workout Data Retrieval
+
 A custom PostgreSQL function (`get_user_workouts`) retrieves the authenticated user's workouts and builds the related workout and exercise data into a JSON response.
 
 The function uses the authenticated user's Supabase UUID to ensure the returned workouts belong to the current user.
@@ -188,23 +196,18 @@ The function uses the authenticated user's Supabase UUID to ensure the returned 
 The resulting data is passed through the React application and into `WorkoutLog`, where workouts can be sorted and filtered for display. After a workout is created, edited, or deleted, the application re-fetches the current workout log so the displayed data always reflects the current database state.
 
 ## Row Level Security
+
 Supabase Row Level Security and database permissions are used to control access to workout-related tables.
 
 Authenticated users are granted the required database permissions, while RLS policies control access to the data. Ownership-based policies restrict users to their own workouts and workout-exercise records, verified through a correlated subquery against the `workouts` table where a direct `user_id` column isn't available (as on the `workout_exercises` join table). Shared reference data, such as exercise definitions, remains readable by all authenticated users, since exercises are not user-owned.
 
-
-
 ## Unit Testing
+
 Momentum uses **Vitest** and **React Testing Library** for component-level unit tests, chosen over Jest for its native integration with the existing Vite build pipeline.
 
 Supabase calls are mocked at the module level (`vi.mock`) on a per-file basis, scoped to only the methods each component actually calls, so tests run without touching the real database.
 
-Current coverage includes sign up, sign in, save workout, edit workout, and delete workout flows:
-    - Form rendering and field presence
-    - Client-side validation blocking submission before Supabase is contacted
-    - Correct payload shape sent to Supabase on valid submission
-    - Error handling and messaging when Supabase returns an authentication failure
-    - Conditional success message displays
+Current coverage includes sign up, sign in, save workout, edit workout, and delete workout flows: - Form rendering and field presence - Client-side validation blocking submission before Supabase is contacted - Correct payload shape sent to Supabase on valid submission - Error handling and messaging when Supabase returns an authentication failure - Conditional success message displays
 
 # What I Learned / Built From Scratch
 
@@ -226,7 +229,7 @@ Current coverage includes sign up, sign in, save workout, edit workout, and dele
 
 **PL/pgSQL & Reconciliation Logic**: Building the `edit_workout` function required learning PL/pgSQL's procedural constructs (guard clauses, loops, exception handling) and designing set-based reconciliation logic using correlated `EXISTS`/`NOT EXISTS` subqueries to determine which records to update, insert, or delete based on differences between submitted and existing data.
 
-**Row Level Security Behavior**: Debugging an overly permissive policy revealed that Postgres evaluates multiple permissive RLS policies on the same table with OR logic rather than AND — meaning a single broad policy can silently override a more restrictive one on the same table. A separate RLS gap on `public.users` reinforced that a missing policy fails silently (an empty result, not an error), which required deliberately ruling out client-side causes before identifying the database as the actual source. 
+**Row Level Security Behavior**: Debugging an overly permissive policy revealed that Postgres evaluates multiple permissive RLS policies on the same table with OR logic rather than AND — meaning a single broad policy can silently override a more restrictive one on the same table. A separate RLS gap on `public.users` reinforced that a missing policy fails silently (an empty result, not an error), which required deliberately ruling out client-side causes before identifying the database as the actual source.
 
 **Authentication Verification**: Replaced `supabase.auth.getSession()` with `supabase.auth.getUser()` for route protection. `getSession()` reads cached, unverified session data from storage, while `getUser()` makes a live request to the Auth server to re-verify the user's JWT, closing a gap where stale or tampered local session data could otherwise be trusted.
 
@@ -238,7 +241,7 @@ Current coverage includes sign up, sign in, save workout, edit workout, and dele
 
 **Debugging Across the Stack**: Tracing bugs in this project frequently required distinguishing between database logic, RLS/permissions, API caching, and client-side JavaScript as separate possible causes — including a case where a PostgREST schema cache issue and a mismatched JSON payload shape produced identical-looking symptoms but required entirely different fixes.
 
-**Unit Testing Async, Network-Dependent Components**: Writing unit tests required learning to mock Supabase at the module level and explicitly configuring and resetting each mock's resolved value per test case, since an unconfigured mock silently resolves to `undefined` rather than throwing. 
+**Unit Testing Async, Network-Dependent Components**: Writing unit tests required learning to mock Supabase at the module level and explicitly configuring and resetting each mock's resolved value per test case, since an unconfigured mock silently resolves to `undefined` rather than throwing.
 
 # Future Development
 
