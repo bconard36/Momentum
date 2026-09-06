@@ -26,7 +26,6 @@
   box-sizing: border-box;
 }
 
-<<<<<<< HEAD
 .sign-in-title {
   font-family: "Racing Sans One", sans-serif;
   font-size: 3rem;
@@ -44,7 +43,7 @@
 .return-link#sign-in-home-return:hover {
   color: var(--accent-mint);
   transform: translateY(-3px);
-=======
+}
 @media (min-width: 768px) {
   .sign-in-form {
     padding: 50px;
@@ -60,7 +59,6 @@
     left: 0px;
     top: 0px;
   }
->>>>>>> feature/account-settings
 }
 
 #form-title {
@@ -70,7 +68,6 @@
   position: relative;
   animation-name: titleAnimation;
   animation-duration: 2s;
-<<<<<<< HEAD
 }
 
 @media (min-width: 768px) {
@@ -88,8 +85,6 @@
     left: 0px;
     top: 0px;
   }
-=======
->>>>>>> feature/account-settings
 }
 
 #create-account-header {
@@ -103,10 +98,7 @@
   align-items: center;
   flex-direction: column;
   position: relative;
-<<<<<<< HEAD
-=======
   gap: 0.4rem;
->>>>>>> feature/account-settings
   width: 100%;
   max-width: 300px;
 }
@@ -131,18 +123,6 @@
   width: 100%;
 }
 
-<<<<<<< HEAD
-.sign-up-form-group input[type="password"] {
-  padding-right: 45px;
-}
-
-.password-toggle {
-  position: absolute;
-  right: 10px;
-  bottom: 25px;
-  width: 24px;
-  height: 24px;
-=======
 .create-account-form .sign-up-form-group input[type="password"] {
   padding-right: 45px;
 }
@@ -153,27 +133,12 @@
   bottom: calc(17.5px + 0.65rem);
   width: 20px;
   height: 20px;
->>>>>>> feature/account-settings
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-<<<<<<< HEAD
-  color: var(--text-primary);
   transition: color 0.2s ease;
   pointer-events: auto;
-}
-
-.password-toggle:nth-child(1) {
-  color: var(--text-primary);
-}
-
-.password-toggle:hover {
-  color: var(--accent-mint-light);
-=======
-  transition: color 0.2s ease;
-  pointer-events: auto;
->>>>>>> feature/account-settings
 }
 
 .sign-up-action {
@@ -253,49 +218,6 @@
   padding-top: 60px;
 }
 
-<<<<<<< HEAD
-header.workout-header .return-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 98%;
-  margin: 0 auto;
-  padding: 0.5%;
-}
-
-header.workout-header .return-link {
-  font-size: 0.85rem;
-  letter-spacing: 0.02em;
-  opacity: 0.9;
-}
-
-#sign-in-return,
-#create-home-return {
-  transition:
-    color 0.2s ease,
-    transform 0.2s ease,
-    text-shadow 0.2s ease;
-}
-
-#sign-in-return:hover,
-#sign-in-return:focus-visible,
-#create-home-return:hover,
-#create-home-return:focus-visible {
-  color: var(--accent-mint-light);
-  transform: translateY(-2px);
-  text-shadow: 0 4px 12px rgba(96, 165, 250, 0.25);
-}
-
-.sign-up-form-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  padding-top: 10px;
-}
-
-#clear-button {
-  margin-bottom: 20px;
-=======
 .sign-up-form-actions {
   display: flex;
   flex-direction: column;
@@ -312,7 +234,6 @@ header.workout-header .return-link {
   color: var(--accent-mint-light);
   transform: translateY(-2px);
   text-shadow: 0 4px 12px rgba(96, 165, 250, 0.25);
->>>>>>> feature/account-settings
 }
 
 #create-success-overlay {
