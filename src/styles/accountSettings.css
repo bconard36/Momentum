@@ -170,6 +170,11 @@
   text-wrap: balance;
 }
 
+.account-settings-form-group .error-message {
+  text-align: center;
+  text-wrap: pretty;
+}
+
 .account-update-button {
   font-weight: 300;
   margin-top: 2%;

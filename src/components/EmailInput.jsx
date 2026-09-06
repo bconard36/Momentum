@@ -1,12 +1,14 @@
 const EmailInput = ({ register, type, name, id, errors }) => {
+  const fieldError = errors?.[name];
+
   const inputLabel =
     name === "email_reset" ? "New Email Address" : "Email Address";
 
   return (
     <>
       <label htmlFor={id}>{inputLabel}</label>
-      {errors?.email && (
-        <span className="error-message">{errors.email.message}</span>
+      {fieldError && (
+        <span className="error-message">{fieldError.message}</span>
       )}
       <input
         type={type}
