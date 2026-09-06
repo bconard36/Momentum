@@ -458,6 +458,7 @@ const AccountSettings = ({ user }) => {
                   name="confirm_password_reset"
                   id="confirm_password_reset"
                   errors={errors}
+                  matchValue={watch("password_reset")}
                 />
               </div>
             </>
