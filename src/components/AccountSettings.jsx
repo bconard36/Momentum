@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 import { supabase } from "../utils/supabaseClient";
-import { useAuthUser } from "../hooks/useAuthUser";
 import PasswordInput from "./PasswordInput";
 import EmailInput from "./EmailInput";
 
