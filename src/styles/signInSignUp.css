@@ -63,6 +63,7 @@
   align-items: center;
   flex-direction: column;
   position: relative;
+  gap: 0.4rem;
   width: 100%;
   max-width: 300px;
 }
@@ -87,31 +88,22 @@
   width: 100%;
 }
 
-.sign-up-form-group input[type="password"] {
+.create-account-form .sign-up-form-group input[type="password"] {
   padding-right: 45px;
 }
 
-.password-toggle {
+.create-account-form .password-reset-toggle {
   position: absolute;
   right: 10px;
-  bottom: 25px;
-  width: 24px;
-  height: 24px;
+  bottom: calc(17.5px + 0.65rem);
+  width: 20px;
+  height: 20px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-primary);
   transition: color 0.2s ease;
   pointer-events: auto;
-}
-
-.password-toggle:nth-child(1) {
-  color: var(--text-primary);
-}
-
-.password-toggle:hover {
-  color: var(--accent-mint-light);
 }
 
 .sign-up-action {
