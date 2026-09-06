@@ -2,28 +2,28 @@
 Style rules for 404/Catch All "Not Found" Component
 */
 .not-found-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-family: "Inter", sans-serif;
-    margin: 100px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: "Inter", sans-serif;
+  margin: 100px auto;
 }
 
 .not-found-text {
-    color: var(--text-secondary);
+  color: var(--text-secondary);
 }
 
 .not-found-link {
-    text-decoration: none;
-    color: var(--text-primary);
-    margin-top: 40px;
+  text-decoration: none;
+  color: var(--text-primary);
+  margin-top: 40px;
 }
 
 .not-found-link:hover {
-    transform: translateY(-3px);
-    border-color: var(--border-active);
-    background: var(--border-active-mint);
-    border-radius: 4px;
-    padding: 5px;
+  transform: translateY(-3px);
+  border-color: var(--border-active);
+  background: var(--border-active-mint);
+  border-radius: 4px;
+  padding: 5px;
 }
