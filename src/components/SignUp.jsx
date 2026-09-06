@@ -41,16 +41,9 @@ const SignUp = () => {
     mode: "onChange",
   });
 
-  // Local password visibility state management
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirm, setShowConfirm] = useState(false);
-
   // Create account success/failure state management
   const [createSuccess, setCreateSuccess] = useState(false);
   const [createFail, setCreateFail] = useState(false);
-
-  // Watch password field so confirm_password can validate against its current value
-  const passwordValue = watch("password", "");
 
   /**
      * Handles account creation by sending the user's email, password, and profile data to Supabase Auth
