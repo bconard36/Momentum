@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 import { supabase } from "../utils/supabaseClient";
+import { useAuthUser } from "../hooks/useAuthUser";
 
 // Account Settings
 // Two buttons/areas - update password and update email
@@ -29,7 +30,8 @@ const AccountSettings = ({ user }) => {
   });
 
   // Capture authenticated user email data
-  let userEmail = user?.email;
+  const userEmail = user?.email;
+  const emailUpdatePending = !!user?.new_email && user.new_email !== user.email;
 
   // Password visibility state management
   const [showOriginalPassword, setShowOriginalPassword] = useState(false);
@@ -87,17 +89,16 @@ const AccountSettings = ({ user }) => {
           // TODO - Insert graceful error pop up here
           setFormError({
             form: "email",
-            message: "Error updating email address.",
+            message: "Error updating email address. Please try again.",
           });
-          console.log("Error resetting email: ", emailResetError.message);
         } else {
-          // TODO - success render here
           setFormError(null);
+          setNewEmail(emailReset);
           setFormSuccess({
             form: "email",
-            message: "Success! Your email has been updated.",
+            message: `A confirmation link has been to ${emailReset}. Your account will keep using your old email until you confirm.`,
           });
-          setNewEmail(emailReset);
+
           reset();
         }
       } else if (activeForm === "password") {
@@ -303,11 +304,9 @@ const AccountSettings = ({ user }) => {
             <div className="reset-overlay">
               <div className="reset-message-container">
                 <span className="reset-success-message">
-                  Success! Your email has been updated.
+                  {formSuccess.message}
                 </span>
-                <span className="reset-success-note">
-                  A confirmation email has been sent to {newEmail}.
-                </span>
+
                 <Link to="/dashboard" className="password-success-link">
                   <button
                     type="button"
@@ -329,6 +328,13 @@ const AccountSettings = ({ user }) => {
                   Redirecting to sign in ...
                 </span>
               </div>
+            </div>
+          )}
+          {emailUpdatePending && (
+            <div className="email-update-pending">
+              <strong>Change Pending:</strong> Waiting for verification to
+              update your account to <u>{user.new_email}</u>. Please check your
+              inbox.
             </div>
           )}
 
