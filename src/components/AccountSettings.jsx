@@ -108,17 +108,20 @@ const AccountSettings = ({ user }) => {
             form: "password",
             message: "Invalid credentials.",
           });
+          reset();
         } else if (newPassword === oldPassword) {
           setFormError({
             form: "password",
             message:
               "New password must be different from your current password.",
           });
+          reset();
         } else if (newPassword !== confirmNewPassword) {
           setFormError({
             form: "password",
             message: "Passwords do not match.",
           });
+          reset();
         } else {
           const { data: newPass, error: newPassError } =
             await supabase.auth.updateUser({
