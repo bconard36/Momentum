@@ -19,6 +19,10 @@
   flex-wrap: wrap;
 }
 
+.form-to-render-container button {
+  margin-bottom: 2%;
+}
+
 .account-settings-form-container {
   display: flex;
   justify-content: center;
