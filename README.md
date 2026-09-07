@@ -6,9 +6,10 @@ Momentum is a React application for logging, managing, and reviewing workouts. U
 or remove exercises from a workout, validate inputs using React Hook Form, and store workout history in a
 PostgreSQL database through Supabase.
 
-Momentum includes user authentication through Supabase. Users can create an account, sign in, and sign out.
-Supabase Auth manages authentication while a PostgreSQL function & trigger automatically create a corresponding
-user profile in the application's `public.users` table.
+Momentum includes user authentication through Supabase. Users can create an account, sign in, sign out, and
+manage their account credentials, including updating their email address and/or password. Supabase Auth
+manages authentication while PostgreSQL functions & triggers automatically create a corresponding user
+profile in the application's `public.users` table and keep it synchronized with authentication-level changes.
 
 A public landing page introduces the application to unauthenticated visitors, previewing the workout form,
 workout log, workout analytics, and fitness calculator with sample data before requiring an account.
@@ -38,6 +39,13 @@ The application currently supports:
 - A dynamic, personalized dashboard header that greets the authenticated user by first name
 - Route protection verified against Supabase's Auth server, not just cached session data
 - A shared `useAuthUser` hook providing a single, re-verified source of auth state across the application
+- Account settings management for logged in users, including:
+  - Email address reset, password reset, and combined email + password reset
+  - Reauthentication (password confirmation) required before any password change is applied
+  - Partial success/failure handling for the combined reset, so a failure on one field doesn't obscure a success on the other
+  - A pending-change banner reflecting Supabase's confirm-based email update flow, so the UI never implies an email has changed before the user confirms it
+  - Forced global sign-out and redirect after a successful password change, since a changed password invalidates the current session's credential everywhere
+- Reusable `PasswordInput` and `EmailInput` form components shared across sign-up, sign-in, and account settings, with per-instance validation rules (e.g., strength requirements for a new password vs. simple presence for a current-password confirmation)
 - Workout creation and management through React Hook Form
 - Saving workouts to PostgreSQL through Supabase
 - Fetching authenticated users' workout history from PostgreSQL
@@ -55,6 +63,9 @@ The application currently supports:
   - Saving Workouts (WorkoutLog)
   - Editing Workouts (EditWorkout)
   - Deleting Workouts
+  - Account settings (email reset, password reset, combined reset, reauthentication, and pending-change state)
+  - Reusable `PasswordInput` and `EmailInput` components in isolation
+  - Analytics calculations (30-day count, workout streak, exercise splits)
 
 Supabase handles the following responsibilities:
 
@@ -68,53 +79,69 @@ Supabase handles the following responsibilities:
 - public
 - src: parent folder for components, stylesheets, and assets
   - components: parent folder for individual components
+    - analytics: parent folder for analytic-specific components
+      - Analytics.jsx
+      - ExerciseSplits.jsx
+      - ThirtyDayCount.jsx
+      - WorkoutStreak.jsx
     - CalorieTrack: Fitness calculator component
       - refactored from the original [Calorie Track](https://github.com/bconard36/CalorieTrack),
         migrated into Momentum and rebuilt using `react-hook-form` for form state management and validation.
-    - Analytics.jsx
-    - AnalyticsPreview.jsx
-    - CalculatorPreview.jsx
+    - landingPage: Parent folder for landing page components
+      - AnalyticsPreview.jsx
+      - CalculatorPreview.jsx
+      - Hero.jsx
+      - LandingFooter.jsx
+      - LandingPage.jsx
+      - WorkoutFormPreview.jsx
+      - WorkoutLogPreview.jsx
+    - AccountSettings.jsx
     - Dashboard.jsx
     - EditWorkout.jsx
-    - ExerciseSplits.jsx
+    - EmailInput.jsx
     - Header.jsx
-    - Hero.jsx
-    - LandingPage.jsx
     - NotFound.jsx
+    - PasswordInput.jsx
     - ProtectedRoute.jsx
     - SignIn.jsx
     - SignUp.jsx
-    - ThirtyDayCount.jsx
     - WorkoutForm.jsx
-    - WorkoutFormPreview.jsx
     - WorkoutLog.jsx
-    - WorkoutLogPreview.jsx
-    - WorkoutStreak.jsx
   - hooks: custom, reusable hooks
     - useAuthUser.js
+    - useClickOutside.js
   - mock: mock data to be used for landing page renders
     - mockWorkout.js
   - styles: houses all style sheets
+    - landingPage: parent folder for landing page style sheets
+      - hero.css
+      - landingFooter.css
+      - landingPage.css
+      - workoutFormPreview.css
+    - accountSettings.css
     - analysis.css
     - base.css
     - calculator.css
     - editWorkout.css
-    - hero.css
-    - landingPage.css
     - notFound.css
     - signInSignUp.css
     - success.css
     - workoutForm.css
-    - workoutFormPreview.css
     - workoutLog.css
   - tests: parent test folder
+    - AccountSettings.test.jsx
     - Analytics.test.jsx
     - DeleteWorkout.test.jsx
     - EditWorkout.test.jsx
+    - EmailInput.test.jsx
+    - ExerciseSplits.test.jsx
+    - PasswordInput.test.jsx
     - setup.js
     - SignUp.test.jsx
     - SignIn.test.jsx
+    - ThirtyDayCount.test.jsx
     - WorkoutForm.test.jsx
+    - WorkoutStreak.test.jsx
   - utils: parent folder for utility functions
     - supabaseClient.js
   - App.jsx
@@ -123,6 +150,7 @@ Supabase handles the following responsibilities:
   - functions: parent folder for all SQL/PGSQL functions
     - delete_workout.sql
     - edit_workout.sql
+    - email_update.sql
     - get_user_workouts.sql
     - save_workout.sql
     - user_insert_function.sql
@@ -130,8 +158,10 @@ Supabase handles the following responsibilities:
     - grants.sql
     - permissions.sql
   - triggers: parent folder for all DB triggers
+    - email_update_trigger.sql
     - user_insert_trigger.sql
 - .gitignore
+- .prettierrc
 - eslint.config.js
 - index.html
 - package-lock.json
@@ -147,6 +177,16 @@ Supabase handles the following responsibilities:
 - Preview sections for the workout form, workout log, workout analytics and fitness calculator populated from static mock data rather than real user data
 - Interactive, fully functional calculator and workout form previews. The calculator tool itself requires no authentication, and the workout form mimics the input fields adapting based on workout type.
 - Consistent "mock UI" visual pattern across preview sections, distinct from the real, interactive versions of the feature
+
+## Account Settings
+
+- Email reset, password reset, and combined email + password reset, each rendered as its own mode within a single form
+- Password changes require reauthentication (re-entering the current password) before being applied, verified through a live `signInWithPassword` call rather than any client-side comparison, since the current password is never available client-side
+- The combined email + password form allows partial success: a failure updating one field does not block or hide a successful update to the other, and the user is shown a specific, accurate outcome message reflecting exactly what did and didn't succeed
+- Cross-field validation (new password vs. confirm password) implemented as a React Hook Form `validate` rule rather than a manual post-submit check, so a mismatch surfaces as a real field-level error instead of silently blocking submission
+- A pending-email-change banner reflects Supabase's confirmation-based email update flow: the UI clearly communicates that the account continues using the old email address until the new one is confirmed, rather than implying an immediate change
+- A successful password change forces a global sign-out (invalidating all active sessions, not just the current one) and redirects to sign-in, since a password change is a security-sensitive action with no client-side way to reflect the new credential in an existing session
+- Reusable `PasswordInput` and `EmailInput` components extracted from three near-duplicate inline forms, with per-instance validation rules (e.g., full strength requirements for a new password field vs. a lightweight "required only" rule for confirming a current password)
 
 ## Workout Management
 
@@ -183,6 +223,7 @@ Supabase handles the following responsibilities:
 - A shared `useAuthUser` custom hook centralizing auth-state checks and re-verification across the app, used
   for both route protection/redirection and gating authenticated data fetches
 - Automatic creation of a corresponding `public.users` profile through a PostgreSQL function and trigger
+- A second PostgreSQL trigger keeps `public.users` synchronized when a user's email is updated through Supabase Auth, mirroring the same "auth event → application profile update" pattern used for account creation
 - Shared UUID between the Supabase Auth user and application profile
 - Foreign key relationship between the Auth user and application profile
 - A dynamic dashboard header that displays the authenticated user's first name, queried from `public.users`
@@ -251,13 +292,29 @@ Supabase Row Level Security and database permissions are used to control access 
 
 Authenticated users are granted the required database permissions, while RLS policies control access to the data. Ownership-based policies restrict users to their own workouts and workout-exercise records, verified through a correlated subquery against the `workouts` table where a direct `user_id` column isn't available (as on the `workout_exercises` join table). Shared reference data, such as exercise definitions, remains readable by all authenticated users, since exercises are not user-owned.
 
+Account settings' email and password updates go through Supabase Auth directly (`auth.updateUser`), which operates on the Auth-managed `auth.users` table rather than `public.users` — a distinction that matters, since RLS policies on `public.users` have no effect on Auth-level updates.
+
 ## Unit Testing
 
 Momentum uses **Vitest** and **React Testing Library** for component-level unit tests, chosen over Jest for its native integration with the existing Vite build pipeline.
 
 Supabase calls are mocked at the module level (`vi.mock`) on a per-file basis, scoped to only the methods each component actually calls, so tests run without touching the real database.
 
-Current coverage includes sign up, sign in, save workout, edit workout, and delete workout flows: - Form rendering and field presence - Client-side validation blocking submission before Supabase is contacted - Correct payload shape sent to Supabase on valid submission - Error handling and messaging when Supabase returns an authentication failure - Conditional success message displays
+Current coverage includes sign up, sign in, save workout, edit workout, delete workout, account settings, and analytics calculation flows:
+
+- Form rendering and field presence
+- Client-side validation blocking submission before Supabase is contacted
+- Correct payload shape sent to Supabase on valid submission
+- Error handling and messaging when Supabase returns an authentication failure
+- Conditional success message displays
+- Mode-switching behavior in a multi-mode form, including that errors from a previous mode are cleared when switching
+- Reauthentication gating a sensitive update, including the case where reauthentication succeeds but a downstream update still fails
+- Partial success/failure messaging on multi-field updates
+- Date-dependent calculation logic (rolling windows, streaks) using a pinned system time rather than the real clock, so fixture data stays valid regardless of when the suite runs
+
+## Code Formatting
+
+Momentum uses **Prettier** with a project-level `.prettierrc` to enforce consistent formatting across the codebase, applied via editor format-on-save. This was introduced after inconsistent editor defaults across working sessions caused unrelated files to show large, purely cosmetic diffs during branch merges — a project-level config removes the ambiguity by giving every contributor (or every session) the same formatting rules to format against.
 
 # What I Learned / Built From Scratch
 
@@ -266,6 +323,22 @@ Current coverage includes sign up, sign in, save workout, edit workout, and dele
 **Dynamic Forms with `useFieldArray`**: Exercises are managed as a dynamic array, allowing users to add or remove any number of exercises during a workout. This introduced a different approach to forms where the form structure itself changes over time.
 
 **Conditional Form Displays with `watch`**: Workout forms display different inputs based on workout type. React Hook Form's `watch` API monitors the workout-type field and allows the relevant inputs to update dynamically.
+
+**Cross-Field Validation**: Confirming a new password matches its confirmation field is implemented as a React Hook Form `validate` function rather than a manual comparison after submission. A manual post-submit check never runs if RHF's own field-level validation (e.g., a strength `pattern` rule) blocks submission first — folding the comparison into the field's own validation rules ensures a mismatch always produces a visible error instead of a silent, confusing submit block.
+
+**Component Extraction & the "Rule of Three"**: Three near-identical password input blocks (with a duplicated show/hide toggle icon) were extracted into a single reusable `PasswordInput` component once the third copy-paste was about to happen. The extraction surfaced a real design need — different fields require different validation strength (a new password vs. confirming a current one) — solved with a prop that selects between two named rule sets rather than one hardcoded rule object.
+
+**Impossible States**: Three independent boolean flags for "which reset mode is active" allowed invalid combinations (e.g., two modes appearing simultaneously) and made clearing stale error messages error-prone, since every mode-switch handler had to remember to reset every other flag. Collapsing this into a single `activeForm` state variable made the invalid combination structurally impossible rather than something to remember to prevent.
+
+**Reauthentication vs. Route Protection**: A protected route confirms a valid session exists, but a password change additionally reverifies the specific current password via `signInWithPassword` before applying an update — a distinct, stronger guarantee than session validity alone, appropriate for a security-sensitive action.
+
+**Auth-Level vs. Application-Level Data**: `supabase.auth.updateUser()` operates on Supabase's internally-managed `auth.users` table, not the application's `public.users` table — meaning RLS policies and grants on `public.users` have no bearing on Auth-level updates, and a `public.users` mirror column (like email) requires its own dedicated trigger to stay synchronized, following the same pattern originally used for profile creation.
+
+**Modeling Asynchronous, Confirmation-Based State**: Supabase's email change requires a confirmation link before taking effect, meaning `user.email` continues to reflect the _old_ address for an indeterminate period after a successful update request. Rather than treating this as an edge case to route around, the UI models it directly as its own pending state with dedicated messaging, avoiding a false "success" indication for a change that hasn't actually completed yet.
+
+**Testing Time-Dependent Logic**: Analytics calculations (30-day windows, streaks) depend entirely on the current date. Testing them safely requires pinning "now" with Vitest's fake system time and building fixture dates relative to that fixed anchor, so tests remain correct regardless of when they're actually run — rather than relying on real wall-clock time, which would make the same test pass or fail solely based on the calendar date.
+
+**Formatting Drift Across Branches**: Long-lived feature branches without a shared, committed formatter config accumulated editor-specific formatting differences over time, which surfaced as large, misleading merge conflicts unrelated to any actual logic change. Introducing a project-level `.prettierrc` and reformatting each branch before merging (rather than during) isolated genuine logic conflicts from cosmetic noise, making merges meaningfully easier to review.
 
 **Local Data Persistence & Migration**: Momentum originally stored workout history in browser localStorage. This provided experience serializing application data and synchronizing React state with browser storage before the application was migrated to PostgreSQL through Supabase.
 
@@ -306,6 +379,7 @@ As Momentum continues to evolve, planned improvements include:
 - Expanded user profile functionality
 - Extracting workout-fetching, deletion, and related state out of App.jsx into a dedicated useWorkoutLog hook, so the root component is only responsible for routing
 - Further application state management improvements
+- Reconciling session behavior between the standalone password-reset flow (forced global sign-out) and the combined email + password flow (no forced sign-out), so the security posture is consistent regardless of which form a user changes their password through
 
 # Production Build
 
