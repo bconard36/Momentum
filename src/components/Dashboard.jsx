@@ -18,7 +18,7 @@ import useClickOutside from "../hooks/useClickOutside";
    
  * @returns {JSX.Element} - Dashboard component
  */
-const Dashboard = ({ user }) => {
+const Dashboard = () => {
   // Initialize navigation hook
   const logOutNav = useNavigate();
 
@@ -85,7 +85,7 @@ const Dashboard = ({ user }) => {
             <nav className="user-menu">
               <ul>
                 <Link to="/preferences">
-                  <li className="user-menu-item">Preferences</li>
+                  <li className="user-menu-item">Update Profile</li>
                 </Link>
                 <br />
                 <li className="user-menu-item" onClick={signOut}>
@@ -99,32 +99,23 @@ const Dashboard = ({ user }) => {
         <Header />
 
         <nav className="dashboard-nav" aria-label="Main sections">
-          <Link to="/workouts" className="nav-card nav-card-workouts">
+          <Link to="/workouts" className="nav-card">
             <span className="nav-card-label">Workouts</span>
             <span className="nav-card-description">
               Log today's session and review past workouts.
             </span>
           </Link>
 
-          <Link to="/calculator" className="nav-card nav-card-calculator">
+          <Link to="/calculator" className="nav-card">
             <span className="nav-card-label">Fitness Calculator</span>
             <span className="nav-card-description">
               Check your BMI, BMR, and daily calorie targets.
             </span>
           </Link>
 
-          <Link to="/logs" className="nav-card nav-card-history">
+          <Link to="/logs" className="nav-card dashboard-log">
             <span className="nav-card-label">Workout History</span>
-            <span className="nav-card-description">
-              Review your past workout logs and progress.
-            </span>
-          </Link>
-
-          <Link to="/analysis" className="nav-card nav-card-analysis">
-            <span className="nav-card-label">Workout Analysis</span>
-            <span className="nav-card-description">
-              Review metrics and stats of your past workouts
-            </span>
+            <button className="secondary-button">View Workout Log</button>
           </Link>
         </nav>
       </div>

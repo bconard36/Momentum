@@ -6,33 +6,12 @@ import PasswordInput from "./PasswordInput";
 import EmailInput from "./EmailInput";
 
 // Account Settings
-//
-// Provides options to update:
-// - Email address
-// - Password
-// - Email address and password simultaneously
-//
-// Each update form is conditionally rendered based on the selected option.
-//
-// Email updates:
-// - Success message with email confirmation instructions
-// - Error handling
-// - Pending verification state
-//
-// Password updates:
-// - Re-authentication with current password
-// - Success message and redirect to sign-in
-// - Error handling
-//
-// Email and password updates:
-// - Client-side validation
-// - Re-authentication with current password
-// - Individual update error handling
-// - Success and pending confirmation messaging
-//
-// Uses Supabase Auth for authentication and account updates.
-// Uses React Hook Form for form state and validation.
-// Redirects to the dashboard or sign-in page when appropriate.
+// Two buttons/areas - update password and update email
+// Conditional rendering for each
+// password update, success, fail
+// email update, success, fail
+// Supabase needs to be imported
+// Redirect after
 
 const AccountSettings = ({ user }) => {
   const navigate = useNavigate();
@@ -270,7 +249,7 @@ const AccountSettings = ({ user }) => {
         </Link>
       </div>
       <div className="account-settings-header-container">
-        <h1>User Account Settings</h1>
+        <h1>Update Profile</h1>
       </div>
       <div className="form-to-render-container">
         <button
@@ -323,7 +302,6 @@ const AccountSettings = ({ user }) => {
                   <span className="reset-error-message">
                     {formError?.message}
                   </span>
-                  <span>Please try again</span>
                 </div>
               </div>
             )}
