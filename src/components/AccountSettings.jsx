@@ -249,7 +249,7 @@ const AccountSettings = ({ user }) => {
         </Link>
       </div>
       <div className="account-settings-header-container">
-        <h1>User Account Settings</h1>
+        <h1>Update Profile</h1>
       </div>
       <div className="form-to-render-container">
         <button
@@ -302,7 +302,6 @@ const AccountSettings = ({ user }) => {
                   <span className="reset-error-message">
                     {formError?.message}
                   </span>
-                  <span>Please try again</span>
                 </div>
               </div>
             )}
