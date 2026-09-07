@@ -85,7 +85,7 @@ const Dashboard = () => {
             <nav className="user-menu">
               <ul>
                 <Link to="/preferences">
-                  <li className="user-menu-item">Preferences</li>
+                  <li className="user-menu-item">Update Profile</li>
                 </Link>
                 <br />
                 <li className="user-menu-item" onClick={signOut}>
