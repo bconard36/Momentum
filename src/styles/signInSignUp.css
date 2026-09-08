@@ -92,6 +92,12 @@
   padding-top: 20px;
 }
 
+#create-account-header .return-container {
+  right: 1rem;
+  width: auto;
+  justify-content: space-between;
+}
+
 .sign-in-form-group,
 .sign-up-form-group {
   display: flex;
