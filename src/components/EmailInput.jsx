@@ -1,3 +1,14 @@
+/**
+ * Email Input Component
+ * Renders an email input field with validation and conditional labeling.
+ * @param {Object} props - email input properties
+ * @param {Function} props.register - React Hook Form register function
+ * @param {string} props.type - input field type
+ * @param {string} props.name - email input field name
+ * @param {string} props.id - email input field ID
+ * @param {Object} props.errors - form validation errors
+ * @returns {JSX.Element} email input field
+ */
 const EmailInput = ({ register, type, name, id, errors }) => {
   const fieldError = errors?.[name];
 

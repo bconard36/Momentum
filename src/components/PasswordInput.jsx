@@ -1,5 +1,17 @@
 import { useState } from "react";
-
+/**
+ * Password Input Component
+ * Renders a password input field with validation and show/hide functionality.
+ * @param {Object} props - password input properties
+ * @param {Function} props.register - React Hook Form register function
+ * @param {string} props.label - identifies the type of password field
+ * @param {string} props.name - password input field name
+ * @param {string} props.id - password input field ID
+ * @param {Object} props.errors - form validation errors
+ * @param {boolean} props.isCurrentPassword - identifies the current password field
+ * @param {string} props.matchValue - password value used for confirmation validation
+ * @returns {JSX.Element} password input field
+ */
 const PasswordInput = ({
   register,
   label,

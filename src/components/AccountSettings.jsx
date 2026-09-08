@@ -5,13 +5,12 @@ import { supabase } from "../utils/supabaseClient";
 import PasswordInput from "./PasswordInput";
 import EmailInput from "./EmailInput";
 
-// Account Settings
-// Two buttons/areas - update password and update email
-// Conditional rendering for each
-// password update, success, fail
-// email update, success, fail
-// Supabase needs to be imported
-// Redirect after
+/**
+ * Account Settings Component
+ * Allows authenticated users to update their email, password, or both
+ * @param {Object} user - authenticated user  
+ * @returns {JSXElement} account settings component with conditional form rendering
+ */
 
 const AccountSettings = ({ user }) => {
   const navigate = useNavigate();

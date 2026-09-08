@@ -1,5 +1,9 @@
 import { Link } from "react-router";
-
+/**
+ * Landing Page Footer Component
+ * CTA and link to sign up with copyright info
+ * @returns {JSXElement} footer component
+ */
 const Footer = () => {
   return (
     <footer className="landing-footer">
