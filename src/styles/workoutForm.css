@@ -49,7 +49,7 @@ in base.css's :root — load base.css first.
 
 #form-log-link {
   color: var(--text-primary);
-  border-radius: 999px;
+  border-radius: var(--radius);
 }
 
 #form-log-link:hover,
@@ -277,7 +277,7 @@ in base.css's :root — load base.css first.
 }
 
 .form-actions button {
-  border-radius: 999px;
+  border-radius: var(--radius);
 }
 
 .footer-actions {

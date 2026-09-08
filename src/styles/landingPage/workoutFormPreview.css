@@ -9,7 +9,7 @@
 
 .mock-tab {
   padding: 0.4rem 1rem;
-  border-radius: 999px;
+  border-radius: var(--radius);
   font-size: 0.8rem;
   font-weight: 600;
   color: var(--text-primary);
@@ -86,7 +86,7 @@
 
 .preview-mock-form-button {
   padding: 0.4rem 1rem;
-  border-radius: 999px;
+  border-radius: var(--radius);
   font-size: 0.8rem;
   font-weight: 600;
   color: var(--primary-text);
