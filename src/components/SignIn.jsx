@@ -73,6 +73,11 @@ const SignIn = () => {
           {/* Render the sign in form when no login errors detected */}
           {!errors.root?.message && (
             <>
+              <div className="return-container">
+                <Link to="/" className="return-link" id="sign-in-home-return">
+                  Return to Home
+                </Link>
+              </div>
               <h1 className="sign-in-title" id="form-title">
                 Momentum
               </h1>
