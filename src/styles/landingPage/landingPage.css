@@ -244,6 +244,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  text-align: center;
+  text-wrap: balance;
 }
 
 .preview-calculator h3,
@@ -283,6 +285,12 @@
   justify-content: center;
   padding-bottom: 1%;
   font-family: "Noto sans", sans-serif;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.preview-analytics-header p {
+  margin-bottom: 0.35rem;
 }
 
 .landing .analysis-container:hover {

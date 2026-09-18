@@ -6,7 +6,8 @@ const Hero = () => {
   return (
     <section className="hero">
       <h1 className="hero-headline">
-        Log your workouts. Watch your progress build.
+        Log your workouts.{" "}
+        <span className="desktop-break">Watch your progress build.</span>
       </h1>
       <p className="hero-subtext">
         One place to track every set, session, and stat — so Momentum keeps
