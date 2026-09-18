@@ -28,6 +28,7 @@
   max-width: 640px;
   line-height: 1.2;
   margin-bottom: 0.75rem;
+  text-wrap: pretty;
 }
 
 .hero-subtext {
@@ -36,4 +37,15 @@
   max-width: 480px;
   line-height: 1.5;
   margin-bottom: 1.75rem;
+  text-wrap: pretty;
+}
+
+.desktop-break {
+  display: inline;
+}
+
+@media (min-width: 768px) {
+  .desktop-break {
+    display: block;
+  }
 }
