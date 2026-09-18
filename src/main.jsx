@@ -15,6 +15,7 @@ import "./styles/landingPage/workoutFormPreview.css";
 import "./styles/analytics.css";
 import "./styles/landingPage/landingFooter.css";
 import "./styles/accountSettings.css";
+import "./styles/forgotPassword.css";
 import App from "./App.jsx";
 
 createRoot(document.getElementById("root")).render(
