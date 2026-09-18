@@ -9,7 +9,9 @@ import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
 import { supabase } from "./utils/supabaseClient";
 import WorkoutLog from "./components/WorkoutLog";
+import Analytics from "./components/analytics/Analytics";
 import LandingPage from "./components/landingPage/LandingPage";
+import AccountSettings from "./components/AccountSettings";
 import { useAuthUser } from "./hooks/useAuthUser";
 
 /**
@@ -129,6 +131,14 @@ function App() {
             }
           />
           <Route
+            path="/preferences"
+            element={
+              <ProtectedRoute>
+                <AccountSettings user={user} />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/workouts"
             element={
               <ProtectedRoute>
@@ -147,6 +157,14 @@ function App() {
                   isLoading={isLoadingWorkouts}
                   workoutError={workoutError}
                 />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/analysis"
+            element={
+              <ProtectedRoute>
+                <Analytics workouts={savedWorkouts} />
               </ProtectedRoute>
             }
           />

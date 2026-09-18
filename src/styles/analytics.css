@@ -82,6 +82,9 @@
   text-transform: uppercase;
   letter-spacing: 0.04em;
   margin-bottom: 0.5rem;
+  margin-top: 1rem;
+  text-wrap: pretty;
+  text-align: center;
 }
 
 #analysis-return:hover {
@@ -118,7 +121,7 @@
   width: fit-content;
   height: auto;
   padding: 5px;
-  border-radius: 999px;
+  border-radius: var(--radius);
   background-color: var(--accent-teal);
 }
 
@@ -157,7 +160,7 @@
   font-weight: 700;
   font-size: 1rem;
   padding: 0.2rem 0.6rem;
-  border-radius: 999px;
+  border-radius: var(--radius);
   text-align: center;
 }
 
@@ -180,6 +183,7 @@
   color: var(--accent-teal);
   text-decoration: none;
   margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
   position: absolute;
   top: 1.25%;
   right: 3%;
@@ -194,7 +198,7 @@
   border: 1px solid var(--accent-teal);
   width: fit-content;
   padding: 0.5rem;
-  border-radius: 999px;
+  border-radius: var(--radius);
   margin: 0 auto;
   color: var(--text-primary);
 }

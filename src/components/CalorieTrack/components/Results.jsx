@@ -23,52 +23,65 @@ import { useEffect, useState } from "react";
 // ============================================================
 
 const Results = ({ results, message }) => {
-    const hasSubmitted = results.bmi != null;
+  const hasSubmitted = results.bmi != null;
 
-    const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
-    useEffect(() => {
-        setIsOpen(true);
-    }, [results])
+  useEffect(() => {
+    setIsOpen(true);
+  }, [results]);
 
-    return (
-        <>
-            {hasSubmitted && isOpen && (
-                // Clicking the dark overlay (anywhere outside the panel) closes the
-                // modal, matching the same click-outside-to-close behavior as the
-                // term-definition modals in Header.jsx. 
-                <div className="modal-overlay" onClick={() => setIsOpen(false)}>
-                    {/* stopPropagation prevents a click inside the panel from bubbling
+  return (
+    <>
+      {hasSubmitted && isOpen && (
+        // Clicking the dark overlay (anywhere outside the panel) closes the
+        // modal, matching the same click-outside-to-close behavior as the
+        // term-definition modals in Header.jsx.
+        <div className="modal-overlay" onClick={() => setIsOpen(false)}>
+          {/* stopPropagation prevents a click inside the panel from bubbling
                         up to the overlay and accidentally closing the modal. */}
-                    <div className="modal-panel" role="dialog" aria-modal="true" aria-label="Calculation results" onClick={(e) => e.stopPropagation()}>
-                        {message && (
-                            <div className={`result-message${message.toLowerCase().includes('invalid') ? ' error' : ''}`}>
-                                {message}
-                            </div>
-                        )}
-
-                        <div className="results-list">
-                            <div className="result-item">
-                                <strong>BMI</strong>
-                                <span>{results.bmi}</span>
-                            </div>
-                            <div className="result-item">
-                                <strong>BMR</strong>
-                                <span>{results.bmr} calories/day</span>
-                            </div>
-                            <div className="result-item">
-                                <strong>Estimated TDEE</strong>
-                                <span>{results.daily} calories/day</span>
-                            </div>
-                            <div className="modal-actions">
-                                <button className="close-button" onClick={() => setIsOpen(false)}>Close</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+          <div
+            className="modal-panel"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Calculation results"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {message && (
+              <div
+                className={`result-message${message.toLowerCase().includes("invalid") ? " error" : ""}`}
+              >
+                {message}
+              </div>
             )}
-        </>
-    );
-}
+
+            <div className="results-list">
+              <div className="result-item">
+                <strong>BMI</strong>
+                <span>{results.bmi}</span>
+              </div>
+              <div className="result-item">
+                <strong>BMR</strong>
+                <span>{results.bmr} calories/day</span>
+              </div>
+              <div className="result-item">
+                <strong>Estimated TDEE</strong>
+                <span>{results.daily} calories/day</span>
+              </div>
+              <div className="modal-actions">
+                <button
+                  className="close-button"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
 
 export default Results;

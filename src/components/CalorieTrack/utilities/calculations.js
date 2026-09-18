@@ -7,8 +7,8 @@
 // ============================================================
 
 // --- Unit conversion constants ---
-const METER_CONVERSION = 0.0254;      // inches -> meters
-const KILOGRAM_CONVERSION = 2.20462;  // pounds per kilogram (divide lbs by this to get kg)
+const METER_CONVERSION = 0.0254; // inches -> meters
+const KILOGRAM_CONVERSION = 2.20462; // pounds per kilogram (divide lbs by this to get kg)
 
 // --- Activity multipliers used in the TDEE (Total Daily Energy Expenditure) formula ---
 // Source: standard Mifflin-St Jeor activity multiplier table
@@ -24,9 +24,9 @@ const EXTRA_ACTIVE = 1.9;
  * @returns {number} Height in meters
  */
 export const calcMetricHeight = (height) => {
-    const metricHeight = height * METER_CONVERSION;
-    return metricHeight;
-}
+  const metricHeight = height * METER_CONVERSION;
+  return metricHeight;
+};
 
 /**
  * Converts weight from pounds to kilograms.
@@ -34,9 +34,9 @@ export const calcMetricHeight = (height) => {
  * @returns {number} Weight in kilograms
  */
 export const calcMetricWeight = (weight) => {
-    const metricWeight = weight / KILOGRAM_CONVERSION;
-    return metricWeight;
-}
+  const metricWeight = weight / KILOGRAM_CONVERSION;
+  return metricWeight;
+};
 
 /**
  * Calculates Body Mass Index (BMI) using the standard metric formula:
@@ -49,9 +49,9 @@ export const calcMetricWeight = (weight) => {
  * @returns {string} BMI, rounded to 1 decimal place, ready for display
  */
 export const calcBMI = (metricWeight, metricHeight) => {
-    const bmi = (metricWeight / (metricHeight ** 2)).toFixed(1);
-    return bmi;
-}
+  const bmi = (metricWeight / metricHeight ** 2).toFixed(1);
+  return bmi;
+};
 
 /**
  * Calculates Basal Metabolic Rate (BMR) using the Mifflin-St Jeor equation.
@@ -68,16 +68,16 @@ export const calcBMI = (metricWeight, metricHeight) => {
  * @returns {number} BMR in calories/day (unrounded)
  */
 export const calcBMR = (gender, metricWeight, metricHeight, age) => {
-    let bmr;
-    if (gender === 'm' || gender === 'M') {
-        bmr = (10 * metricWeight) + (6.25 * (metricHeight * 100)) - (5 * age) + 5;
-    } else if (gender === 'f' || gender === 'F') {
-        bmr = (10 * metricWeight) + (6.25 * (metricHeight * 100)) - (5 * age) - 161;
-    } else {
-        throw new Error(`Invalid gender: ${gender}`);
-    }
-    return bmr;
-}
+  let bmr;
+  if (gender === "m" || gender === "M") {
+    bmr = 10 * metricWeight + 6.25 * (metricHeight * 100) - 5 * age + 5;
+  } else if (gender === "f" || gender === "F") {
+    bmr = 10 * metricWeight + 6.25 * (metricHeight * 100) - 5 * age - 161;
+  } else {
+    throw new Error(`Invalid gender: ${gender}`);
+  }
+  return bmr;
+};
 
 /**
  * Calculates Total Daily Energy Expenditure (TDEE) by applying an
@@ -96,20 +96,20 @@ export const calcBMR = (gender, metricWeight, metricHeight, age) => {
  *   Returns undefined if activityLevel isn't 1-5 (shouldn't happen post-validation).
  */
 export const calcDaily = (activityLevel, bmr) => {
-    const level = Number(activityLevel);
-    let daily;
+  const level = Number(activityLevel);
+  let daily;
 
-    if (level === 1) {
-        daily = (bmr * SEDENTARY).toFixed(0);
-    } else if (level === 2) {
-        daily = (bmr * LIGHTLY_ACTIVE).toFixed(0);
-    } else if (level === 3) {
-        daily = (bmr * MODERATELY_ACTIVE).toFixed(0);
-    } else if (level === 4) {
-        daily = (bmr * VERY_ACTIVE).toFixed(0);
-    } else if (level === 5) {
-        daily = (bmr * EXTRA_ACTIVE).toFixed(0);
-    }
+  if (level === 1) {
+    daily = (bmr * SEDENTARY).toFixed(0);
+  } else if (level === 2) {
+    daily = (bmr * LIGHTLY_ACTIVE).toFixed(0);
+  } else if (level === 3) {
+    daily = (bmr * MODERATELY_ACTIVE).toFixed(0);
+  } else if (level === 4) {
+    daily = (bmr * VERY_ACTIVE).toFixed(0);
+  } else if (level === 5) {
+    daily = (bmr * EXTRA_ACTIVE).toFixed(0);
+  }
 
-    return daily;
-}
+  return daily;
+};

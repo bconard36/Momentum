@@ -228,7 +228,8 @@ a {
 
 .user-menu-container {
   position: fixed;
-  background: var(--bg-surface);
+  z-index: 10;
+  background: var(--bg-secondary);
   padding: 20px;
   top: 40px;
   right: 20px;

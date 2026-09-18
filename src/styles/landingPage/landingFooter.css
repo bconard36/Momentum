@@ -52,7 +52,7 @@
 .footer-cta-button {
   display: inline-block;
   padding: 0.75rem 2rem;
-  border-radius: 999px;
+  border-radius: var(--radius);
   font-weight: 700;
   text-decoration: none;
   color: #ffffff;

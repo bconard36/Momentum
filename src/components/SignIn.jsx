@@ -69,15 +69,15 @@ const SignIn = () => {
   return (
     <>
       <div className="sign-in-container">
-        <div className="return-container">
-          <Link to="/" className="return-link" id="sign-in-home-return">
-            Return to Home
-          </Link>
-        </div>
         <form className="sign-in-form" onSubmit={handleSubmit(onSubmit)}>
           {/* Render the sign in form when no login errors detected */}
           {!errors.root?.message && (
             <>
+              <div className="return-container">
+                <Link to="/" className="return-link" id="sign-in-home-return">
+                  Return to Home
+                </Link>
+              </div>
               <h1 className="sign-in-title" id="form-title">
                 Momentum
               </h1>
@@ -126,7 +126,10 @@ const SignIn = () => {
               </p>
               <button
                 className="primary-button"
-                onClick={() => clearErrors("root")}
+                onClick={() => {
+                  clearErrors("root");
+                  reset();
+                }}
               >
                 Try Again
               </button>
