@@ -7,10 +7,13 @@ Only displays after a workout is saved successfully
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  max-height: 400px;
 }
 
 .success-message {
   font-size: 1.5rem;
+  text-wrap: balance;
+  text-align: center;
 }
 
 .success-return-container {

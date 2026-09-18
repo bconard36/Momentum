@@ -246,7 +246,7 @@ const WorkoutForm = ({ fetchWorkoutLog }) => {
               <p className="success-message">Success! Workout Saved!</p>
               <div className="success-return-container">
                 <button
-                  className="secondary-button success-redirect"
+                  className="primary-button success-redirect"
                   type="button"
                   onClick={handleCloseModal}
                 >
