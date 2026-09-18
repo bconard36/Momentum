@@ -1,11 +1,39 @@
+import { useForm } from "react-hook-form";
+import EmailInput from "../EmailInput";
+
 const ForgotPassword = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      forgot_password_email: "",
+    },
+  });
+
+  const forgotPasswordError = errors.forgot_password_email?.message || null;
+
+  const onSubmit = async (data) => {
+    try {
+      console.log(`Email to be verified: ${data.forgot_password_email}`);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className="forgot-password-form-container">
       <h2>Forgot Password Email Verification</h2>
-      <form className="forgot-password-form">
+      <form className="forgot-password-form" onSubmit={handleSubmit(onSubmit)}>
         <div className="password-reset-form-group">
-          <label htmlFor="email">Enter Email Address</label>
-          <input type="email" name="email"></input>
+          <EmailInput
+            register={register}
+            type="email"
+            name="forgot_password_email"
+            id="forgot_password_email"
+            errors={errors}
+          />
         </div>
         <button className="secondary-button forgot-password-button">
           Reset Forgotten Password
