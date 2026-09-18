@@ -141,7 +141,7 @@ const SignIn = () => {
             </div>
           )}
           <div className="forgot-password">
-            <Link to="forgot-password" className="forgot-password-link">
+            <Link to="/forgot-password" className="forgot-password-link">
               <span>Forgot password?</span>
             </Link>
           </div>
