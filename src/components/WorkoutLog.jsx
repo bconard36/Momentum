@@ -470,7 +470,9 @@ const WorkoutLog = ({
                             )}
                             {exercise.type === "duration" && (
                               <>
-                                <p>Exercise: {exercise.name}</p>
+                                <p>
+                                  <strong>Exercise: {exercise.name}</strong>
+                                </p>
                                 <p>Type: {exercise.type}</p>
                                 <p>
                                   Time:{" "}
