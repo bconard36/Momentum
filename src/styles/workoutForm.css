@@ -216,7 +216,7 @@ in base.css's :root — load base.css first.
   gap: 0.6rem;
   padding: 0.85rem 1rem;
   border: 1px solid var(--border);
-  border-radius: 999px;
+  border-radius: var(--radius);
   background: rgba(255, 255, 255, 0.03);
   color: var(--text-primary);
   font-size: 0.95rem;
