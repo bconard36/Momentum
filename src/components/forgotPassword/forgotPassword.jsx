@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import EmailInput from "../EmailInput";
+import { supabase } from "../../utils/supabaseClient";
 
 const ForgotPassword = () => {
   const {
@@ -11,8 +12,6 @@ const ForgotPassword = () => {
       forgot_password_email: "",
     },
   });
-
-  const forgotPasswordError = errors.forgot_password_email?.message || null;
 
   const onSubmit = async (data) => {
     try {

@@ -14,6 +14,7 @@ import LandingPage from "./components/landingPage/LandingPage";
 import AccountSettings from "./components/AccountSettings";
 import { useAuthUser } from "./hooks/useAuthUser";
 import ForgotPassword from "./components/forgotPassword/forgotPassword";
+import UpdateForgottenPassword from "./components/forgotPassword/updateForgottenPassword";
 
 /**
  * Home Route Component
@@ -124,6 +125,10 @@ function App() {
           <Route path="/sign-in" element={<HomeRedirect />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route
+            path="/update-forgotten-password"
+            element={<UpdateForgottenPassword />}
+          />
           <Route
             path="/dashboard"
             element={
