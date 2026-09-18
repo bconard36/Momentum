@@ -13,6 +13,7 @@ import Analytics from "./components/analytics/Analytics";
 import LandingPage from "./components/landingPage/LandingPage";
 import AccountSettings from "./components/AccountSettings";
 import { useAuthUser } from "./hooks/useAuthUser";
+import ForgotPassword from "./components/forgotPassword/forgotPassword";
 
 /**
  * Home Route Component
@@ -122,6 +123,7 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/sign-in" element={<HomeRedirect />} />
           <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route
             path="/dashboard"
             element={
