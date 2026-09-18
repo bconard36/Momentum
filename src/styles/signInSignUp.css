@@ -26,6 +26,24 @@
   box-sizing: border-box;
 }
 
+.forgot-password {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+}
+
+.forgot-password-link {
+  text-decoration: none;
+  color: var(--text-secondary);
+}
+
+.forgot-password-link:hover,
+.forgot-password-link:focus-visible {
+  transform: translateY(-1.5px);
+  color: var(--text-primary);
+}
+
 .sign-in-title {
   font-family: "Racing Sans One", sans-serif;
   font-size: 3rem;

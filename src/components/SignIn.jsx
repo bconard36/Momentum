@@ -140,6 +140,11 @@ const SignIn = () => {
               <span className="error-message">{emailPasswordError}</span>
             </div>
           )}
+          <div className="forgot-password">
+            <Link to="forgot-password" className="forgot-password-link">
+              <span>Forgot password?</span>
+            </Link>
+          </div>
         </form>
         <div className="sign-up-action">
           <span className="no-account">Don't have an account?</span>
