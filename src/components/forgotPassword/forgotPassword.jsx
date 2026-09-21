@@ -3,10 +3,27 @@ import { Link } from "react-router";
 import EmailInput from "../EmailInput";
 import { supabase } from "../../utils/supabaseClient";
 import { useState } from "react";
-
+/**
+ * Forgot Password Component
+ * Step 1 of the 2-part password-reset process — email verification
+ * Renders a single email input; on submission, requests a Supabase password reset email vai `resetPasswordForEmail()`
+ *
+ * Step 2 (setting up the new password) is handled separately in UpdateForgottenPassword,
+ * which the user reaches via the link Supabase sends to the submitted email address.
+ *
+ * UI states (mutually exclusive):
+ *  - Default: renders the email form
+ *  - showConfirm: renders a generic "check your email" confirmation
+ *  - showError: renders a generic failure message with a retry option
+ *
+ * @returns {JSXElement} - Forgotten password email verification form
+ */
 const ForgotPassword = () => {
+  // Controls which of the 3 UI states are shown
   const [showConfirm, setShowConfirm] = useState(false);
   const [showError, setShowError] = useState(false);
+
+  // Stores submitted email purely for display in the confirmation message
   const [displayEmail, setDisplayEmail] = useState("");
 
   const {
@@ -20,11 +37,25 @@ const ForgotPassword = () => {
     },
   });
 
+  /**
+   * Handles submission of email address for resetting a forgotten password
+   * Calls supabase.auth.resetPasswordForEmail with the submitted address
+   * Intentionally returns a success-shaped response regardless of whether the email belongs
+   * to a real account.
+   *
+   * On success: shows the confirmation message and resets the form
+   * On failure (e.g. network/Supabase-side error) shows generic error state
+   * @param {{ forgot_password_email: string }} data - form value
+   */
   const onSubmit = async (data) => {
     try {
+      // redirectTo must be pre-approved in the Supabase dashboard's
+      // Redirect URLs list, or the generated email link will fail
       const userEmail = data.forgot_password_email;
       const { data: emailRecipient, error } =
         await supabase.auth.resetPasswordForEmail(userEmail, {
+          // TODO: Redirect to a non-local host domain
+          // Ensure URL is input and approved in supabase dashboard
           redirectTo: "http://localhost:5173/update-forgotten-password",
         });
       if (error) {
@@ -49,6 +80,7 @@ const ForgotPassword = () => {
           Return to Sign In
         </Link>
       </div>
+      {/* Error state — shown only if Supabase itself failed (not "account not found") */}
       {showError && (
         <div className="forgot-password-email-failure">
           <div className="email-failure-content">
@@ -62,6 +94,7 @@ const ForgotPassword = () => {
           </div>
         </div>
       )}
+      {/* Confirmation state — shown after any non-error submission, real account or not */}
       {showConfirm && !showError && (
         <div className="forgot-password-email-confirm">
           <div className="email-confirm-content">
@@ -79,6 +112,7 @@ const ForgotPassword = () => {
           </div>
         </div>
       )}
+      {/* Default state — the email request form itself */}
       {!showConfirm && !showError && (
         <>
           <div className="forgot-password-form-container">
