@@ -456,7 +456,11 @@ const AccountSettings = ({ user }) => {
                   type="submit"
                   className="primary-button account-settings-submit"
                 >
-                  Submit Changes
+                  {activeForm === "email"
+                    ? "Update Email"
+                    : activeForm === "password"
+                      ? "Update Password"
+                      : "Update Email & Password"}
                 </button>
                 <button
                   type="reset"
