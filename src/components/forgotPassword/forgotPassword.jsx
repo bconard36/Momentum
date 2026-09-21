@@ -11,6 +11,7 @@ const ForgotPassword = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -23,6 +24,7 @@ const ForgotPassword = () => {
       setShowConfirm(true);
       setDisplayEmail(data.forgot_password_email);
       console.log(`Email to be verified: ${data.forgot_password_email}`);
+      reset();
     } catch (error) {
       console.error(error);
     }

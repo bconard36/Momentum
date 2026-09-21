@@ -5,6 +5,7 @@ const UpdateForgottenPassword = () => {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -13,10 +14,21 @@ const UpdateForgottenPassword = () => {
     },
   });
 
+  const onSubmit = (data) => {
+    try {
+      console.log(`Password to be updated: ${data.update_forgotten_password}`);
+    } catch (error) {
+      console.error(`Error updating password: ${error}`);
+    }
+  };
+
   return (
     <div className="update-forgotten-password-container">
       <h2>Update Your Password</h2>
-      <form className="update-forgotten-password-form">
+      <form
+        className="update-forgotten-password-form"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <div className="update-forgotten-password-field">
           <PasswordInput
             register={register}
@@ -33,6 +45,7 @@ const UpdateForgottenPassword = () => {
             name="confirm_forgotten_password_update"
             id="confirm_forgotten_password_update"
             errors={errors}
+            matchValue={watch("update_forgotten_password")}
           />
         </div>
         <button className="primary-button update-forgotten-password-button">
