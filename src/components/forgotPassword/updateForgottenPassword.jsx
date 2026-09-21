@@ -2,11 +2,12 @@ import { useForm } from "react-hook-form";
 import PasswordInput from "../PasswordInput";
 import { useState } from "react";
 import { supabase } from "../../utils/supabaseClient";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 // Will need to accept reset token for authentication!
 const UpdateForgottenPassword = () => {
   const [formSuccess, setFormSuccess] = useState(false);
   const [formError, setFormError] = useState(null); // Same format as account setting form - error name and message properties
+  const navigate = useNavigate();
 
   const {
     register,
@@ -40,6 +41,9 @@ const UpdateForgottenPassword = () => {
       //   }
       setFormSuccess(true);
       setFormError(null);
+      setTimeout(() => {
+        navigate("/sign-in", { replace: true });
+      }, 3000);
     } catch (error) {
       console.error(`Error updating password: ${error}`);
     }
@@ -53,7 +57,7 @@ const UpdateForgottenPassword = () => {
           <h4>Your password has been reset.</h4>
           <p>Redirecting to sign in...</p>
           <p className="manual-redirect-container">
-            If page does not automatically refresh after 5 seconds,{" "}
+            If page does not automatically refresh after 10 seconds,{" "}
             <Link to="/sign-in" className="manual-redirect">
               click here
             </Link>
