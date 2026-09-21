@@ -23,19 +23,22 @@ const ForgotPassword = () => {
   const onSubmit = async (data) => {
     try {
       const userEmail = data.forgot_password_email;
-      const { data: emailRecipient, error: linkError } =
-        await supabase.auth.resetPasswordForEmail((email = userEmail));
-      if (linkError) {
+      const { data: emailRecipient, error } =
+        await supabase.auth.resetPasswordForEmail(userEmail, {
+          redirectTo: "http://localhost:5173/update-forgotten-password",
+        });
+      if (error) {
         setShowError(true);
         setShowConfirm(false);
+        throw error;
       } else {
         setShowConfirm(true);
         setDisplayEmail(userEmail);
         console.log(`Email to be verified: ${userEmail}`);
         reset();
       }
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      console.error(err.message || "An error occurred.");
     }
   };
 
