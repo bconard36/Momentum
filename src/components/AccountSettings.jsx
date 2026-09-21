@@ -261,7 +261,7 @@ const AccountSettings = ({ user }) => {
             reset();
           }}
         >
-          Email Reset
+          Update Email
         </button>
         <button
           type="button"
@@ -273,7 +273,7 @@ const AccountSettings = ({ user }) => {
             reset();
           }}
         >
-          Password Reset
+          Update Password
         </button>
         <button
           type="button"
@@ -285,7 +285,7 @@ const AccountSettings = ({ user }) => {
             reset();
           }}
         >
-          Email & Password Reset
+          Update Email & Password
         </button>
       </div>
 

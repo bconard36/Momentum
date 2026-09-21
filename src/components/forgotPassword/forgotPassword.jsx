@@ -71,7 +71,7 @@ const ForgotPassword = () => {
                 />
               </div>
               <button className="secondary-button forgot-password-button">
-                Reset Forgotten Password
+                Request Password Reset Email
               </button>
             </form>
           </div>
