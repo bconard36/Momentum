@@ -31,6 +31,7 @@ const ForgotPassword = () => {
       </div>
       <div className="forgot-password-form-container">
         <h2>Forgot Password Email Verification</h2>
+        <p>Please enter the email address associated with your account.</p>
         <form
           className="forgot-password-form"
           onSubmit={handleSubmit(onSubmit)}
