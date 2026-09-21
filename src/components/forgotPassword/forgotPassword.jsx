@@ -6,6 +6,7 @@ import { useState } from "react";
 
 const ForgotPassword = () => {
   const [showConfirm, setShowConfirm] = useState(false);
+  const [showError, setShowError] = useState(false);
   const [displayEmail, setDisplayEmail] = useState("");
 
   const {
@@ -21,10 +22,18 @@ const ForgotPassword = () => {
 
   const onSubmit = async (data) => {
     try {
-      setShowConfirm(true);
-      setDisplayEmail(data.forgot_password_email);
-      console.log(`Email to be verified: ${data.forgot_password_email}`);
-      reset();
+      const userEmail = data.forgot_password_email;
+      const { data: emailRecipient, error: linkError } =
+        await supabase.auth.resetPasswordForEmail((email = userEmail));
+      if (linkError) {
+        setShowError(true);
+        setShowConfirm(false);
+      } else {
+        setShowConfirm(true);
+        setDisplayEmail(userEmail);
+        console.log(`Email to be verified: ${userEmail}`);
+        reset();
+      }
     } catch (error) {
       console.error(error);
     }
@@ -37,7 +46,20 @@ const ForgotPassword = () => {
           Return to Sign In
         </Link>
       </div>
-      {showConfirm && (
+      {showError && (
+        <div className="forgot-password-email-failure">
+          <div className="email-failure-content">
+            <p>Unable to send a verification email. Please try again.</p>
+            <button
+              className="secondary-button"
+              onClick={() => setShowError(false)}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+      {showConfirm && !showError && (
         <div className="forgot-password-email-confirm">
           <div className="email-confirm-content">
             <p>
@@ -54,7 +76,7 @@ const ForgotPassword = () => {
           </div>
         </div>
       )}
-      {!showConfirm && (
+      {!showConfirm && !showError && (
         <>
           <div className="forgot-password-form-container">
             <h2>Forgot Password Email Verification</h2>
