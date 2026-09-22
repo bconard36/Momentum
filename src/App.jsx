@@ -127,8 +127,13 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route
             path="/update-forgotten-password"
-            element={<UpdateForgottenPassword />}
+            element={
+              <ProtectedRoute>
+                <UpdateForgottenPassword />
+              </ProtectedRoute>
+            }
           />
+
           <Route
             path="/dashboard"
             element={
