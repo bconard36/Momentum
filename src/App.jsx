@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router";
 import { useState, useEffect } from "react";
 import ProtectedRoute from "./components/ProtectedRoute";
+import PasswordRecoveryRoute from "./components/PasswordRecoveryRoute";
 import Dashboard from "./components/Dashboard";
 import Calculator from "./components/CalorieTrack/components/CalculatorForm";
 import WorkoutForm from "./components/WorkoutForm";
@@ -128,9 +129,9 @@ function App() {
           <Route
             path="/update-forgotten-password"
             element={
-              <ProtectedRoute>
+              <PasswordRecoveryRoute>
                 <UpdateForgottenPassword />
-              </ProtectedRoute>
+              </PasswordRecoveryRoute>
             }
           />
 
