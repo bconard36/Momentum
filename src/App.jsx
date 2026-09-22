@@ -129,9 +129,9 @@ function App() {
           <Route
             path="/update-forgotten-password"
             element={
-              <PasswordRecoveryRoute>
-                <UpdateForgottenPassword />
-              </PasswordRecoveryRoute>
+              // <PasswordRecoveryRoute>
+              <UpdateForgottenPassword />
+              // </PasswordRecoveryRoute>
             }
           />
 
