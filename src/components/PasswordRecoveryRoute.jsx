@@ -12,28 +12,20 @@ import { Navigate } from "react-router";
  * @returns {JSX.Element} Loading state, redirect, or protected child component
  */
 const PasswordRecoveryRoute = ({ children }) => {
-  // Track state for loading and authentication
+  // Track state for loading and password recovery
   const [loading, setLoading] = useState(true);
-  const [authenticated, setAuthenticated] = useState(false);
+  const [recoverySession, setRecoverySession] = useState(false);
 
   useEffect(() => {
-    const checkUser = supabase.auth
-      .getUser() // Retrieves authenticated user data
-      .then(({ data: { user } }) => {
-        setAuthenticated(!!user); // Convert user object to a boolean: user exists = authenticated
-        setLoading(false);
-      });
-
-    checkUser();
-
     // Listen for PASSWORD_RECOVERY auth event
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event) => {
       if (event === "PASSWORD_RECOVERY") {
-        setAuthenticated(true);
-        setLoading(false);
+        setRecoverySession(true);
       }
+
+      setLoading(false);
     });
 
     return () => {
@@ -49,7 +41,7 @@ const PasswordRecoveryRoute = ({ children }) => {
     );
   }
 
-  if (!authenticated) {
+  if (!recoverySession) {
     return <Navigate to="/sign-in" replace />;
   }
 
