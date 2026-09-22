@@ -64,28 +64,27 @@ const UpdateForgottenPassword = () => {
    */
   const onSubmit = async (data) => {
     try {
-      console.log(
-        `Call supabase.auth.updateUser() with password to set as new: ${data.update_forgotten_password}`,
-      );
+      const passwordReset = data.confirm_forgotten_password_update;
       // Attempt to update password
-      //   const { data: passwordReset, error: passwordResetError } =
-      //     await supabase.auth.updateUser({
-      //       password: passwordReset,
-      //     });
+      const { error: passwordResetError } = await supabase.auth.updateUser({
+        password: passwordReset,
+      });
 
-      //   if (passwordResetError) {
-      //     console.log(`Error updating password: ${passwordResetError.message}`);
-      //   } else {
-      //     console.log(
-      //       `Success — password updated. New password: ${passwordReset}`,
-      //     );
-      //   }
-      // Placeholder success path until the real call above is wired in
-      setFormSuccess(true);
-      setFormError(null);
-      setTimeout(() => {
-        navigate("/sign-in", { replace: true });
-      }, 3000);
+      if (passwordResetError) {
+        setFormError({
+          form: "password_revocery",
+          message: "Unexpected error occured.",
+        });
+      } else {
+        console.log(
+          `Success — password updated. New password: ${passwordReset}`,
+        );
+        setFormSuccess(true);
+        setFormError(null);
+        setTimeout(() => {
+          navigate("/sign-in", { replace: true });
+        }, 3000);
+      }
     } catch (error) {
       console.error(`Error updating password: ${error}`);
     }
@@ -112,7 +111,7 @@ const UpdateForgottenPassword = () => {
       {!formSuccess && formError !== null && (
         <div className="forgotten-password-reset-failure">
           <span className="error-message">Error updating password.</span>
-          <p>{formError}</p>
+          <p>{formError.message}</p>
           <Link to="/forgot-password" className="password-reset-error-redirect">
             Please try again
           </Link>
