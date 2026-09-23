@@ -81,7 +81,6 @@ const AccountSettings = ({ user }) => {
           });
 
         if (emailResetError) {
-          // TODO - Insert graceful error pop up here
           setFormError({
             form: "email",
             message: "Error updating email address. Please try again.",
@@ -101,7 +100,6 @@ const AccountSettings = ({ user }) => {
           email: userEmail,
           password: oldPassword,
         });
-        // TODO - Error and Success handling here
         if (reAuthError) {
           setFormError({
             form: "password",
