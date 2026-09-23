@@ -23,9 +23,8 @@ const PasswordRecoveryRoute = ({ children }) => {
     } = supabase.auth.onAuthStateChange((event) => {
       if (event === "PASSWORD_RECOVERY") {
         setRecoverySession(true);
+        setLoading(false);
       }
-
-      setLoading(false);
     });
 
     return () => {
