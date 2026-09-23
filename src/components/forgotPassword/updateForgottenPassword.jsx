@@ -11,11 +11,10 @@ import { Link, useNavigate } from "react-router";
  * Supabase emails to the user after ForgotPassword submits a reset
  * request (see redirectTo in ForgotPassword's onSubmit).
  *
- * NOTE: Currently a UI/state scaffold only. The actual
- * supabase.auth.updateUser() call is stubbed out below and not yet wired in.
- * Supabase's password-recovery link establishes a temporary authenticated
- * session on redirect, which updateUser() will rely on once implemented —
- * this component does not yet accept or validate a reset token directly.
+ * The recovery link establishes an authenticated recovery session,
+ * which allows supabase.auth.updateUser() to update the user's password.
+ * After a successful password update, the user is signed out of the recovery
+ * session and redirected to the sign-in route.
  *
  * UI states (mutually exclusive):
  *  - Default: renders the new-password form
@@ -48,15 +47,11 @@ const UpdateForgottenPassword = () => {
   /**
    * Handles submission of the new password.
    *
-   * TODO: currently a placeholder — logs the intended new password instead
-   * of calling Supabase. The commented block below is the planned
-   * supabase.auth.updateUser() call to wire in once ready.
-   *
-   * Intended flow once implemented:
-   *  1. Call supabase.auth.updateUser({ password }) using the session
-   *     established by the recovery link redirect.
-   *  2. On success: show the success state and redirect to /sign-in.
-   *  3. On failure: set formError and show the error state instead.
+   * Flow:
+   *  1. Update the user's password using the authenticated recovery session.
+   *  2. Sign out of the recovery session.
+   *  3. On successful sign-out, show the success state and redirect to /sign-in.
+   *  4. If either operation fails, set formError and display the error state.
    *
    * @param {{ update_forgotten_password: string, confirm_forgotten_password_update: string }} data
    *   Form values from react-hook-form. The confirm field is validated
@@ -73,16 +68,26 @@ const UpdateForgottenPassword = () => {
 
       if (passwordResetError) {
         setFormError({
-          form: "password_revocery",
-          message: "Unexpected error occured.",
+          form: "password_recovery",
+          message: "Unexpected error occurred.",
         });
       } else {
-        signOut();
-        setFormSuccess(true);
-        setFormError(null);
-        setTimeout(() => {
-          navigate("/sign-in", { replace: true });
-        }, 3000);
+        // Wait for the signOut method to clear session data
+        const { success, error } = await signOut();
+
+        // If signOut successful, handle password reset redirect flow
+        if (success) {
+          setFormSuccess(true);
+          setFormError(null);
+          setTimeout(() => {
+            navigate("/sign-in", { replace: true });
+          }, 3000);
+        } else {
+          setFormError({
+            form: "password_recovery",
+            message: `${error.message}`,
+          });
+        }
       }
     } catch (error) {
       console.error(`Error updating password: ${error}`);
@@ -106,7 +111,7 @@ const UpdateForgottenPassword = () => {
           </p>
         </div>
       )}
-      {/* Error state — shown if the (future) update call fails */}
+      {/* Error state — shown if password update or sign-out fails */}
       {!formSuccess && formError !== null && (
         <div className="forgotten-password-reset-failure">
           <span className="error-message">Error updating password.</span>
