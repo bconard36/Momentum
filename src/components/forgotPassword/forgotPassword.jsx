@@ -63,7 +63,6 @@ const ForgotPassword = () => {
       } else {
         setShowConfirm(true);
         setDisplayEmail(userEmail);
-        console.log(`Email to be verified: ${userEmail}`);
         reset();
       }
     } catch (err) {
