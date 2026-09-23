@@ -1,6 +1,5 @@
 import { Link, useNavigate, useLocation } from "react-router";
-import signOut from "../hooks/signOut";
-import { supabase } from "../utils/supabaseClient";
+import signOut from "../utils/signOut";
 import { useState, useRef, useEffect } from "react";
 import Header from "./Header";
 import useClickOutside from "../hooks/useClickOutside";
