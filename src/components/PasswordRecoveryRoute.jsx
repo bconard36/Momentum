@@ -3,12 +3,10 @@ import { supabase } from "../utils/supabaseClient";
 import { Navigate } from "react-router";
 
 /**
- * Protected Route Component
- * Sends an HTTP request to Supabase auth server to verify User's authenticated JWT
- * Displays a loading state while user is being checked, redirects unauthenticated users to the sign-in route,
- * and renders the provided child component for authenticated users.
- * @param {React.ReactNode} children - child components(s) whose routes are to be protected
- * @returns {Object} route to navigate back to
+ * Password Recovery Route Component
+ * Listens for a PASSWORD_RECOVERY event from supabase
+ * Allows access only during a password recovery flow.
+ * @param {React.ReactNode} children - child component whose route is protected
  * @returns {JSX.Element} Loading state, redirect, or protected child component
  */
 const PasswordRecoveryRoute = ({ children }) => {
@@ -27,8 +25,13 @@ const PasswordRecoveryRoute = ({ children }) => {
       }
     });
 
+    // Handle an invalid/expired/already used link here
+    // Redirect to sign in and set loading as false after 5 seconds
+    const timeout = setTimeout(() => setLoading(false), 5000);
+
     return () => {
       subscription.unsubscribe();
+      clearTimeout(timeout);
     };
   }, []);
 
