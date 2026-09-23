@@ -54,9 +54,7 @@ const ForgotPassword = () => {
       const userEmail = data.forgot_password_email;
       const { data: emailRecipient, error } =
         await supabase.auth.resetPasswordForEmail(userEmail, {
-          // TODO: Redirect to a non-local host domain
-          // Ensure URL is input and approved in supabase dashboard
-          redirectTo: "http://localhost:5173/update-forgotten-password",
+          redirectTo: `${window.location.origin}/update-forgotten-password`,
         });
       if (error) {
         setShowError(true);
