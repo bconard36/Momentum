@@ -74,6 +74,25 @@ Supabase handles the following responsibilities:
 - _workout storage, retrieval, and edits_
 - _deletion_
 
+## Known Issues
+
+### Password reset / email confirmation links may show "otp_expired" but still work
+
+Some email providers (notably institutional addresses like .edu domains,
+and corporate accounts behind Microsoft Defender Safe Links, Proofpoint,
+Barracuda, etc.) scan links in incoming emails before delivering them.
+Since Supabase's auth links are single-use, this scan consumes the token
+before the user ever clicks it — so the user sees:
+
+http://localhost:5173/#error=access_denied&error_code=otp_expired...
+
+...even though the underlying action (password reset, email confirmation)
+already succeeded when the scanner hit the link.
+
+This is a known behavior of link-based email verification generally, not
+a bug in this app. No fix is planned — noting it here so it isn't mistaken
+for a broken flow during testing or support
+
 # Folder List
 
 - public

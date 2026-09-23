@@ -16,6 +16,10 @@ import { Link, useNavigate } from "react-router";
  * After a successful password update, the user is signed out of the recovery
  * session and redirected to the sign-in route.
  *
+ * If this hasn't fired within a few seconds, the link may be expired,
+ * already used, or "pre-clicked" by an email security scanner —
+ * see README > Known Issues for details.
+ *
  * UI states (mutually exclusive):
  *  - Default: renders the new-password form
  *  - formSuccess: confirmation message, auto-redirects to /sign-in after 3s

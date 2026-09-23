@@ -351,6 +351,10 @@ const AccountSettings = ({ user }) => {
                 )}
               </div>
             )}
+          {/* Note: if the confirmation email is delayed or the user's provider
+    scans/pre-visits email links, the confirmation link may show as
+    "expired" even though the email change already succeeded —
+    see README > Known Issues for details. */}
           {emailUpdatePending && (
             <div className="email-update-pending">
               <span className="reset-success-message">

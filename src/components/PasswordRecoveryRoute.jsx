@@ -16,6 +16,9 @@ const PasswordRecoveryRoute = ({ children }) => {
 
   useEffect(() => {
     // Listen for PASSWORD_RECOVERY auth event
+    // If this hasn't fired within a few seconds, the link may be expired,
+    // already used, or "pre-clicked" by an email security scanner —
+    // see README > Known Issues for details.
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event) => {
