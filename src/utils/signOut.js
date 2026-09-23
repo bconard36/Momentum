@@ -1,4 +1,4 @@
-import { supabase } from "../utils/supabaseClient";
+import { supabase } from "./supabaseClient";
 /**
  * Signs out the current user from the local Supabase session.
  * @returns {Promise<{success: boolean, error: object | null}>} Result of the sign-out request. */
