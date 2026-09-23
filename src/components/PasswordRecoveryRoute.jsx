@@ -36,6 +36,11 @@ import { Navigate } from "react-router";
  *    always returns null, so linkError falls back to the generic message
  *    every time (harmless, but worth fixing).
  *
+ * why the reset keeps failing is now understood —
+ * it's not really a code bug to hunt down further,
+ * it's a design change (don't let loading the page use up the token;
+ * require a click first).
+ *
  * NEXT SESSION: rewrite this route + UpdateForgottenPassword to use the
  * token_hash/type query-param + verifyOtp-on-click pattern instead of the
  * hash-based auto-detection this file currently does.
@@ -62,7 +67,7 @@ const PasswordRecoveryRoute = ({ children }) => {
     // Supabase appends error info directly to the hash
     if (params.get("error")) {
       setLinkError(
-        params.get("error.description") ||
+        params.get("error_description") ||
           "This reset link is invalid or has expired.",
       );
     }
