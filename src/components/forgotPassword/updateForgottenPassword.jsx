@@ -76,9 +76,7 @@ const UpdateForgottenPassword = () => {
           message: "Unexpected error occured.",
         });
       } else {
-        console.log(
-          `Success — password updated. New password: ${passwordReset}`,
-        );
+        signOut();
         setFormSuccess(true);
         setFormError(null);
         setTimeout(() => {
