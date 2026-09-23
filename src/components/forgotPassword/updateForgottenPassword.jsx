@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import PasswordInput from "../PasswordInput";
 import { useState } from "react";
 import { supabase } from "../../utils/supabaseClient";
+import signOut from "../../hooks/signOut";
 import { Link, useNavigate } from "react-router";
 /**
  * Update Forgotten Password Component
