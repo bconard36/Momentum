@@ -1,5 +1,5 @@
 import { Link, useNavigate, useLocation } from "react-router";
-import { supabase } from "../utils/supabaseClient";
+import signOut from "../utils/signOut";
 import { useState, useRef, useEffect } from "react";
 import Header from "./Header";
 import useClickOutside from "../hooks/useClickOutside";
@@ -32,32 +32,6 @@ const Dashboard = ({ user }) => {
     setIsUserOpen(false);
   }, [location.pathname]);
 
-  /**
-     * Sign Out Handler 
-     * Calls Supabase Auth signOut() to end the user's current session. 
-     * On successful sign-out, redirects the user to the sign-in route.
-      
-     * @returns {Promise<void>} - Resolves after the sign-out requests completes
-     */
-  const signOut = async () => {
-    try {
-      const { error } = await supabase.auth.signOut({
-        // Local scope signs the user out of the current session,
-        // without terminating the user's other active sessions
-        scope: "local",
-      });
-
-      if (error) {
-        console.log("Error signing out:", error);
-      } else {
-        setIsUserOpen(false);
-        logOutNav("/", { replace: true });
-      }
-    } catch (error) {
-      console.error("Error signing out:", error);
-    }
-  };
-
   return (
     <>
       <div className="dashboard">
@@ -88,7 +62,14 @@ const Dashboard = ({ user }) => {
                   <li className="user-menu-item">Preferences</li>
                 </Link>
                 <br />
-                <li className="user-menu-item" onClick={signOut}>
+                <li
+                  className="user-menu-item"
+                  onClick={() => {
+                    signOut();
+                    setIsUserOpen(false);
+                    logOutNav("/", { replace: true });
+                  }}
+                >
                   Sign Out
                 </li>
               </ul>

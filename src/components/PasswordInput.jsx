@@ -27,7 +27,9 @@ const PasswordInput = ({
   const inputLabel =
     label === "password_original"
       ? "Confirm Old Password"
-      : label === "confirm_password" || label === "confirm_password_reset"
+      : label === "confirm_password" ||
+          label === "confirm_password_reset" ||
+          label === "confirm_forgotten_password_update"
         ? "Confirm Password"
         : "Enter Password";
 

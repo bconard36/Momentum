@@ -81,7 +81,6 @@ const AccountSettings = ({ user }) => {
           });
 
         if (emailResetError) {
-          // TODO - Insert graceful error pop up here
           setFormError({
             form: "email",
             message: "Error updating email address. Please try again.",
@@ -101,7 +100,6 @@ const AccountSettings = ({ user }) => {
           email: userEmail,
           password: oldPassword,
         });
-        // TODO - Error and Success handling here
         if (reAuthError) {
           setFormError({
             form: "password",
@@ -261,7 +259,7 @@ const AccountSettings = ({ user }) => {
             reset();
           }}
         >
-          Email Reset
+          Update Email
         </button>
         <button
           type="button"
@@ -273,7 +271,7 @@ const AccountSettings = ({ user }) => {
             reset();
           }}
         >
-          Password Reset
+          Update Password
         </button>
         <button
           type="button"
@@ -285,7 +283,7 @@ const AccountSettings = ({ user }) => {
             reset();
           }}
         >
-          Email & Password Reset
+          Update Email & Password
         </button>
       </div>
 
@@ -351,6 +349,10 @@ const AccountSettings = ({ user }) => {
                 )}
               </div>
             )}
+          {/* Note: if the confirmation email is delayed or the user's provider
+    scans/pre-visits email links, the confirmation link may show as
+    "expired" even though the email change already succeeded —
+    see README > Known Issues for details. */}
           {emailUpdatePending && (
             <div className="email-update-pending">
               <span className="reset-success-message">
@@ -456,7 +458,11 @@ const AccountSettings = ({ user }) => {
                   type="submit"
                   className="primary-button account-settings-submit"
                 >
-                  Submit Changes
+                  {activeForm === "email"
+                    ? "Update Email"
+                    : activeForm === "password"
+                      ? "Update Password"
+                      : "Update Email & Password"}
                 </button>
                 <button
                   type="reset"

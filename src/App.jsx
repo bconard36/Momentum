@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router";
 import { useState, useEffect } from "react";
 import ProtectedRoute from "./components/ProtectedRoute";
+import PasswordRecoveryRoute from "./components/PasswordRecoveryRoute";
 import Dashboard from "./components/Dashboard";
 import Calculator from "./components/CalorieTrack/components/CalculatorForm";
 import WorkoutForm from "./components/WorkoutForm";
@@ -13,6 +14,8 @@ import Analytics from "./components/analytics/Analytics";
 import LandingPage from "./components/landingPage/LandingPage";
 import AccountSettings from "./components/AccountSettings";
 import { useAuthUser } from "./hooks/useAuthUser";
+import ForgotPassword from "./components/forgotPassword/forgotPassword";
+import UpdateForgottenPassword from "./components/forgotPassword/updateForgottenPassword";
 
 /**
  * Home Route Component
@@ -122,6 +125,16 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/sign-in" element={<HomeRedirect />} />
           <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route
+            path="/update-forgotten-password"
+            element={
+              <PasswordRecoveryRoute>
+                <UpdateForgottenPassword />
+              </PasswordRecoveryRoute>
+            }
+          />
+
           <Route
             path="/dashboard"
             element={
