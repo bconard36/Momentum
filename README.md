@@ -6,10 +6,11 @@ Momentum is a React application for logging, managing, and reviewing workouts. U
 or remove exercises from a workout, validate inputs using React Hook Form, and store workout history in a
 PostgreSQL database through Supabase.
 
-Momentum includes user authentication through Supabase. Users can create an account, sign in, sign out, and
-manage their account credentials, including updating their email address and/or password. Supabase Auth
-manages authentication while PostgreSQL functions & triggers automatically create a corresponding user
-profile in the application's `public.users` table and keep it synchronized with authentication-level changes.
+Momentum includes user authentication through Supabase. Users can create an account, sign in, sign out,
+recover a forgotten password through an emailed reset link, and manage their account credentials, including
+updating their email address and/or password. Supabase Auth manages authentication while PostgreSQL
+functions & triggers automatically create a corresponding user profile in the application's `public.users`
+table and keep it synchronized with authentication-level changes.
 
 A public landing page introduces the application to unauthenticated visitors, previewing the workout form,
 workout log, workout analytics, and fitness calculator with sample data before requiring an account.
@@ -57,6 +58,7 @@ The application currently supports:
   - Current workout streak
   - Exercise type splits
 - User-facing error messaging for failed workout operations
+- Full self-service password reset via emailed recovery link, gated by a dedicated route guard that waits for Supabase's `PASSWORD_RECOVERY` event before granting access, with a timeout fallback for expired/invalid links
 - Unit test coverage for:
   - Creating an account (SignUp)
   - Signing in (SignIn)
@@ -66,6 +68,7 @@ The application currently supports:
   - Account settings (email reset, password reset, combined reset, reauthentication, and pending-change state)
   - Reusable `PasswordInput` and `EmailInput` components in isolation
   - Analytics calculations (30-day count, workout streak, exercise splits)
+  - Password reset request and recovery (`ForgotPassword`, `UpdateForgottenPassword`)
 
 Supabase handles the following responsibilities:
 
@@ -91,7 +94,7 @@ already succeeded when the scanner hit the link.
 
 This is a known behavior of link-based email verification generally, not
 a bug in this app. No fix is planned — noting it here so it isn't mistaken
-for a broken flow during testing or support
+for a broken flow during testing or support.
 
 # Folder List
 
@@ -106,7 +109,10 @@ for a broken flow during testing or support
     - CalorieTrack: Fitness calculator component
       - refactored from the original [Calorie Track](https://github.com/bconard36/CalorieTrack),
         migrated into Momentum and rebuilt using `react-hook-form` for form state management and validation.
-    - landingPage: Parent folder for landing page components
+    - forgotPassword: parent folder for forgot password logic/flow
+      - ForgotPassword.jsx
+      - UpdateForgottenPassword.jsx
+    - landingPage: parent folder for landing page components
       - AnalyticsPreview.jsx
       - CalculatorPreview.jsx
       - Hero.jsx
@@ -121,6 +127,7 @@ for a broken flow during testing or support
     - Header.jsx
     - NotFound.jsx
     - PasswordInput.jsx
+    - PasswordRecoveryRoute.jsx
     - ProtectedRoute.jsx
     - SignIn.jsx
     - SignUp.jsx
@@ -142,6 +149,7 @@ for a broken flow during testing or support
     - base.css
     - calculator.css
     - editWorkout.css
+    - forgotPassword.css
     - notFound.css
     - signInSignUp.css
     - success.css
@@ -154,14 +162,17 @@ for a broken flow during testing or support
     - EditWorkout.test.jsx
     - EmailInput.test.jsx
     - ExerciseSplits.test.jsx
+    - ForgotPassword.test.jsx
     - PasswordInput.test.jsx
     - setup.js
     - SignUp.test.jsx
     - SignIn.test.jsx
     - ThirtyDayCount.test.jsx
+    - UpdateForgottenPassword.test.jsx
     - WorkoutForm.test.jsx
     - WorkoutStreak.test.jsx
   - utils: parent folder for utility functions
+    - signOut.js
     - supabaseClient.js
   - App.jsx
   - main.jsx
@@ -391,6 +402,14 @@ Momentum uses **Prettier** with a project-level `.prettierrc` to enforce consist
 
 **Unit Testing Async, Network-Dependent Components**: Writing unit tests required learning to mock Supabase at the module level and explicitly configuring and resetting each mock's resolved value per test case, since an unconfigured mock silently resolves to `undefined` rather than throwing.
 
+**Email Link Verification Isn't Instant**: Some email providers scan and pre-visit links before a user ever clicks them, silently consuming Supabase's single-use recovery token. This surfaces as a valid-looking link showing an "expired" error even though the underlying action already succeeded — a client-side symptom with a server-adjacent, non-code root cause, and a good reminder that not every bug-shaped thing is a bug.
+
+**Choosing the Simpler Correct Solution**: An initial approach to hardening the recovery flow (custom token-hash query params with a manual, click-gated verification step) was scrapped in favor of Supabase's default recovery-event flow once it became clear the added complexity wasn't buying enough real protection to justify the harder mental model — a deliberate trade of theoretical robustness for maintainability.
+
+**Supabase Password Recovery Is Session-Based**: Supabase's password recovery flow establishes a temporary authenticated session from the recovery link, allowing supabase.auth.updateUser() to securely update the password without manually handling the recovery token in the component.
+
+**Recovery Sessions Need Their Own Sign-Out Flow**: The recovery flow explicitly signs the user out after a successful password update, preventing the temporary recovery session from being mistaken for a normal authenticated session. This sign-out logic was extracted into a reusable `signOut` utility, keeping authentication behavior shared across components while UI state and navigation stay specific to whichever component calls it.
+
 # Future Development
 
 As Momentum continues to evolve, planned improvements include:
@@ -398,7 +417,7 @@ As Momentum continues to evolve, planned improvements include:
 - Expanded user profile functionality
 - Extracting workout-fetching, deletion, and related state out of App.jsx into a dedicated useWorkoutLog hook, so the root component is only responsible for routing
 - Further application state management improvements
-- Reconciling session behavior between the standalone password-reset flow (forced global sign-out) and the combined email + password flow (no forced sign-out), so the security posture is consistent regardless of which form a user changes their password through
+- Reconciling session behavior across all three password-change paths: the forgot-password recovery flow (local-scope sign-out), the standalone account-settings password change (forced global sign-out), and the combined email + password change (no forced sign-out) — so the security posture is consistent regardless of which path a user takes
 
 # Production Build
 
