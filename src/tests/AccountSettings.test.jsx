@@ -67,6 +67,21 @@ const renderAccountSettings = (userOverrides = {}) => {
   );
 };
 
+/**
+ * Extracts the submit button from an array of buttons with the same name
+ * Added to combat dynamic button name rendering across separate account settings forms
+ * Form and submit buttons have the same names — this gets the submit button to avoid errors
+ * @param {*} name - shared name across buttons
+ * @returns {} - button to submit the form data
+ */
+const getSubmitButton = (name) => {
+  const buttons = screen.getAllByRole("button", {
+    name: new RegExp(`^${name}$`, "i"),
+  });
+  expect(buttons).toHaveLength(2);
+  return buttons[1];
+};
+
 /** Fills the three password fields shared by the password-only and
  *  email_password forms. Assumes only one active mode is rendered. */
 const fillPasswordFields = async (
@@ -96,7 +111,7 @@ describe("AccountSettings - mode switching", () => {
     const user = userEvent.setup();
     renderAccountSettings();
 
-    await user.click(screen.getByRole("button", { name: /^email reset$/i }));
+    await user.click(screen.getByRole("button", { name: /^update email$/i }));
 
     expect(screen.getByLabelText(/new email address/i)).toBeInTheDocument();
     expect(screen.queryByLabelText(/enter password/i)).not.toBeInTheDocument();
@@ -106,7 +121,9 @@ describe("AccountSettings - mode switching", () => {
     const user = userEvent.setup();
     renderAccountSettings();
 
-    await user.click(screen.getByRole("button", { name: /^password reset$/i }));
+    await user.click(
+      screen.getByRole("button", { name: /^update password$/i }),
+    );
 
     expect(screen.getByLabelText(/confirm old password/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/enter password/i)).toBeInTheDocument();
@@ -121,7 +138,7 @@ describe("AccountSettings - mode switching", () => {
     renderAccountSettings();
 
     await user.click(
-      screen.getByRole("button", { name: /email & password reset/i }),
+      screen.getByRole("button", { name: /update email & password/i }),
     );
 
     expect(screen.getByLabelText(/new email address/i)).toBeInTheDocument();
@@ -138,26 +155,33 @@ describe("AccountSettings - mode switching", () => {
     });
     renderAccountSettings();
 
-    await user.click(screen.getByRole("button", { name: /^password reset$/i }));
+    const formButton = screen.getByRole("button", {
+      name: /^Update Password$/i,
+    });
+
+    await user.click(formButton);
+    const submitButton = getSubmitButton("Update Password");
     await fillPasswordFields(user, {
       oldPassword: "WrongPass123!",
       newPassword: "ValidPass456!",
       confirmPassword: "ValidPass456!",
     });
-    await user.click(screen.getByRole("button", { name: /submit changes/i }));
+    await user.click(submitButton);
 
-    expect(await screen.findByText(/invalid credentials/i)).toBeInTheDocument();
+    expect(
+      await screen.findByText(/invalid credentials\./i),
+    ).toBeInTheDocument();
 
-    await user.click(screen.getByRole("button", { name: /^email reset$/i }));
+    await user.click(screen.getByRole("button", { name: /^update email$/i }));
 
     expect(screen.queryByText(/invalid credentials/i)).not.toBeInTheDocument();
   });
 });
 /**
- * Test Suite for Password Reset Flow
+ * Test Suite for Password Update Flow
  * On success, tests for redirect and sign out
  */
-describe("AccountSettings - password reset flow", () => {
+describe("AccountSettings - password update flow", () => {
   // Test 1 - Blocks change when old password is invalid
   it("shows an error when the old password fails reauthentication", async () => {
     const user = userEvent.setup();
@@ -166,13 +190,18 @@ describe("AccountSettings - password reset flow", () => {
     });
     renderAccountSettings();
 
-    await user.click(screen.getByRole("button", { name: /^password reset$/i }));
+    const formButton = screen.getByRole("button", {
+      name: /^Update Password$/i,
+    });
+
+    await user.click(formButton);
+    const submitButton = getSubmitButton("Update Password");
     await fillPasswordFields(user, {
       oldPassword: "WrongPass123!",
       newPassword: "ValidPass456!",
       confirmPassword: "ValidPass456!",
     });
-    await user.click(screen.getByRole("button", { name: /submit changes/i }));
+    await user.click(submitButton);
 
     expect(await screen.findByText(/invalid credentials/i)).toBeInTheDocument();
     expect(mockUpdateUser).not.toHaveBeenCalled();
@@ -189,13 +218,18 @@ describe("AccountSettings - password reset flow", () => {
 
     renderAccountSettings();
 
-    await user.click(screen.getByRole("button", { name: /^password reset$/i }));
+    const formButton = screen.getByRole("button", {
+      name: /^Update Password$/i,
+    });
+
+    await user.click(formButton);
+    const submitButton = getSubmitButton("Update Password");
     await fillPasswordFields(user, {
       oldPassword: "OldPass123!",
       newPassword: "ValidPass456!",
       confirmPassword: "ValidPass456!",
     });
-    await user.click(screen.getByRole("button", { name: /submit changes/i }));
+    await user.click(submitButton);
 
     expect(
       await screen.findByText(/success! password updated\./i),
@@ -211,10 +245,10 @@ describe("AccountSettings - password reset flow", () => {
   });
 });
 /**
- * Email & Password Reset Flow
+ * Email & Password Update Flow
  * Tests for partial failures/successes
  */
-describe("AccountSettings - email & password reset flow", () => {
+describe("AccountSettings - email & password update flow", () => {
   const fillEmailPasswordFields = async (
     user,
     { email, oldPassword, newPassword, confirmPassword },
@@ -239,16 +273,19 @@ describe("AccountSettings - email & password reset flow", () => {
 
     renderAccountSettings();
 
-    await user.click(
-      screen.getByRole("button", { name: /email & password reset/i }),
-    );
+    const formButton = screen.getByRole("button", {
+      name: /^Update Email & Password$/i,
+    });
+
+    await user.click(formButton);
+    const submitButton = getSubmitButton("Update Email & Password");
     await fillEmailPasswordFields(user, {
       email: "taken@example.com",
       oldPassword: "OldPass123!",
       newPassword: "ValidPass456!",
       confirmPassword: "ValidPass456!",
     });
-    await user.click(screen.getByRole("button", { name: /submit changes/i }));
+    await user.click(submitButton);
 
     expect(await screen.findByText(/password updated!/i)).toBeInTheDocument();
     expect(
@@ -268,16 +305,19 @@ describe("AccountSettings - email & password reset flow", () => {
 
     renderAccountSettings();
 
-    await user.click(
-      screen.getByRole("button", { name: /email & password reset/i }),
-    );
+    const formButton = screen.getByRole("button", {
+      name: /^Update Email & Password$/i,
+    });
+
+    await user.click(formButton);
+    const submitButton = getSubmitButton("Update Email & Password");
     await fillEmailPasswordFields(user, {
       email: "new@example.com",
       oldPassword: "OldPass123!",
       newPassword: "ValidPass456!",
       confirmPassword: "ValidPass456!",
     });
-    await user.click(screen.getByRole("button", { name: /submit changes/i }));
+    await user.click(submitButton);
 
     expect(
       await screen.findByText(/email and password have been updated/i),
