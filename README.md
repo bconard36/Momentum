@@ -330,7 +330,7 @@ Momentum uses **Vitest** and **React Testing Library** for component-level unit 
 
 Supabase calls are mocked at the module level (`vi.mock`) on a per-file basis, scoped to only the methods each component actually calls, so tests run without touching the real database.
 
-Current coverage includes sign up, sign in, save workout, edit workout, delete workout, account settings, and analytics calculation flows:
+Current coverage includes sign up, sign in, save workout, edit workout, delete workout, account settings, password recovery, and analytics calculation flows:
 
 - Form rendering and field presence
 - Client-side validation blocking submission before Supabase is contacted
