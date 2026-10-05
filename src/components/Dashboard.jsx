@@ -18,7 +18,7 @@ import useClickOutside from "../hooks/useClickOutside";
    
  * @returns {JSX.Element} - Dashboard component
  */
-const Dashboard = ({ user }) => {
+const Dashboard = () => {
   // Initialize navigation hook
   const logOutNav = useNavigate();
 
