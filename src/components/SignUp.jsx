@@ -96,9 +96,12 @@ const SignUp = () => {
             <button
               type="button"
               className="secondary-button"
-              onClick={() => setCreateFail(false)}
+              onClick={() => {
+                setCreateFail(false);
+                reset();
+              }}
             >
-              Return to Sign In
+              Try Again
             </button>
           </div>
         </div>
