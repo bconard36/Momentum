@@ -40,13 +40,13 @@ const WorkoutFormPreview = () => {
       </div>
       <div className="mock-tabs">
         <div
-          className={`${exerciseType === "strength" ? `mock-tab mock-tab-active` : `mock-tab`}`}
+          className={`${exerciseType === "strength" ? "mock-tab mock-tab-active" : "mock-tab"}`}
           onClick={() => setExerciseType("strength")}
         >
           Strength
         </div>
         <div
-          className={`${exerciseType === "duration" ? `mock-tab mock-tab-active` : `mock-tab`}`}
+          className={`${exerciseType === "duration" ? "mock-tab mock-tab-active" : "mock-tab"}`}
           onClick={() => setExerciseType("duration")}
         >
           Duration
